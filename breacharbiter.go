@@ -8,21 +8,21 @@ import (
 	"io"
 	"sync"
 
-	"github.com/btcsuite/btcd/blockchain"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/vclsuite_vcld/blockchain"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/davecgh/go-spew/spew"
 
-	"github.com/lightningnetwork/lnd/chainntnfs"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	"github.com/lightningnetwork/lnd/htlcswitch"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/labels"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/htlcswitch"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/labels"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
 )
 
 var (
@@ -303,7 +303,7 @@ func convertToSecondLevelRevoke(bo *breachedOutput, breachInfo *retributionInfo,
 	// to know the new input value (the second level transactions shaves
 	// off some funds to fees).
 	newAmt := spendingTx.TxOut[0].Value
-	bo.amt = btcutil.Amount(newAmt)
+	bo.amt = vclutil.Amount(newAmt)
 	bo.signDesc.Output.Value = newAmt
 	bo.signDesc.Output.PkScript = spendingTx.TxOut[0].PkScript
 
@@ -639,7 +639,7 @@ justiceTxBroadcast:
 
 		// Compute both the total value of funds being swept and the
 		// amount of funds that were revoked from the counter party.
-		var totalFunds, revokedFunds btcutil.Amount
+		var totalFunds, revokedFunds vclutil.Amount
 		for _, inp := range breachInfo.breachedOutputs {
 			totalFunds += inp.Amount()
 
@@ -824,7 +824,7 @@ func (b *breachArbiter) handleBreachHandoff(breachEvent *ContractBreachEvent) {
 // output. A breached output is an output that we are now entitled to due to a
 // revoked commitment transaction being broadcast.
 type breachedOutput struct {
-	amt         btcutil.Amount
+	amt         vclutil.Amount
 	outpoint    wire.OutPoint
 	witnessType input.StandardWitnessType
 	signDesc    input.SignDescriptor
@@ -846,7 +846,7 @@ func makeBreachedOutput(outpoint *wire.OutPoint,
 	amount := signDescriptor.Output.Value
 
 	return breachedOutput{
-		amt:                      btcutil.Amount(amount),
+		amt:                      vclutil.Amount(amount),
 		outpoint:                 *outpoint,
 		secondLevelWitnessScript: secondLevelScript,
 		witnessType:              witnessType,
@@ -856,7 +856,7 @@ func makeBreachedOutput(outpoint *wire.OutPoint,
 }
 
 // Amount returns the number of satoshis contained in the breached output.
-func (bo *breachedOutput) Amount() btcutil.Amount {
+func (bo *breachedOutput) Amount() vclutil.Amount {
 	return bo.amt
 }
 
@@ -1121,9 +1121,9 @@ func (b *breachArbiter) sweepSpendableOutputsTxn(txWeight int64,
 	}
 
 	// Compute the total amount contained in the inputs.
-	var totalAmt btcutil.Amount
+	var totalAmt vclutil.Amount
 	for _, input := range inputs {
-		totalAmt += btcutil.Amount(input.SignDesc().Output.Value)
+		totalAmt += vclutil.Amount(input.SignDesc().Output.Value)
 	}
 
 	// We'll actually attempt to target inclusion within the next two
@@ -1158,7 +1158,7 @@ func (b *breachArbiter) sweepSpendableOutputsTxn(txWeight int64,
 
 	// Before signing the transaction, check to ensure that it meets some
 	// basic validity requirements.
-	btx := btcutil.NewTx(txn)
+	btx := vclutil.NewTx(txn)
 	if err := blockchain.CheckTransactionSanity(btx); err != nil {
 		return nil, err
 	}
@@ -1560,7 +1560,7 @@ func (bo *breachedOutput) Decode(r io.Reader) error {
 	if _, err := io.ReadFull(r, scratch[:8]); err != nil {
 		return err
 	}
-	bo.amt = btcutil.Amount(binary.BigEndian.Uint64(scratch[:8]))
+	bo.amt = vclutil.Amount(binary.BigEndian.Uint64(scratch[:8]))
 
 	if err := readOutpoint(r, &bo.outpoint); err != nil {
 		return err

@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/lightningnetwork/lnd/lntypes"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwire"
+	"github.com/John-Tonny/lnd/lntypes"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwire"
 )
 
 type linkTestContext struct {

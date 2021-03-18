@@ -5,10 +5,10 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/watchtower/blob"
-	"github.com/lightningnetwork/lnd/watchtower/wtdb"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/watchtower/blob"
+	"github.com/John-Tonny/lnd/watchtower/wtdb"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
 )
 
 type towerPK [33]byte

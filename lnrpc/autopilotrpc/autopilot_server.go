@@ -7,10 +7,10 @@ import (
 	"encoding/hex"
 	"sync/atomic"
 
-	"github.com/btcsuite/btcd/btcec"
+	"github.com/John-Tonny/lnd/autopilot"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/lightningnetwork/lnd/autopilot"
-	"github.com/lightningnetwork/lnd/lnrpc"
 	"google.golang.org/grpc"
 	"gopkg.in/macaroon-bakery.v2/bakery"
 )

@@ -11,17 +11,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/chainntnfs"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	"github.com/lightningnetwork/lnd/clock"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/lntest/mock"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwire"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/clock"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/lntest/mock"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 const (
@@ -1964,8 +1964,8 @@ func TestRemoteCloseInitiator(t *testing.T) {
 				ChannelCloseSummary: channeldb.ChannelCloseSummary{
 					ChanPoint:         channel.FundingOutpoint,
 					RemotePub:         channel.IdentityPub,
-					SettledBalance:    btcutil.Amount(500),
-					TimeLockedBalance: btcutil.Amount(10000),
+					SettledBalance:    vclutil.Amount(500),
+					TimeLockedBalance: vclutil.Amount(10000),
 					IsPending:         false,
 				},
 				HtlcResolutions: &lnwallet.HtlcResolutions{},
@@ -2243,7 +2243,7 @@ func TestChannelArbitratorAnchors(t *testing.T) {
 		t.Fatalf("contract was not resolved")
 	}
 
-	anchorAmt := btcutil.Amount(
+	anchorAmt := vclutil.Amount(
 		anchorResolution.AnchorSignDescriptor.Output.Value,
 	)
 	spendTx := chanArbCtx.sweeper.sweepTx.TxHash()

@@ -3,7 +3,7 @@ package keychain
 import (
 	"crypto/sha256"
 
-	"github.com/btcsuite/btcd/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
 )
 
 // NewPubKeyECDH wraps the given key of the key ring so it adheres to the

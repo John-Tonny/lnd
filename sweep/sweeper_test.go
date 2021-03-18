@@ -8,18 +8,18 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/lnd/build"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/lntest/mock"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/lightningnetwork/lnd/build"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/lntest/mock"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
 	"github.com/stretchr/testify/require"
 )
 
@@ -107,7 +107,7 @@ func createSweeperTestContext(t *testing.T) *sweeperTestContext {
 	backend := newMockBackend(t, notifier)
 	backend.walletUtxos = []*lnwallet.Utxo{
 		{
-			Value:       btcutil.Amount(1_000_000),
+			Value:       vclutil.Amount(1_000_000),
 			AddressType: lnwallet.WitnessPubKey,
 		},
 	}
@@ -353,7 +353,7 @@ func assertTxFeeRate(t *testing.T, tx *wire.MsgTx,
 	}
 	outputAmt := tx.TxOut[0].Value
 
-	fee := btcutil.Amount(inputAmt - outputAmt)
+	fee := vclutil.Amount(inputAmt - outputAmt)
 	_, estimator := getWeightEstimate(inputs, nil, 0)
 	txWeight := estimator.weight()
 
@@ -1208,7 +1208,7 @@ func TestBumpFeeRBF(t *testing.T) {
 	// We'll then attempt to sweep an input, which we'll use to bump its fee
 	// later on.
 	input := createTestInput(
-		btcutil.SatoshiPerBitcoin, input.CommitmentTimeLock,
+		vclutil.SatoshiPerBitcoin, input.CommitmentTimeLock,
 	)
 	sweepResult, err := ctx.sweeper.SweepInput(
 		&input, Params{Fee: lowFeePref},
@@ -1790,7 +1790,7 @@ func TestRequiredTxOuts(t *testing.T) {
 	var inputs []*input.BaseInput
 	for i := 0; i < 20; i++ {
 		input := createTestInput(
-			int64(btcutil.SatoshiPerBitcoin+i*500),
+			int64(vclutil.SatoshiPerBitcoin+i*500),
 			input.CommitmentTimeLock,
 		)
 

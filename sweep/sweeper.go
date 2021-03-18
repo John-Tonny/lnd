@@ -9,14 +9,14 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/lightningnetwork/lnd/chainntnfs"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
 )
 
 const (
@@ -167,7 +167,7 @@ type PendingInput struct {
 	WitnessType input.WitnessType
 
 	// Amount is the amount of the input being swept.
-	Amount btcutil.Amount
+	Amount vclutil.Amount
 
 	// LastFeeRate is the most recent fee rate used for the input being
 	// swept within a transaction broadcast to the network.
@@ -462,7 +462,7 @@ func (s *UtxoSweeper) SweepInput(input input.Input,
 	log.Infof("Sweep request received: out_point=%v, witness_type=%v, "+
 		"time_lock=%v, amount=%v, params=(%v)",
 		input.OutPoint(), input.WitnessType(), input.BlocksToMaturity(),
-		btcutil.Amount(input.SignDesc().Output.Value), params)
+		vclutil.Amount(input.SignDesc().Output.Value), params)
 
 	sweeperInput := &sweepInputMessage{
 		input:      input,
@@ -1351,7 +1351,7 @@ func (s *UtxoSweeper) handlePendingSweepsReq(
 		pendingInputs[op] = &PendingInput{
 			OutPoint:    op,
 			WitnessType: pendingInput.WitnessType(),
-			Amount: btcutil.Amount(
+			Amount: vclutil.Amount(
 				pendingInput.SignDesc().Output.Value,
 			),
 			LastFeeRate:         pendingInput.lastFeeRate,

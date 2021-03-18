@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/routing/route"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/routing/route"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 // createPubkey return a new test pubkey.
@@ -20,7 +20,7 @@ func createPubkey(id byte) route.Vertex {
 // mockChannel holds the channel state of a channel in the mock graph.
 type mockChannel struct {
 	id       uint64
-	capacity btcutil.Amount
+	capacity vclutil.Amount
 	balance  lnwire.MilliSatoshi
 }
 
@@ -131,7 +131,7 @@ func (m *mockGraph) addNode(node *mockNode) {
 // capacities.
 // nolint:unparam
 func (m *mockGraph) addChannel(id uint64, node1id, node2id byte,
-	capacity btcutil.Amount) {
+	capacity vclutil.Amount) {
 
 	node1pubkey := createPubkey(node1id)
 	node2pubkey := createPubkey(node2id)

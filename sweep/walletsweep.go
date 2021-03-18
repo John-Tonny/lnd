@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 const (
@@ -152,10 +152,10 @@ type WalletSweepPackage struct {
 // paying to more than one specified address.
 type DeliveryAddr struct {
 	// Addr is the address to pay to.
-	Addr btcutil.Address
+	Addr vclutil.Address
 
 	// Amt is the amount to pay to the given address.
-	Amt btcutil.Amount
+	Amt vclutil.Amount
 }
 
 // CraftSweepAllTx attempts to craft a WalletSweepPackage which will allow the
@@ -164,8 +164,8 @@ type DeliveryAddr struct {
 // output, as specified by the change address. The sweep transaction will be
 // crafted with the target fee rate, and will use the utxoSource and
 // outpointLocker as sources for wallet funds.
-func CraftSweepAllTx(feeRate chainfee.SatPerKWeight, dustLimit btcutil.Amount,
-	blockHeight uint32, deliveryAddrs []DeliveryAddr, changeAddr btcutil.Address,
+func CraftSweepAllTx(feeRate chainfee.SatPerKWeight, dustLimit vclutil.Amount,
+	blockHeight uint32, deliveryAddrs []DeliveryAddr, changeAddr vclutil.Address,
 	coinSelectLocker CoinSelectionLocker, utxoSource UtxoSource,
 	outpointLocker OutpointLocker, feeEstimator chainfee.Estimator,
 	signer input.Signer) (*WalletSweepPackage, error) {

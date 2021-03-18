@@ -4,16 +4,16 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/chainntnfs"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/lntest/mock"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
-	"github.com/lightningnetwork/lnd/sweep"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/lntest/mock"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/sweep"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 type commitSweepResolverTestContext struct {
@@ -201,7 +201,7 @@ func TestCommitSweepResolverNoDelay(t *testing.T) {
 	// No csv delay, so the input should be swept immediately.
 	<-ctx.sweeper.sweptInputs
 
-	amt := btcutil.Amount(res.SelfOutputSignDesc.Output.Value)
+	amt := vclutil.Amount(res.SelfOutputSignDesc.Output.Value)
 	expectedReport := &channeldb.ResolverReport{
 		OutPoint:        wire.OutPoint{},
 		Amount:          amt,
@@ -262,8 +262,8 @@ func testCommitSweepResolverDelay(t *testing.T, sweepErr error) {
 	expectedReport := ContractReport{
 		Outpoint:     outpoint,
 		Type:         ReportOutputUnencumbered,
-		Amount:       btcutil.Amount(amt),
-		LimboBalance: btcutil.Amount(amt),
+		Amount:       vclutil.Amount(amt),
+		LimboBalance: vclutil.Amount(amt),
 	}
 	if *report != expectedReport {
 		t.Fatalf("unexpected resolver report. want=%v got=%v",
@@ -313,7 +313,7 @@ func testCommitSweepResolverDelay(t *testing.T, sweepErr error) {
 		OutPoint:        outpoint,
 		ResolverType:    channeldb.ResolverTypeCommit,
 		ResolverOutcome: outcome,
-		Amount:          btcutil.Amount(amt),
+		Amount:          vclutil.Amount(amt),
 		SpendTxID:       &sweepTx,
 	})
 
@@ -322,7 +322,7 @@ func testCommitSweepResolverDelay(t *testing.T, sweepErr error) {
 	// If this test case generates a sweep error, we don't expect to be
 	// able to recover anything. This might happen if the local commitment
 	// output was swept by a justice transaction by the remote party.
-	expectedRecoveredBalance := btcutil.Amount(amt)
+	expectedRecoveredBalance := vclutil.Amount(amt)
 	if sweepErr != nil {
 		expectedRecoveredBalance = 0
 	}
@@ -331,7 +331,7 @@ func testCommitSweepResolverDelay(t *testing.T, sweepErr error) {
 	expectedReport = ContractReport{
 		Outpoint:         outpoint,
 		Type:             ReportOutputUnencumbered,
-		Amount:           btcutil.Amount(amt),
+		Amount:           vclutil.Amount(amt),
 		MaturityHeight:   testInitialBlockHeight + 2,
 		RecoveredBalance: expectedRecoveredBalance,
 	}

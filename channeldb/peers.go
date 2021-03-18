@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	"github.com/lightningnetwork/lnd/routing/route"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/routing/route"
 )
 
 var (

@@ -3,8 +3,8 @@ package wtmock
 import (
 	"sync"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/lightningnetwork/lnd/keychain"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
 )
 
 // SecretKeyRing is a mock, in-memory implementation for deriving private keys.

@@ -8,14 +8,14 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/lightningnetwork/lnd/chainntnfs"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	"github.com/lightningnetwork/lnd/watchtower"
-	"github.com/lightningnetwork/lnd/watchtower/blob"
-	"github.com/lightningnetwork/lnd/watchtower/wtdb"
-	"github.com/lightningnetwork/lnd/watchtower/wtmock"
-	"github.com/lightningnetwork/lnd/watchtower/wtpolicy"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/watchtower"
+	"github.com/John-Tonny/lnd/watchtower/blob"
+	"github.com/John-Tonny/lnd/watchtower/wtdb"
+	"github.com/John-Tonny/lnd/watchtower/wtmock"
+	"github.com/John-Tonny/lnd/watchtower/wtpolicy"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
 )
 
 var (

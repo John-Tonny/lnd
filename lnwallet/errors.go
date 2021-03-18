@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/lnwire"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 // ReservationError wraps certain errors returned during channel reservation
@@ -61,7 +61,7 @@ func ErrCsvDelayTooLarge(remoteDelay, maxDelay uint16) ReservationError {
 
 // ErrChanReserveTooSmall returns an error indicating that the channel reserve
 // the remote is requiring is too small to be accepted.
-func ErrChanReserveTooSmall(reserve, dustLimit btcutil.Amount) ReservationError {
+func ErrChanReserveTooSmall(reserve, dustLimit vclutil.Amount) ReservationError {
 	return ReservationError{
 		fmt.Errorf("channel reserve of %v sat is too small, min is %v "+
 			"sat", int64(reserve), int64(dustLimit)),
@@ -71,7 +71,7 @@ func ErrChanReserveTooSmall(reserve, dustLimit btcutil.Amount) ReservationError 
 // ErrChanReserveTooLarge returns an error indicating that the chan reserve the
 // remote is requiring, is too large to be accepted.
 func ErrChanReserveTooLarge(reserve,
-	maxReserve btcutil.Amount) ReservationError {
+	maxReserve vclutil.Amount) ReservationError {
 	return ReservationError{
 		fmt.Errorf("channel reserve is too large: %v sat, max "+
 			"is %v sat", int64(reserve), int64(maxReserve)),
@@ -135,7 +135,7 @@ func ErrNumConfsTooLarge(numConfs, maxNumConfs uint32) error {
 // ErrChanTooSmall returns an error indicating that an incoming channel request
 // was too small. We'll reject any incoming channels if they're below our
 // configured value for the min channel size we'll accept.
-func ErrChanTooSmall(chanSize, minChanSize btcutil.Amount) ReservationError {
+func ErrChanTooSmall(chanSize, minChanSize vclutil.Amount) ReservationError {
 	return ReservationError{
 		fmt.Errorf("chan size of %v is below min chan size of %v",
 			chanSize, minChanSize),
@@ -145,7 +145,7 @@ func ErrChanTooSmall(chanSize, minChanSize btcutil.Amount) ReservationError {
 // ErrChanTooLarge returns an error indicating that an incoming channel request
 // was too large. We'll reject any incoming channels if they're above our
 // configured value for the max channel size we'll accept.
-func ErrChanTooLarge(chanSize, maxChanSize btcutil.Amount) ReservationError {
+func ErrChanTooLarge(chanSize, maxChanSize vclutil.Amount) ReservationError {
 	return ReservationError{
 		fmt.Errorf("chan size of %v exceeds maximum chan size of %v",
 			chanSize, maxChanSize),

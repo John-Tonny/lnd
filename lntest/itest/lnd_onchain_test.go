@@ -6,14 +6,14 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/lnrpc/walletrpc"
-	"github.com/lightningnetwork/lnd/lntest"
-	"github.com/lightningnetwork/lnd/lntest/wait"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/sweep"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lnrpc/walletrpc"
+	"github.com/John-Tonny/lnd/lntest"
+	"github.com/John-Tonny/lnd/lntest/wait"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/sweep"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/stretchr/testify/require"
 )
 
@@ -32,7 +32,7 @@ func testCPFP(net *lntest.NetworkHarness, t *harnessTest) {
 	// send to Bob.
 	ctxb := context.Background()
 	ctxt, _ := context.WithTimeout(ctxb, defaultTimeout)
-	err := net.SendCoins(ctxt, btcutil.SatoshiPerBitcoin, net.Alice)
+	err := net.SendCoins(ctxt, vclutil.SatoshiPerBitcoin, net.Alice)
 	if err != nil {
 		t.Fatalf("unable to send coins to alice: %v", err)
 	}
@@ -51,7 +51,7 @@ func testCPFP(net *lntest.NetworkHarness, t *harnessTest) {
 	// be broadcast and seen in the mempool.
 	sendReq := &lnrpc.SendCoinsRequest{
 		Addr:   resp.Address,
-		Amount: btcutil.SatoshiPerBitcoin,
+		Amount: vclutil.SatoshiPerBitcoin,
 	}
 	ctxt, _ = context.WithTimeout(ctxb, defaultTimeout)
 	if _, err = net.Alice.SendCoins(ctxt, sendReq); err != nil {

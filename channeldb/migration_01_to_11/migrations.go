@@ -6,9 +6,9 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	lnwire "github.com/lightningnetwork/lnd/channeldb/migration/lnwire21"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	lnwire "github.com/John-Tonny/lnd/channeldb/migration/lnwire21"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
 )
 
 // MigrateNodeAndEdgeUpdateIndex is a migration function that will update the

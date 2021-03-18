@@ -12,22 +12,22 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/btcjson"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/integration/rpctest"
-	"github.com/btcsuite/btcd/rpcclient"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcwallet/chain"
-	"github.com/btcsuite/btcwallet/walletdb"
-	_ "github.com/btcsuite/btcwallet/walletdb/bdb" // Required to register the boltdb walletdb implementation.
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/btcjson"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/integration/rpctest"
+	"github.com/John-Tonny/vclsuite_vcld/rpcclient"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	"github.com/John-Tonny/vclsuite_vclwallet/chain"
+	"github.com/John-Tonny/vclsuite_vclwallet/walletdb"
+	_ "github.com/John-Tonny/vclsuite_vclwallet/walletdb/bdb" // Required to register the boltdb walletdb implementation.
 
-	"github.com/lightninglabs/neutrino"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/neutrino"
 )
 
 var (
@@ -41,7 +41,7 @@ var (
 	}
 
 	privKey, pubKey = btcec.PrivKeyFromBytes(btcec.S256(), testPrivKey)
-	addrPk, _       = btcutil.NewAddressPubKey(pubKey.SerializeCompressed(),
+	addrPk, _       = vclutil.NewAddressPubKey(pubKey.SerializeCompressed(),
 		netParams)
 	testAddr = addrPk.AddressPubKeyHash()
 
@@ -50,7 +50,7 @@ var (
 
 func waitForMempoolTx(r *rpctest.Harness, txid *chainhash.Hash) error {
 	var found bool
-	var tx *btcutil.Tx
+	var tx *vclutil.Tx
 	var err error
 	timeout := time.After(10 * time.Second)
 	for !found {
@@ -482,7 +482,7 @@ func testFilterSingleBlock(node *rpctest.Harness, chainView FilteredChainView,
 	if err != nil {
 		t.Fatalf("unable to create spending tx: %v", err)
 	}
-	txns := []*btcutil.Tx{btcutil.NewTx(spendingTx1), btcutil.NewTx(spendingTx2)}
+	txns := []*vclutil.Tx{vclutil.NewTx(spendingTx1), vclutil.NewTx(spendingTx2)}
 	block, err := node.GenerateAndSubmitBlock(txns, 11, time.Time{})
 	if err != nil {
 		t.Fatalf("unable to generate block: %v", err)

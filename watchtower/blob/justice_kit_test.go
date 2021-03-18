@@ -8,11 +8,11 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/watchtower/blob"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/watchtower/blob"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
 	"github.com/stretchr/testify/require"
 )
 

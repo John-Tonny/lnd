@@ -1,8 +1,8 @@
 package build
 
 import (
+	"github.com/John-Tonny/lnd/signal"
 	"github.com/btcsuite/btclog"
-	"github.com/lightningnetwork/lnd/signal"
 )
 
 // ShutdownLogger wraps an existing logger with a shutdown function which will

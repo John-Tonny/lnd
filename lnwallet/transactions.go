@@ -4,11 +4,11 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/input"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 const (
@@ -46,7 +46,7 @@ var (
 // should be:
 //   * <0> <sender sig> <recvr sig> <preimage>
 func CreateHtlcSuccessTx(chanType channeldb.ChannelType,
-	htlcOutput wire.OutPoint, htlcAmt btcutil.Amount, csvDelay uint32,
+	htlcOutput wire.OutPoint, htlcAmt vclutil.Amount, csvDelay uint32,
 	revocationKey, delayKey *btcec.PublicKey) (*wire.MsgTx, error) {
 
 	// Create a version two transaction (as the success version of this
@@ -102,7 +102,7 @@ func CreateHtlcSuccessTx(chanType channeldb.ChannelType,
 // fee rate at the time the HTLC was created. The fee should be able to
 // entirely pay for this (tiny: 1-in 1-out) transaction.
 func CreateHtlcTimeoutTx(chanType channeldb.ChannelType,
-	htlcOutput wire.OutPoint, htlcAmt btcutil.Amount,
+	htlcOutput wire.OutPoint, htlcAmt vclutil.Amount,
 	cltvExpiry, csvDelay uint32,
 	revocationKey, delayKey *btcec.PublicKey) (*wire.MsgTx, error) {
 

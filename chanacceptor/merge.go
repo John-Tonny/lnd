@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/lnwire"
+	"github.com/John-Tonny/lnd/lnwire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 const (
@@ -123,7 +123,7 @@ func mergeResponse(current, new ChannelAcceptResponse) (ChannelAcceptResponse,
 	if err != nil {
 		return current, err
 	}
-	current.Reserve = btcutil.Amount(reserve)
+	current.Reserve = vclutil.Amount(reserve)
 
 	current.MinHtlcIn, err = mergeMillisatoshi(
 		fieldMinIn, current.MinHtlcIn, new.MinHtlcIn,

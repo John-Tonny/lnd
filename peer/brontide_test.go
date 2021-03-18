@@ -5,17 +5,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/chainntnfs"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/htlcswitch"
-	"github.com/lightningnetwork/lnd/lntest/mock"
-	"github.com/lightningnetwork/lnd/lnwallet/chancloser"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/pool"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/htlcswitch"
+	"github.com/John-Tonny/lnd/lntest/mock"
+	"github.com/John-Tonny/lnd/lnwallet/chancloser"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/pool"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/stretchr/testify/require"
 )
 
@@ -314,7 +314,7 @@ func TestPeerChannelClosureFeeNegotiationsResponder(t *testing.T) {
 
 	// Bob doesn't agree with the fee and will send one back that's 2.5x.
 	preferredRespFee := aliceClosingSigned.FeeSatoshis
-	increasedFee := btcutil.Amount(float64(preferredRespFee) * 2.5)
+	increasedFee := vclutil.Amount(float64(preferredRespFee) * 2.5)
 	bobSig, _, _, err := bobChan.CreateCloseProposal(
 		increasedFee, dummyDeliveryScript, aliceDeliveryScript,
 	)
@@ -358,7 +358,7 @@ func TestPeerChannelClosureFeeNegotiationsResponder(t *testing.T) {
 	lastFeeResponder := aliceFee
 
 	// We try negotiating a 2.1x fee, which should also be rejected.
-	increasedFee = btcutil.Amount(float64(preferredRespFee) * 2.1)
+	increasedFee = vclutil.Amount(float64(preferredRespFee) * 2.1)
 	bobSig, _, _, err = bobChan.CreateCloseProposal(
 		increasedFee, dummyDeliveryScript, aliceDeliveryScript,
 	)
@@ -519,7 +519,7 @@ func TestPeerChannelClosureFeeNegotiationsInitiator(t *testing.T) {
 	idealFeeRate := closingSignedMsg.FeeSatoshis
 	lastReceivedFee := idealFeeRate
 
-	increasedFee := btcutil.Amount(float64(idealFeeRate) * 2.1)
+	increasedFee := vclutil.Amount(float64(idealFeeRate) * 2.1)
 	lastSentFee := increasedFee
 
 	bobSig, _, _, err := bobChan.CreateCloseProposal(
@@ -566,7 +566,7 @@ func TestPeerChannelClosureFeeNegotiationsInitiator(t *testing.T) {
 	lastReceivedFee = aliceFee
 
 	// We'll try negotiating a 1.5x fee, which should also be rejected.
-	increasedFee = btcutil.Amount(float64(idealFeeRate) * 1.5)
+	increasedFee = vclutil.Amount(float64(idealFeeRate) * 1.5)
 	lastSentFee = increasedFee
 
 	bobSig, _, _, err = bobChan.CreateCloseProposal(
@@ -988,7 +988,7 @@ func TestStaticRemoteDowngrade(t *testing.T) {
 // be a valid address.
 func genScript(t *testing.T, address string) lnwire.DeliveryAddress {
 	// Generate an address which can be used for testing.
-	deliveryAddr, err := btcutil.DecodeAddress(
+	deliveryAddr, err := vclutil.DecodeAddress(
 		address,
 		&chaincfg.TestNet3Params,
 	)

@@ -6,8 +6,8 @@ package invoicesrpc
 import (
 	context "context"
 	fmt "fmt"
+	lnrpc "github.com/John-Tonny/lnd/lnrpc"
 	proto "github.com/golang/protobuf/proto"
-	lnrpc "github.com/lightningnetwork/lnd/lnrpc"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"

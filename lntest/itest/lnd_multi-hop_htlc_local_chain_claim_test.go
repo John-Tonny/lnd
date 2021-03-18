@@ -4,14 +4,14 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/btcsuite/btcd/wire"
-	"github.com/lightningnetwork/lnd/lncfg"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/lnrpc/invoicesrpc"
-	"github.com/lightningnetwork/lnd/lnrpc/routerrpc"
-	"github.com/lightningnetwork/lnd/lntest"
-	"github.com/lightningnetwork/lnd/lntest/wait"
-	"github.com/lightningnetwork/lnd/lntypes"
+	"github.com/John-Tonny/lnd/lncfg"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lnrpc/invoicesrpc"
+	"github.com/John-Tonny/lnd/lnrpc/routerrpc"
+	"github.com/John-Tonny/lnd/lntest"
+	"github.com/John-Tonny/lnd/lntest/wait"
+	"github.com/John-Tonny/lnd/lntypes"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
 	"github.com/stretchr/testify/require"
 )
 

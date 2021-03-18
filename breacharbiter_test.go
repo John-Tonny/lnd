@@ -18,24 +18,24 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/htlcswitch"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/lntest/channels"
+	"github.com/John-Tonny/lnd/lntest/mock"
+	"github.com/John-Tonny/lnd/lntest/wait"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/shachain"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/go-errors/errors"
-	"github.com/lightningnetwork/lnd/chainntnfs"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/htlcswitch"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/lntest/channels"
-	"github.com/lightningnetwork/lnd/lntest/mock"
-	"github.com/lightningnetwork/lnd/lntest/wait"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/shachain"
 )
 
 var (
@@ -102,7 +102,7 @@ var (
 
 	breachedOutputs = []breachedOutput{
 		{
-			amt:         btcutil.Amount(1e7),
+			amt:         vclutil.Amount(1e7),
 			outpoint:    breachOutPoints[0],
 			witnessType: input.CommitmentNoDelay,
 			signDesc: input.SignDescriptor{
@@ -146,7 +146,7 @@ var (
 			secondLevelWitnessScript: breachKeys[0],
 		},
 		{
-			amt:         btcutil.Amount(1e7),
+			amt:         vclutil.Amount(1e7),
 			outpoint:    breachOutPoints[0],
 			witnessType: input.CommitSpendNoDelayTweakless,
 			signDesc: input.SignDescriptor{
@@ -182,7 +182,7 @@ var (
 			secondLevelWitnessScript: breachKeys[0],
 		},
 		{
-			amt:         btcutil.Amount(2e9),
+			amt:         vclutil.Amount(2e9),
 			outpoint:    breachOutPoints[1],
 			witnessType: input.CommitmentRevoke,
 			signDesc: input.SignDescriptor{
@@ -226,7 +226,7 @@ var (
 			secondLevelWitnessScript: breachKeys[0],
 		},
 		{
-			amt:         btcutil.Amount(3e4),
+			amt:         vclutil.Amount(3e4),
 			outpoint:    breachOutPoints[2],
 			witnessType: input.CommitmentDelayOutput,
 			signDesc: input.SignDescriptor{
@@ -1719,14 +1719,14 @@ func createInitChannels(revocationWindow int) (*lnwallet.LightningChannel, *lnwa
 	bobKeyPriv, bobKeyPub := btcec.PrivKeyFromBytes(btcec.S256(),
 		channels.BobsPrivKey)
 
-	channelCapacity, err := btcutil.NewAmount(10)
+	channelCapacity, err := vclutil.NewAmount(10)
 	if err != nil {
 		return nil, nil, nil, err
 	}
 
 	channelBal := channelCapacity / 2
-	aliceDustLimit := btcutil.Amount(200)
-	bobDustLimit := btcutil.Amount(1300)
+	aliceDustLimit := vclutil.Amount(200)
+	bobDustLimit := vclutil.Amount(1300)
 	csvTimeoutAlice := uint32(5)
 	csvTimeoutBob := uint32(4)
 
@@ -1850,7 +1850,7 @@ func createInitChannels(revocationWindow int) (*lnwallet.LightningChannel, *lnwa
 		CommitHeight:  0,
 		LocalBalance:  lnwire.NewMSatFromSatoshis(channelBal - commitFee),
 		RemoteBalance: lnwire.NewMSatFromSatoshis(channelBal),
-		FeePerKw:      btcutil.Amount(feePerKw),
+		FeePerKw:      vclutil.Amount(feePerKw),
 		CommitFee:     commitFee,
 		CommitTx:      aliceCommitTx,
 		CommitSig:     bytes.Repeat([]byte{1}, 71),
@@ -1859,7 +1859,7 @@ func createInitChannels(revocationWindow int) (*lnwallet.LightningChannel, *lnwa
 		CommitHeight:  0,
 		LocalBalance:  lnwire.NewMSatFromSatoshis(channelBal),
 		RemoteBalance: lnwire.NewMSatFromSatoshis(channelBal - commitFee),
-		FeePerKw:      btcutil.Amount(feePerKw),
+		FeePerKw:      vclutil.Amount(feePerKw),
 		CommitFee:     commitFee,
 		CommitTx:      bobCommitTx,
 		CommitSig:     bytes.Repeat([]byte{1}, 71),

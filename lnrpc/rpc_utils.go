@@ -5,8 +5,8 @@ import (
 	"errors"
 	"sort"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/lightningnetwork/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
 )
 
 // RPCTransactionDetails returns a set of rpc transaction details.

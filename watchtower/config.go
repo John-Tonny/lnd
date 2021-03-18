@@ -5,12 +5,12 @@ import (
 	"net"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/tor"
-	"github.com/lightningnetwork/lnd/watchtower/lookout"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/tor"
+	"github.com/John-Tonny/lnd/watchtower/lookout"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 const (
@@ -61,7 +61,7 @@ type Config struct {
 
 	// NewAddress is used to generate reward addresses, where a cut of
 	// successfully sent funds can be received.
-	NewAddress func() (btcutil.Address, error)
+	NewAddress func() (vclutil.Address, error)
 
 	// NodeKeyECDH is the ECDH capable wrapper of the key to be used in
 	// accepting new brontide connections.

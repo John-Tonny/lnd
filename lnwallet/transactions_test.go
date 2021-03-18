@@ -15,18 +15,18 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/lntypes"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/shachain"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/lntypes"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/shachain"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/stretchr/testify/require"
 )
 
@@ -48,11 +48,11 @@ type testContext struct {
 
 	localPerCommitSecret lntypes.Hash
 
-	fundingTx *btcutil.Tx
+	fundingTx *vclutil.Tx
 
 	localCsvDelay uint16
-	fundingAmount btcutil.Amount
-	dustLimit     btcutil.Amount
+	fundingAmount vclutil.Amount
+	dustLimit     vclutil.Amount
 	commitHeight  uint64
 
 	t *testing.T
@@ -142,7 +142,7 @@ type testCase struct {
 	Name          string
 	LocalBalance  lnwire.MilliSatoshi
 	RemoteBalance lnwire.MilliSatoshi
-	FeePerKw      btcutil.Amount
+	FeePerKw      vclutil.Amount
 
 	// UseTestHtlcs defined whether the fixed set of test htlc should be
 	// added to the channel before checking the commitment assertions.
@@ -504,7 +504,7 @@ func testSpendValidation(t *testing.T, tweakless bool) {
 	}
 	fakeFundingTxIn := wire.NewTxIn(fundingOut, nil, nil)
 
-	const channelBalance = btcutil.Amount(1 * 10e8)
+	const channelBalance = vclutil.Amount(1 * 10e8)
 	const csvTimeout = 5
 
 	// We also set up set some resources for the commitment transaction.
@@ -758,7 +758,7 @@ func (p *mockProducer) Encode(w io.Writer) error {
 // createTestChannelsForVectors creates two LightningChannel instances for the
 // test channel that is used to verify the test vectors.
 func createTestChannelsForVectors(tc *testContext, chanType channeldb.ChannelType,
-	feeRate btcutil.Amount, remoteBalance, localBalance btcutil.Amount) (
+	feeRate vclutil.Amount, remoteBalance, localBalance vclutil.Amount) (
 	*LightningChannel, *LightningChannel, func()) {
 
 	t := tc.t
@@ -878,7 +878,7 @@ func createTestChannelsForVectors(tc *testContext, chanType channeldb.ChannelTyp
 	}
 	commitFee := feePerKw.FeeForWeight(commitWeight)
 
-	var anchorAmt btcutil.Amount
+	var anchorAmt vclutil.Amount
 	if chanType.HasAnchors() {
 		anchorAmt = 2 * anchorSize
 	}
@@ -901,7 +901,7 @@ func createTestChannelsForVectors(tc *testContext, chanType channeldb.ChannelTyp
 		LocalBalance:  lnwire.NewMSatFromSatoshis(remoteBalance),
 		RemoteBalance: lnwire.NewMSatFromSatoshis(localBalance - commitFee - anchorAmt),
 		CommitFee:     commitFee,
-		FeePerKw:      btcutil.Amount(feePerKw),
+		FeePerKw:      vclutil.Amount(feePerKw),
 		CommitTx:      remoteCommitTx,
 		CommitSig:     testSigBytes,
 	}
@@ -910,7 +910,7 @@ func createTestChannelsForVectors(tc *testContext, chanType channeldb.ChannelTyp
 		LocalBalance:  lnwire.NewMSatFromSatoshis(localBalance - commitFee - anchorAmt),
 		RemoteBalance: lnwire.NewMSatFromSatoshis(remoteBalance),
 		CommitFee:     commitFee,
-		FeePerKw:      btcutil.Amount(feePerKw),
+		FeePerKw:      vclutil.Amount(feePerKw),
 		CommitTx:      localCommitTx,
 		CommitSig:     testSigBytes,
 	}

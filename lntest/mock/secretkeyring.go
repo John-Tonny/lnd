@@ -1,9 +1,9 @@
 package mock
 
 import (
-	"github.com/btcsuite/btcd/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
 
-	"github.com/lightningnetwork/lnd/keychain"
+	"github.com/John-Tonny/lnd/keychain"
 )
 
 // SecretKeyRing is a mock implementation of the SecretKeyRing interface.

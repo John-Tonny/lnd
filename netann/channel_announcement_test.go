@@ -4,11 +4,11 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/lnwire"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -48,7 +48,7 @@ func TestCreateChanAnnouncement(t *testing.T) {
 		ChainHash:        expChanAnn.ChainHash,
 		ChannelID:        expChanAnn.ShortChannelID.ToUint64(),
 		ChannelPoint:     wire.OutPoint{Index: 1},
-		Capacity:         btcutil.SatoshiPerBitcoin,
+		Capacity:         vclutil.SatoshiPerBitcoin,
 		NodeKey1Bytes:    key,
 		NodeKey2Bytes:    key,
 		BitcoinKey1Bytes: key,

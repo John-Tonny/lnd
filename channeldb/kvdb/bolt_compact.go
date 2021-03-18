@@ -10,7 +10,7 @@ import (
 	"path"
 	"time"
 
-	"github.com/lightningnetwork/lnd/healthcheck"
+	"github.com/John-Tonny/lnd/healthcheck"
 	"go.etcd.io/bbolt"
 )
 

@@ -18,14 +18,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/record"
-	"github.com/lightningnetwork/lnd/routing/route"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/record"
+	"github.com/John-Tonny/lnd/routing/route"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 const (
@@ -296,7 +296,7 @@ func parseTestGraph(path string) (*testGraphInstance, error) {
 			ChannelID:    edge.ChannelID,
 			AuthProof:    &testAuthProof,
 			ChannelPoint: fundingPoint,
-			Capacity:     btcutil.Amount(edge.Capacity),
+			Capacity:     vclutil.Amount(edge.Capacity),
 		}
 
 		copy(edgeInfo.NodeKey1Bytes[:], node1Bytes)
@@ -349,7 +349,7 @@ type testChannelEnd struct {
 	*testChannelPolicy
 }
 
-func symmetricTestChannel(alias1, alias2 string, capacity btcutil.Amount,
+func symmetricTestChannel(alias1, alias2 string, capacity vclutil.Amount,
 	policy *testChannelPolicy, chanID ...uint64) *testChannel {
 
 	// Leaving id zero will result in auto-generation of a channel id during
@@ -366,7 +366,7 @@ func symmetricTestChannel(alias1, alias2 string, capacity btcutil.Amount,
 	)
 }
 
-func asymmetricTestChannel(alias1, alias2 string, capacity btcutil.Amount,
+func asymmetricTestChannel(alias1, alias2 string, capacity vclutil.Amount,
 	policy1, policy2 *testChannelPolicy, id uint64) *testChannel {
 
 	return &testChannel{
@@ -386,7 +386,7 @@ func asymmetricTestChannel(alias1, alias2 string, capacity btcutil.Amount,
 type testChannel struct {
 	Node1     *testChannelEnd
 	Node2     *testChannelEnd
-	Capacity  btcutil.Amount
+	Capacity  vclutil.Amount
 	ChannelID uint64
 }
 
@@ -716,7 +716,7 @@ type expectedHop struct {
 
 type basicGraphPathFindingTestCase struct {
 	target                string
-	paymentAmt            btcutil.Amount
+	paymentAmt            vclutil.Amount
 	feeLimit              lnwire.MilliSatoshi
 	expectedTotalAmt      lnwire.MilliSatoshi
 	expectedTotalTimeLock uint32
@@ -1750,7 +1750,7 @@ func TestPathInsufficientCapacity(t *testing.T) {
 	// though we have a 2-hop link.
 	target := graph.aliasMap["sophon"]
 
-	payAmt := lnwire.NewMSatFromSatoshis(btcutil.SatoshiPerBitcoin)
+	payAmt := lnwire.NewMSatFromSatoshis(vclutil.SatoshiPerBitcoin)
 	_, err = dbFindPath(
 		graph.graph, nil, nil,
 		noRestrictions, testPathFindingConfig,
@@ -2461,7 +2461,7 @@ func TestProbabilityRouting(t *testing.T) {
 		p10, p11, p20  float64
 		minProbability float64
 		expectedChan   uint64
-		amount         btcutil.Amount
+		amount         vclutil.Amount
 	}{
 		// Test two variations with probabilities that should multiply
 		// to the same total route probability. In both cases the three
@@ -2548,7 +2548,7 @@ func TestProbabilityRouting(t *testing.T) {
 	}
 }
 
-func testProbabilityRouting(t *testing.T, paymentAmt btcutil.Amount,
+func testProbabilityRouting(t *testing.T, paymentAmt vclutil.Amount,
 	p10, p11, p20, minProbability float64, expectedChan uint64) {
 
 	t.Parallel()

@@ -5,13 +5,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/netann"
-	"github.com/lightningnetwork/lnd/routing"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/netann"
+	"github.com/John-Tonny/lnd/routing"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
 )
 
 type mockSigner struct {

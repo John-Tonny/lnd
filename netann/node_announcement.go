@@ -4,9 +4,9 @@ import (
 	"net"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwire"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
 )
 
 // NodeAnnModifier is a closure that makes in-place modifications to an

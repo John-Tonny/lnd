@@ -6,10 +6,10 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
-	"github.com/lightningnetwork/lnd/tlv"
-	"github.com/lightningnetwork/lnd/watchtower/blob"
-	"github.com/lightningnetwork/lnd/watchtower/wtwire"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/tlv"
+	"github.com/John-Tonny/lnd/watchtower/blob"
+	"github.com/John-Tonny/lnd/watchtower/wtwire"
 	"github.com/stretchr/testify/require"
 )
 

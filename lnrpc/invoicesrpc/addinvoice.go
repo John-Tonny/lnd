@@ -9,18 +9,18 @@ import (
 	"math"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/davecgh/go-spew/spew"
 
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/lntypes"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/netann"
-	"github.com/lightningnetwork/lnd/routing"
-	"github.com/lightningnetwork/lnd/zpay32"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/lntypes"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/netann"
+	"github.com/John-Tonny/lnd/routing"
+	"github.com/John-Tonny/lnd/zpay32"
 )
 
 // AddInvoiceConfig contains dependencies for invoice creation.
@@ -155,7 +155,7 @@ func AddInvoice(ctx context.Context, cfg *AddInvoiceConfig,
 
 	// We set the max invoice amount to 100k BTC, which itself is several
 	// multiples off the current block reward.
-	maxInvoiceAmt := btcutil.Amount(btcutil.SatoshiPerBitcoin * 100000)
+	maxInvoiceAmt := vclutil.Amount(vclutil.SatoshiPerBitcoin * 100000)
 
 	switch {
 	// The value of the invoice must not be negative.
@@ -189,7 +189,7 @@ func AddInvoice(ctx context.Context, cfg *AddInvoiceConfig,
 
 	// If specified, add a fallback address to the payment request.
 	if len(invoice.FallbackAddr) > 0 {
-		addr, err := btcutil.DecodeAddress(invoice.FallbackAddr,
+		addr, err := vclutil.DecodeAddress(invoice.FallbackAddr,
 			cfg.ChainParams)
 		if err != nil {
 			return nil, nil, fmt.Errorf("invalid fallback address: %v",

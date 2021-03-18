@@ -5,7 +5,7 @@ package etcd
 import (
 	"testing"
 
-	"github.com/btcsuite/btcwallet/walletdb/walletdbtest"
+	"github.com/John-Tonny/vclsuite_vclwallet/walletdb/walletdbtest"
 )
 
 // TestWalletDBInterface performs the WalletDB interface test suite for the

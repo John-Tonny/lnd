@@ -8,10 +8,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/lntypes"
+	"github.com/John-Tonny/lnd/lnwire"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/lntypes"
-	"github.com/lightningnetwork/lnd/lnwire"
 	"github.com/stretchr/testify/require"
 )
 

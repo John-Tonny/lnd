@@ -2,7 +2,7 @@
 
 package macaroons
 
-import "github.com/btcsuite/btcwallet/snacl"
+import "github.com/John-Tonny/vclsuite_vclwallet/snacl"
 
 var (
 	// Below are the default scrypt parameters that are used when creating

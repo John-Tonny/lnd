@@ -5,15 +5,15 @@ import (
 	"sync"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/watchtower/blob"
+	"github.com/John-Tonny/lnd/watchtower/wtdb"
+	"github.com/John-Tonny/lnd/watchtower/wtpolicy"
+	"github.com/John-Tonny/lnd/watchtower/wtserver"
+	"github.com/John-Tonny/lnd/watchtower/wtwire"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
 	"github.com/btcsuite/btclog"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/watchtower/blob"
-	"github.com/lightningnetwork/lnd/watchtower/wtdb"
-	"github.com/lightningnetwork/lnd/watchtower/wtpolicy"
-	"github.com/lightningnetwork/lnd/watchtower/wtserver"
-	"github.com/lightningnetwork/lnd/watchtower/wtwire"
 )
 
 // SessionNegotiator is an interface for asynchronously requesting new sessions.

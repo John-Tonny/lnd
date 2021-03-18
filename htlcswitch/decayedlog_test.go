@@ -7,10 +7,10 @@ import (
 	"testing"
 	"time"
 
-	sphinx "github.com/lightningnetwork/lightning-onion"
-	"github.com/lightningnetwork/lnd/chainntnfs"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	"github.com/lightningnetwork/lnd/lntest/mock"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/lntest/mock"
+	sphinx "github.com/lJohn-Tonny/lightning-onion"
 )
 
 const (

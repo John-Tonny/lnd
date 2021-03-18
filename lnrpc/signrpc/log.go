@@ -1,8 +1,8 @@
 package signrpc
 
 import (
+	"github.com/John-Tonny/lnd/build"
 	"github.com/btcsuite/btclog"
-	"github.com/lightningnetwork/lnd/build"
 )
 
 // log is a logger that is initialized with no output filters.  This

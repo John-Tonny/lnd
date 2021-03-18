@@ -3,8 +3,8 @@ package lnwire
 import (
 	"fmt"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/lightningnetwork/lnd/input"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
 )
 
 // Sig is a fixed-sized ECDSA signature. Unlike Bitcoin, we use fixed sized

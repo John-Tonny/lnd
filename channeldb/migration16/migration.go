@@ -6,8 +6,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/btcsuite/btcd/wire"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
 )
 
 var (

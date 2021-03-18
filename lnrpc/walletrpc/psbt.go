@@ -7,10 +7,10 @@ import (
 	"math"
 	"time"
 
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil/psbt"
-	"github.com/btcsuite/btcwallet/wtxmgr"
-	"github.com/lightningnetwork/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	"github.com/John-Tonny/vclsuite_vclutil/psbt"
+	"github.com/John-Tonny/vclsuite_vclwallet/wtxmgr"
 )
 
 const (

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/btcsuite/btcutil"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 // ExternalScoreAttachment is an implementation of the AttachmentHeuristic
@@ -81,7 +81,7 @@ func (s *ExternalScoreAttachment) SetNodeScores(targetHeuristic string,
 //
 // NOTE: This is a part of the AttachmentHeuristic interface.
 func (s *ExternalScoreAttachment) NodeScores(g ChannelGraph, chans []LocalChannel,
-	chanSize btcutil.Amount, nodes map[NodeID]struct{}) (
+	chanSize vclutil.Amount, nodes map[NodeID]struct{}) (
 	map[NodeID]*NodeScore, error) {
 
 	existingPeers := make(map[NodeID]struct{})

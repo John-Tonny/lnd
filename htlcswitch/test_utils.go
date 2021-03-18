@@ -16,28 +16,28 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/contractcourt"
+	"github.com/John-Tonny/lnd/htlcswitch/hop"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/lnpeer"
+	"github.com/John-Tonny/lnd/lntest/channels"
+	"github.com/John-Tonny/lnd/lntest/mock"
+	"github.com/John-Tonny/lnd/lntest/wait"
+	"github.com/John-Tonny/lnd/lntypes"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/shachain"
+	"github.com/John-Tonny/lnd/ticker"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/go-errors/errors"
-	sphinx "github.com/lightningnetwork/lightning-onion"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	"github.com/lightningnetwork/lnd/contractcourt"
-	"github.com/lightningnetwork/lnd/htlcswitch/hop"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/lnpeer"
-	"github.com/lightningnetwork/lnd/lntest/channels"
-	"github.com/lightningnetwork/lnd/lntest/mock"
-	"github.com/lightningnetwork/lnd/lntest/wait"
-	"github.com/lightningnetwork/lnd/lntypes"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/shachain"
-	"github.com/lightningnetwork/lnd/ticker"
+	sphinx "github.com/lJohn-Tonny/lightning-onion"
 )
 
 var (
@@ -124,7 +124,7 @@ type testLightningChannel struct {
 //
 // TODO(roasbeef): need to factor out, similar func re-used in many parts of codebase
 func createTestChannel(alicePrivKey, bobPrivKey []byte,
-	aliceAmount, bobAmount, aliceReserve, bobReserve btcutil.Amount,
+	aliceAmount, bobAmount, aliceReserve, bobReserve vclutil.Amount,
 	chanID lnwire.ShortChannelID) (*testLightningChannel,
 	*testLightningChannel, func(), error) {
 
@@ -136,7 +136,7 @@ func createTestChannel(alicePrivKey, bobPrivKey []byte,
 	csvTimeoutBob := uint32(4)
 
 	aliceConstraints := &channeldb.ChannelConstraints{
-		DustLimit: btcutil.Amount(200),
+		DustLimit: vclutil.Amount(200),
 		MaxPendingAmount: lnwire.NewMSatFromSatoshis(
 			channelCapacity),
 		ChanReserve:      aliceReserve,
@@ -146,7 +146,7 @@ func createTestChannel(alicePrivKey, bobPrivKey []byte,
 	}
 
 	bobConstraints := &channeldb.ChannelConstraints{
-		DustLimit: btcutil.Amount(800),
+		DustLimit: vclutil.Amount(800),
 		MaxPendingAmount: lnwire.NewMSatFromSatoshis(
 			channelCapacity),
 		ChanReserve:      bobReserve,
@@ -278,7 +278,7 @@ func createTestChannel(alicePrivKey, bobPrivKey []byte,
 		LocalBalance:  lnwire.NewMSatFromSatoshis(aliceAmount - commitFee),
 		RemoteBalance: lnwire.NewMSatFromSatoshis(bobAmount),
 		CommitFee:     commitFee,
-		FeePerKw:      btcutil.Amount(feePerKw),
+		FeePerKw:      vclutil.Amount(feePerKw),
 		CommitTx:      aliceCommitTx,
 		CommitSig:     bytes.Repeat([]byte{1}, 71),
 	}
@@ -287,7 +287,7 @@ func createTestChannel(alicePrivKey, bobPrivKey []byte,
 		LocalBalance:  lnwire.NewMSatFromSatoshis(bobAmount),
 		RemoteBalance: lnwire.NewMSatFromSatoshis(aliceAmount - commitFee),
 		CommitFee:     commitFee,
-		FeePerKw:      btcutil.Amount(feePerKw),
+		FeePerKw:      vclutil.Amount(feePerKw),
 		CommitTx:      bobCommitTx,
 		CommitSig:     bytes.Repeat([]byte{1}, 71),
 	}
@@ -865,7 +865,7 @@ type clusterChannels struct {
 
 // createClusterChannels creates lightning channels which are needed for
 // network cluster to be initialized.
-func createClusterChannels(aliceToBob, bobToCarol btcutil.Amount) (
+func createClusterChannels(aliceToBob, bobToCarol vclutil.Amount) (
 	*clusterChannels, func(), func() (*clusterChannels, error), error) {
 
 	_, _, firstChanID, secondChanID := genIDs()
@@ -1061,7 +1061,7 @@ func serverOptionRejectHtlc(alice, bob, carol bool) serverOption {
 
 // createTwoClusterChannels creates lightning channels which are needed for
 // a 2 hop network cluster to be initialized.
-func createTwoClusterChannels(aliceToBob, bobToCarol btcutil.Amount) (
+func createTwoClusterChannels(aliceToBob, bobToCarol vclutil.Amount) (
 	*testLightningChannel, *testLightningChannel,
 	func(), error) {
 

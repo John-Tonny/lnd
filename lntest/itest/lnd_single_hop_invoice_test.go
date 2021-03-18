@@ -6,15 +6,15 @@ import (
 	"encoding/hex"
 	"time"
 
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lnrpc/routerrpc"
+	"github.com/John-Tonny/lnd/lntest"
+	"github.com/John-Tonny/lnd/lntest/wait"
+	"github.com/John-Tonny/lnd/lntypes"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/record"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/lnrpc/routerrpc"
-	"github.com/lightningnetwork/lnd/lntest"
-	"github.com/lightningnetwork/lnd/lntest/wait"
-	"github.com/lightningnetwork/lnd/lntypes"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/record"
 	"github.com/stretchr/testify/require"
 )
 
@@ -24,7 +24,7 @@ func testSingleHopInvoice(net *lntest.NetworkHarness, t *harnessTest) {
 	// Open a channel with 100k satoshis between Alice and Bob with Alice being
 	// the sole funder of the channel.
 	ctxt, _ := context.WithTimeout(ctxb, channelOpenTimeout)
-	chanAmt := btcutil.Amount(100000)
+	chanAmt := vclutil.Amount(100000)
 	chanPoint := openChannelAndAssert(
 		ctxt, t, net, net.Alice, net.Bob,
 		lntest.OpenChannelParams{

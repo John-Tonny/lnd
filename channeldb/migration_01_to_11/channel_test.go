@@ -6,14 +6,14 @@ import (
 	"math/rand"
 	"os"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	_ "github.com/btcsuite/btcwallet/walletdb/bdb"
-	lnwire "github.com/lightningnetwork/lnd/channeldb/migration/lnwire21"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/shachain"
+	lnwire "github.com/John-Tonny/lnd/channeldb/migration/lnwire21"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/shachain"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	_ "github.com/John-Tonny/vclsuite_vclwallet/walletdb/bdb"
 )
 
 var (
@@ -108,9 +108,9 @@ func createTestChannelState(cdb *DB) (*OpenChannel, error) {
 
 	localCfg := ChannelConfig{
 		ChannelConstraints: ChannelConstraints{
-			DustLimit:        btcutil.Amount(rand.Int63()),
+			DustLimit:        vclutil.Amount(rand.Int63()),
 			MaxPendingAmount: lnwire.MilliSatoshi(rand.Int63()),
-			ChanReserve:      btcutil.Amount(rand.Int63()),
+			ChanReserve:      vclutil.Amount(rand.Int63()),
 			MinHTLC:          lnwire.MilliSatoshi(rand.Int63()),
 			MaxAcceptedHtlcs: uint16(rand.Int31()),
 			CsvDelay:         uint16(rand.Int31()),
@@ -133,9 +133,9 @@ func createTestChannelState(cdb *DB) (*OpenChannel, error) {
 	}
 	remoteCfg := ChannelConfig{
 		ChannelConstraints: ChannelConstraints{
-			DustLimit:        btcutil.Amount(rand.Int63()),
+			DustLimit:        vclutil.Amount(rand.Int63()),
 			MaxPendingAmount: lnwire.MilliSatoshi(rand.Int63()),
-			ChanReserve:      btcutil.Amount(rand.Int63()),
+			ChanReserve:      vclutil.Amount(rand.Int63()),
 			MinHTLC:          lnwire.MilliSatoshi(rand.Int63()),
 			MaxAcceptedHtlcs: uint16(rand.Int31()),
 			CsvDelay:         uint16(rand.Int31()),
@@ -187,7 +187,7 @@ func createTestChannelState(cdb *DB) (*OpenChannel, error) {
 		IsInitiator:       true,
 		IsPending:         true,
 		IdentityPub:       pubKey,
-		Capacity:          btcutil.Amount(10000),
+		Capacity:          vclutil.Amount(10000),
 		LocalChanCfg:      localCfg,
 		RemoteChanCfg:     remoteCfg,
 		TotalMSatSent:     8,
@@ -196,8 +196,8 @@ func createTestChannelState(cdb *DB) (*OpenChannel, error) {
 			CommitHeight:  0,
 			LocalBalance:  lnwire.MilliSatoshi(9000),
 			RemoteBalance: lnwire.MilliSatoshi(3000),
-			CommitFee:     btcutil.Amount(rand.Int63()),
-			FeePerKw:      btcutil.Amount(5000),
+			CommitFee:     vclutil.Amount(rand.Int63()),
+			FeePerKw:      vclutil.Amount(5000),
 			CommitTx:      testTx,
 			CommitSig:     bytes.Repeat([]byte{1}, 71),
 		},
@@ -205,8 +205,8 @@ func createTestChannelState(cdb *DB) (*OpenChannel, error) {
 			CommitHeight:  0,
 			LocalBalance:  lnwire.MilliSatoshi(3000),
 			RemoteBalance: lnwire.MilliSatoshi(9000),
-			CommitFee:     btcutil.Amount(rand.Int63()),
-			FeePerKw:      btcutil.Amount(5000),
+			CommitFee:     vclutil.Amount(rand.Int63()),
+			FeePerKw:      vclutil.Amount(5000),
 			CommitTx:      testTx,
 			CommitSig:     bytes.Repeat([]byte{1}, 71),
 		},

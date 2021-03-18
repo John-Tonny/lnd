@@ -3,7 +3,7 @@ package routerrpc
 import (
 	"time"
 
-	"github.com/btcsuite/btcutil"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 // RoutingConfig contains the configurable parameters that control routing.
@@ -32,7 +32,7 @@ type RoutingConfig struct {
 	// AttemptCost is the fixed virtual cost in path finding of a failed
 	// payment attempt. It is used to trade off potentially better routes
 	// against their probability of succeeding.
-	AttemptCost btcutil.Amount `long:"attemptcost" description:"The fixed (virtual) cost in sats of a failed payment attempt"`
+	AttemptCost vclutil.Amount `long:"attemptcost" description:"The fixed (virtual) cost in sats of a failed payment attempt"`
 
 	// AttemptCostPPM is the proportional virtual cost in path finding of a
 	// failed payment attempt. It is used to trade off potentially better

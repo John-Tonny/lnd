@@ -7,12 +7,12 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/btcsuite/btcd/btcjson"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/rpcclient"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/channeldb"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/vclsuite_vcld/btcjson"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/rpcclient"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 // BtcdFilteredChainView is an implementation of the FilteredChainView
@@ -151,7 +151,7 @@ func (b *BtcdFilteredChainView) Stop() error {
 // end of the main chain. Based on our current chain filter, the block may or
 // may not include any relevant transactions.
 func (b *BtcdFilteredChainView) onFilteredBlockConnected(height int32,
-	header *wire.BlockHeader, txns []*btcutil.Tx) {
+	header *wire.BlockHeader, txns []*vclutil.Tx) {
 
 	mtxs := make([]*wire.MsgTx, len(txns))
 	b.filterMtx.Lock()
@@ -334,7 +334,7 @@ func (b *BtcdFilteredChainView) chainFilterer() {
 			// Apply the new TX filter to btcd, which will cause
 			// all following notifications from and calls to it
 			// return blocks filtered with the new filter.
-			b.btcdConn.LoadTxFilter(false, []btcutil.Address{},
+			b.btcdConn.LoadTxFilter(false, []vclutil.Address{},
 				update.newUtxos)
 
 			// All blocks gotten after we loaded the filter will

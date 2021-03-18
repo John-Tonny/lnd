@@ -5,12 +5,12 @@ import (
 	"io"
 	"sync"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/sweep"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/sweep"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 // anchorResolver is a resolver that will attempt to sweep our anchor output.
@@ -48,7 +48,7 @@ func newAnchorResolver(anchorSignDescriptor input.SignDescriptor,
 	anchor wire.OutPoint, broadcastHeight uint32,
 	chanPoint wire.OutPoint, resCfg ResolverConfig) *anchorResolver {
 
-	amt := btcutil.Amount(anchorSignDescriptor.Output.Value)
+	amt := vclutil.Amount(anchorSignDescriptor.Output.Value)
 
 	report := ContractReport{
 		Outpoint:         anchor,

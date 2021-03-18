@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	lnwire "github.com/lightningnetwork/lnd/channeldb/migration/lnwire21"
-	"github.com/lightningnetwork/lnd/channeldb/migration21/common"
-	"github.com/lightningnetwork/lnd/keychain"
+	lnwire "github.com/John-Tonny/lnd/channeldb/migration/lnwire21"
+	"github.com/John-Tonny/lnd/channeldb/migration21/common"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 var (
@@ -142,7 +142,7 @@ func WriteElement(w io.Writer, element interface{}) error {
 			return err
 		}
 
-	case btcutil.Amount:
+	case vclutil.Amount:
 		if err := binary.Write(w, byteOrder, uint64(e)); err != nil {
 			return err
 		}
@@ -254,13 +254,13 @@ func ReadElement(r io.Reader, element interface{}) error {
 			return err
 		}
 
-	case *btcutil.Amount:
+	case *vclutil.Amount:
 		var a uint64
 		if err := binary.Read(r, byteOrder, &a); err != nil {
 			return err
 		}
 
-		*e = btcutil.Amount(a)
+		*e = vclutil.Amount(a)
 
 	case *lnwire.MilliSatoshi:
 		var a uint64

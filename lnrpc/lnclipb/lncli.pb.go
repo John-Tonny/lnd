@@ -5,8 +5,8 @@ package lnclipb
 
 import (
 	fmt "fmt"
+	verrpc "github.com/John-Tonny/lnd/lnrpc/verrpc"
 	proto "github.com/golang/protobuf/proto"
-	verrpc "github.com/lightningnetwork/lnd/lnrpc/verrpc"
 	math "math"
 )
 

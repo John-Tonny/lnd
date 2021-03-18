@@ -8,20 +8,20 @@ import (
 	math "math"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/htlcswitch"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/lntypes"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/record"
-	"github.com/lightningnetwork/lnd/routing"
-	"github.com/lightningnetwork/lnd/routing/route"
-	"github.com/lightningnetwork/lnd/subscribe"
-	"github.com/lightningnetwork/lnd/zpay32"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/htlcswitch"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lntypes"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/record"
+	"github.com/John-Tonny/lnd/routing"
+	"github.com/John-Tonny/lnd/routing/route"
+	"github.com/John-Tonny/lnd/subscribe"
+	"github.com/John-Tonny/lnd/zpay32"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 const (
@@ -41,7 +41,7 @@ type RouterBackend struct {
 
 	// FetchChannelCapacity is a closure that we'll use the fetch the total
 	// capacity of a channel to populate in responses.
-	FetchChannelCapacity func(chanID uint64) (btcutil.Amount, error)
+	FetchChannelCapacity func(chanID uint64) (vclutil.Amount, error)
 
 	// FetchChannelEndpoints returns the pubkeys of both endpoints of the
 	// given channel id.

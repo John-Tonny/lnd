@@ -6,8 +6,8 @@ import (
 
 	prand "math/rand"
 
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/lnwire"
+	"github.com/John-Tonny/lnd/lnwire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 func TestConstraintsChannelBudget(t *testing.T) {
@@ -17,7 +17,7 @@ func TestConstraintsChannelBudget(t *testing.T) {
 
 	const (
 		minChanSize = 0
-		maxChanSize = btcutil.Amount(btcutil.SatoshiPerBitcoin)
+		maxChanSize = vclutil.Amount(vclutil.SatoshiPerBitcoin)
 
 		chanLimit = 3
 
@@ -38,10 +38,10 @@ func TestConstraintsChannelBudget(t *testing.T) {
 
 	testCases := []struct {
 		channels  []LocalChannel
-		walletAmt btcutil.Amount
+		walletAmt vclutil.Amount
 
 		needMore     bool
-		amtAvailable btcutil.Amount
+		amtAvailable vclutil.Amount
 		numMore      uint32
 	}{
 		// Many available funds, but already have too many active open
@@ -50,18 +50,18 @@ func TestConstraintsChannelBudget(t *testing.T) {
 			[]LocalChannel{
 				{
 					ChanID:  randChanID(),
-					Balance: btcutil.Amount(prand.Int31()),
+					Balance: vclutil.Amount(prand.Int31()),
 				},
 				{
 					ChanID:  randChanID(),
-					Balance: btcutil.Amount(prand.Int31()),
+					Balance: vclutil.Amount(prand.Int31()),
 				},
 				{
 					ChanID:  randChanID(),
-					Balance: btcutil.Amount(prand.Int31()),
+					Balance: vclutil.Amount(prand.Int31()),
 				},
 			},
-			btcutil.Amount(btcutil.SatoshiPerBitcoin * 10),
+			vclutil.Amount(vclutil.SatoshiPerBitcoin * 10),
 			false,
 			0,
 			0,
@@ -73,14 +73,14 @@ func TestConstraintsChannelBudget(t *testing.T) {
 			[]LocalChannel{
 				{
 					ChanID:  randChanID(),
-					Balance: btcutil.Amount(btcutil.SatoshiPerBitcoin),
+					Balance: vclutil.Amount(vclutil.SatoshiPerBitcoin),
 				},
 				{
 					ChanID:  randChanID(),
-					Balance: btcutil.Amount(btcutil.SatoshiPerBitcoin),
+					Balance: vclutil.Amount(vclutil.SatoshiPerBitcoin),
 				},
 			},
-			btcutil.Amount(btcutil.SatoshiPerBitcoin * 2),
+			vclutil.Amount(vclutil.SatoshiPerBitcoin * 2),
 			false,
 			0,
 			0,
@@ -96,12 +96,12 @@ func TestConstraintsChannelBudget(t *testing.T) {
 			[]LocalChannel{
 				{
 					ChanID:  randChanID(),
-					Balance: btcutil.Amount(btcutil.SatoshiPerBitcoin),
+					Balance: vclutil.Amount(vclutil.SatoshiPerBitcoin),
 				},
 			},
-			btcutil.Amount(btcutil.SatoshiPerBitcoin * 9),
+			vclutil.Amount(vclutil.SatoshiPerBitcoin * 9),
 			true,
-			btcutil.Amount(btcutil.SatoshiPerBitcoin * 4),
+			vclutil.Amount(vclutil.SatoshiPerBitcoin * 4),
 			2,
 		},
 
@@ -116,16 +116,16 @@ func TestConstraintsChannelBudget(t *testing.T) {
 			[]LocalChannel{
 				{
 					ChanID:  randChanID(),
-					Balance: btcutil.Amount(btcutil.SatoshiPerBitcoin),
+					Balance: vclutil.Amount(vclutil.SatoshiPerBitcoin),
 				},
 				{
 					ChanID:  randChanID(),
-					Balance: btcutil.Amount(btcutil.SatoshiPerBitcoin * 3),
+					Balance: vclutil.Amount(vclutil.SatoshiPerBitcoin * 3),
 				},
 			},
-			btcutil.Amount(btcutil.SatoshiPerBitcoin * 10),
+			vclutil.Amount(vclutil.SatoshiPerBitcoin * 10),
 			true,
-			btcutil.Amount(btcutil.SatoshiPerBitcoin * 3),
+			vclutil.Amount(vclutil.SatoshiPerBitcoin * 3),
 			1,
 		},
 
@@ -135,14 +135,14 @@ func TestConstraintsChannelBudget(t *testing.T) {
 			[]LocalChannel{
 				{
 					ChanID:  randChanID(),
-					Balance: btcutil.Amount(btcutil.SatoshiPerBitcoin),
+					Balance: vclutil.Amount(vclutil.SatoshiPerBitcoin),
 				},
 				{
 					ChanID:  randChanID(),
-					Balance: btcutil.Amount(btcutil.SatoshiPerBitcoin),
+					Balance: vclutil.Amount(vclutil.SatoshiPerBitcoin),
 				},
 			},
-			btcutil.Amount(btcutil.SatoshiPerBitcoin),
+			vclutil.Amount(vclutil.SatoshiPerBitcoin),
 			false,
 			0,
 			0,

@@ -10,9 +10,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/lntest"
-	"github.com/lightningnetwork/lnd/macaroons"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lntest"
+	"github.com/John-Tonny/lnd/macaroons"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"gopkg.in/macaroon.v2"

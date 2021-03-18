@@ -9,22 +9,22 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcutil/psbt"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	"github.com/John-Tonny/vclsuite_vclutil/psbt"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/keychain"
 	"github.com/stretchr/testify/require"
 )
 
 var (
 	localPrivkey                  = []byte{1, 2, 3, 4, 5, 6}
 	remotePrivkey                 = []byte{6, 5, 4, 3, 2, 1}
-	chanCapacity   btcutil.Amount = 644000
+	chanCapacity   vclutil.Amount = 644000
 	params                        = chaincfg.RegressionNetParams
 	defaultTimeout                = 50 * time.Millisecond
 )
@@ -72,7 +72,7 @@ func TestPsbtIntent(t *testing.T) {
 		t.Fatalf("error calculating script: %v", err)
 	}
 	witnessScriptHash := sha256.Sum256(script)
-	addr, err := btcutil.NewAddressWitnessScriptHash(
+	addr, err := vclutil.NewAddressWitnessScriptHash(
 		witnessScriptHash[:], &params,
 	)
 	if err != nil {
@@ -207,7 +207,7 @@ func TestPsbtIntentBasePsbt(t *testing.T) {
 		t.Fatalf("error calculating script: %v", err)
 	}
 	witnessScriptHash := sha256.Sum256(script)
-	addr, err := btcutil.NewAddressWitnessScriptHash(
+	addr, err := vclutil.NewAddressWitnessScriptHash(
 		witnessScriptHash[:], &params,
 	)
 	if err != nil {

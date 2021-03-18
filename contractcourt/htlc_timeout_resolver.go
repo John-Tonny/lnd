@@ -6,16 +6,16 @@ import (
 	"io"
 	"sync"
 
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/lntypes"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/sweep"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/lightningnetwork/lnd/chainntnfs"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/lntypes"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/sweep"
 )
 
 // htlcTimeoutResolver is a ContractResolver that's capable of resolving an
@@ -176,7 +176,7 @@ func (h *htlcTimeoutResolver) claimCleanUp(
 
 	// Checkpoint our resolver with a report which reflects the preimage
 	// claim by the remote party.
-	amt := btcutil.Amount(h.htlcResolution.SweepSignDesc.Output.Value)
+	amt := vclutil.Amount(h.htlcResolution.SweepSignDesc.Output.Value)
 	report := &channeldb.ResolverReport{
 		OutPoint:        h.htlcResolution.ClaimOutpoint,
 		Amount:          amt,
@@ -528,7 +528,7 @@ func (h *htlcTimeoutResolver) handleCommitSpend(
 	h.currentReport.LimboBalance = 0
 	h.reportLock.Unlock()
 
-	amt := btcutil.Amount(h.htlcResolution.SweepSignDesc.Output.Value)
+	amt := vclutil.Amount(h.htlcResolution.SweepSignDesc.Output.Value)
 	reports = append(reports, &channeldb.ResolverReport{
 		OutPoint:        claimOutpoint,
 		Amount:          amt,
@@ -575,7 +575,7 @@ func (h *htlcTimeoutResolver) initReport() {
 	// resolvers not handled by the nursery.
 	finalAmt := h.htlc.Amt.ToSatoshis()
 	if h.htlcResolution.SignedTimeoutTx != nil {
-		finalAmt = btcutil.Amount(
+		finalAmt = vclutil.Amount(
 			h.htlcResolution.SignedTimeoutTx.TxOut[0].Value,
 		)
 	}

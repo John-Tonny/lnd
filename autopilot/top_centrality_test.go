@@ -3,8 +3,8 @@ package autopilot
 import (
 	"testing"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/stretchr/testify/require"
 )
 
@@ -53,7 +53,7 @@ func testTopCentrality(t *testing.T, graph testGraph,
 			}
 		}
 
-		const chanSize = btcutil.SatoshiPerBitcoin
+		const chanSize = vclutil.SatoshiPerBitcoin
 
 		// Attempt to get centrality scores and expect
 		// that the result equals with the expected set.

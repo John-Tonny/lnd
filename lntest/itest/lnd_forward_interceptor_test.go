@@ -7,13 +7,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/chainreg"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/lnrpc/routerrpc"
-	"github.com/lightningnetwork/lnd/lntest"
-	"github.com/lightningnetwork/lnd/routing/route"
+	"github.com/John-Tonny/lnd/chainreg"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lnrpc/routerrpc"
+	"github.com/John-Tonny/lnd/lntest"
+	"github.com/John-Tonny/lnd/routing/route"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -59,7 +59,7 @@ func testForwardInterceptor(net *lntest.NetworkHarness, t *harnessTest) {
 	testContext := newInterceptorTestContext(t, net, alice, bob, carol)
 
 	const (
-		chanAmt = btcutil.Amount(300000)
+		chanAmt = vclutil.Amount(300000)
 	)
 
 	// Open and wait for channels.
@@ -302,12 +302,12 @@ func (c *interceptorTestContext) prepareTestCases() []*interceptorTestCase {
 }
 
 func (c *interceptorTestContext) openChannel(from, to *lntest.HarnessNode,
-	chanSize btcutil.Amount) {
+	chanSize vclutil.Amount) {
 
 	ctxb := context.Background()
 
 	ctxt, _ := context.WithTimeout(ctxb, defaultTimeout)
-	err := c.net.SendCoins(ctxt, btcutil.SatoshiPerBitcoin, from)
+	err := c.net.SendCoins(ctxt, vclutil.SatoshiPerBitcoin, from)
 	require.NoError(c.t.t, err, "unable to send coins")
 
 	ctxt, _ = context.WithTimeout(ctxb, channelOpenTimeout)

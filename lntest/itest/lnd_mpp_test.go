@@ -6,13 +6,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/chainreg"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/lnrpc/routerrpc"
-	"github.com/lightningnetwork/lnd/lntest"
-	"github.com/lightningnetwork/lnd/routing/route"
+	"github.com/John-Tonny/lnd/chainreg"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lnrpc/routerrpc"
+	"github.com/John-Tonny/lnd/lntest"
+	"github.com/John-Tonny/lnd/routing/route"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 // testSendToRouteMultiPath tests that we are able to successfully route a
@@ -27,7 +27,7 @@ func testSendToRouteMultiPath(net *lntest.NetworkHarness, t *harnessTest) {
 	// channel size that can only carry one shard at a time. We'll divide
 	// the payment into 3 shards.
 	const (
-		paymentAmt = btcutil.Amount(300000)
+		paymentAmt = vclutil.Amount(300000)
 		shardAmt   = paymentAmt / 3
 		chanAmt    = shardAmt * 3 / 2
 	)
@@ -75,7 +75,7 @@ func testSendToRouteMultiPath(net *lntest.NetworkHarness, t *harnessTest) {
 	payAddr := decodeResp.PaymentAddr
 
 	// Helper function for Alice to build a route from pubkeys.
-	buildRoute := func(amt btcutil.Amount, hops []*lntest.HarnessNode) (
+	buildRoute := func(amt vclutil.Amount, hops []*lntest.HarnessNode) (
 		*lnrpc.Route, error) {
 
 		rpcHops := make([][]byte, 0, len(hops))
@@ -330,11 +330,11 @@ func newMppTestContext(t *harnessTest,
 }
 
 // openChannel is a helper to open a channel from->to.
-func (c *mppTestContext) openChannel(from, to *lntest.HarnessNode, chanSize btcutil.Amount) {
+func (c *mppTestContext) openChannel(from, to *lntest.HarnessNode, chanSize vclutil.Amount) {
 	ctxb := context.Background()
 
 	ctxt, _ := context.WithTimeout(ctxb, defaultTimeout)
-	err := c.net.SendCoins(ctxt, btcutil.SatoshiPerBitcoin, from)
+	err := c.net.SendCoins(ctxt, vclutil.SatoshiPerBitcoin, from)
 	if err != nil {
 		c.t.Fatalf("unable to send coins : %v", err)
 	}

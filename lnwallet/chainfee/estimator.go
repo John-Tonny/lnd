@@ -10,8 +10,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/btcsuite/btcd/rpcclient"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/vclsuite_vcld/rpcclient"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 const (
@@ -171,7 +171,7 @@ func (b *BtcdEstimator) Start() error {
 		return err
 	}
 
-	relayFee, err := btcutil.NewAmount(info.RelayFee)
+	relayFee, err := vclutil.NewAmount(info.RelayFee)
 	if err != nil {
 		return err
 	}
@@ -244,7 +244,7 @@ func (b *BtcdEstimator) fetchEstimate(confTarget uint32) (SatPerKWeight, error) 
 
 	// Next, we'll convert the returned value to satoshis, as it's
 	// currently returned in BTC.
-	satPerKB, err := btcutil.NewAmount(btcPerKB)
+	satPerKB, err := vclutil.NewAmount(btcPerKB)
 	if err != nil {
 		return 0, err
 	}
@@ -340,7 +340,7 @@ func (b *BitcoindEstimator) Start() error {
 		return err
 	}
 
-	relayFee, err := btcutil.NewAmount(info.RelayFee)
+	relayFee, err := vclutil.NewAmount(info.RelayFee)
 	if err != nil {
 		return err
 	}
@@ -434,7 +434,7 @@ func (b *BitcoindEstimator) fetchEstimate(confTarget uint32) (SatPerKWeight, err
 
 	// Next, we'll convert the returned value to satoshis, as it's currently
 	// returned in BTC.
-	satPerKB, err := btcutil.NewAmount(feeEstimate.FeeRate)
+	satPerKB, err := vclutil.NewAmount(feeEstimate.FeeRate)
 	if err != nil {
 		return 0, err
 	}

@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/btcsuite/btcd/wire"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/discovery"
-	"github.com/lightningnetwork/lnd/htlcswitch"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/routing"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/discovery"
+	"github.com/John-Tonny/lnd/htlcswitch"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/routing"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
 )
 
 // Manager manages the node's local channels. The only operation that is

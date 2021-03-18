@@ -1,17 +1,17 @@
 ## Lightning Network Daemon
 
 [![Build Status](https://img.shields.io/travis/lightningnetwork/lnd.svg)](https://travis-ci.org/lightningnetwork/lnd)
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/lightningnetwork/lnd/blob/master/LICENSE)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/John-Tonny/lnd/blob/master/LICENSE)
 [![Irc](https://img.shields.io/badge/chat-on%20freenode-brightgreen.svg)](https://webchat.freenode.net/?channels=lnd)
-[![Godoc](https://godoc.org/github.com/lightningnetwork/lnd?status.svg)](https://godoc.org/github.com/lightningnetwork/lnd)
+[![Godoc](https://godoc.org/github.com/John-Tonny/lnd?status.svg)](https://godoc.org/github.com/John-Tonny/lnd)
 
 <img src="logo.png">
 
 The Lightning Network Daemon (`lnd`) - is a complete implementation of a
 [Lightning Network](https://lightning.network) node.  `lnd` has several pluggable back-end
-chain services including [`btcd`](https://github.com/btcsuite/btcd) (a
+chain services including [`btcd`](https://github.com/John-Tonny/vclsuite_vcld) (a
 full-node), [`bitcoind`](https://github.com/bitcoin/bitcoin), and
-[`neutrino`](https://github.com/lightninglabs/neutrino) (a new experimental light client). The project's codebase uses the
+[`neutrino`](https://github.com/John-Tonny/neutrino) (a new experimental light client). The project's codebase uses the
 [btcsuite](https://github.com/btcsuite/) set of Bitcoin libraries, and also
 exports a large set of isolated re-usable Lightning Network related libraries
 within it.  In the current state `lnd` is capable of:
@@ -20,10 +20,10 @@ within it.  In the current state `lnd` is capable of:
 * Completely managing all channel states (including the exceptional ones!).
 * Maintaining a fully authenticated+validated channel graph.
 * Performing path finding within the network, passively forwarding incoming payments.
-* Sending outgoing [onion-encrypted payments](https://github.com/lightningnetwork/lightning-onion)
+* Sending outgoing [onion-encrypted payments](https://github.com/lJohn-Tonny/lightning-onion)
 through the network.
 * Updating advertised fee schedules.
-* Automatic channel management ([`autopilot`](https://github.com/lightningnetwork/lnd/tree/master/autopilot)).
+* Automatic channel management ([`autopilot`](https://github.com/John-Tonny/lnd/tree/master/autopilot)).
 
 ## Lightning Network Specification Compliance
 `lnd` _fully_ conforms to the [Lightning Network specification
@@ -93,5 +93,5 @@ preferably encrypted using our designated PGP key
 [here](https://gist.githubusercontent.com/Roasbeef/6fb5b52886183239e4aa558f83d085d3/raw/5fa96010af201628bcfa61e9309d9b13d23d220f/security@lightning.engineering).
 
 ## Further reading
-* [Step-by-step send payment guide with docker](https://github.com/lightningnetwork/lnd/tree/master/docker)
-* [Contribution guide](https://github.com/lightningnetwork/lnd/blob/master/docs/code_contribution_guidelines.md)
+* [Step-by-step send payment guide with docker](https://github.com/John-Tonny/lnd/tree/master/docker)
+* [Contribution guide](https://github.com/John-Tonny/lnd/blob/master/docs/code_contribution_guidelines.md)

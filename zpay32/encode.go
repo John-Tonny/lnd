@@ -5,10 +5,10 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcutil/bech32"
-	"github.com/lightningnetwork/lnd/lnwire"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	"github.com/John-Tonny/vclsuite_vclutil/bech32"
 )
 
 // Encode takes the given MessageSigner and returns a string encoding this
@@ -175,13 +175,13 @@ func writeTaggedFields(bufferBase32 *bytes.Buffer, invoice *Invoice) error {
 	if invoice.FallbackAddr != nil {
 		var version byte
 		switch addr := invoice.FallbackAddr.(type) {
-		case *btcutil.AddressPubKeyHash:
+		case *vclutil.AddressPubKeyHash:
 			version = 17
-		case *btcutil.AddressScriptHash:
+		case *vclutil.AddressScriptHash:
 			version = 18
-		case *btcutil.AddressWitnessPubKeyHash:
+		case *vclutil.AddressWitnessPubKeyHash:
 			version = addr.WitnessVersion()
-		case *btcutil.AddressWitnessScriptHash:
+		case *vclutil.AddressWitnessScriptHash:
 			version = addr.WitnessVersion()
 		default:
 			return fmt.Errorf("unknown fallback address type")

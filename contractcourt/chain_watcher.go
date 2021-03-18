@@ -7,16 +7,16 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/lightningnetwork/lnd/chainntnfs"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/lnwallet"
 )
 
 const (
@@ -157,7 +157,7 @@ type chainWatcherConfig struct {
 
 	// isOurAddr is a function that returns true if the passed address is
 	// known to us.
-	isOurAddr func(btcutil.Address) bool
+	isOurAddr func(vclutil.Address) bool
 
 	// extractStateNumHint extracts the encoded state hint using the passed
 	// obfuscater. This is used by the chain watcher to identify which
@@ -859,8 +859,8 @@ func (c *chainWatcher) handleUnknownRemoteState(
 // to a script that the wallet controls. If no outputs pay to us, then we
 // return zero. This is possible as our output may have been trimmed due to
 // being dust.
-func (c *chainWatcher) toSelfAmount(tx *wire.MsgTx) btcutil.Amount {
-	var selfAmt btcutil.Amount
+func (c *chainWatcher) toSelfAmount(tx *wire.MsgTx) vclutil.Amount {
+	var selfAmt vclutil.Amount
 	for _, txOut := range tx.TxOut {
 		_, addrs, _, err := txscript.ExtractPkScriptAddrs(
 			// Doesn't matter what net we actually pass in.
@@ -872,7 +872,7 @@ func (c *chainWatcher) toSelfAmount(tx *wire.MsgTx) btcutil.Amount {
 
 		for _, addr := range addrs {
 			if c.cfg.isOurAddr(addr) {
-				selfAmt += btcutil.Amount(txOut.Value)
+				selfAmt += vclutil.Amount(txOut.Value)
 			}
 		}
 	}
@@ -987,7 +987,7 @@ func (c *chainWatcher) dispatchLocalForceClose(
 		closeSummary.TimeLockedBalance = chanSnapshot.LocalBalance.ToSatoshis()
 	}
 	for _, htlc := range forceClose.HtlcResolutions.OutgoingHTLCs {
-		htlcValue := btcutil.Amount(htlc.SweepSignDesc.Output.Value)
+		htlcValue := vclutil.Amount(htlc.SweepSignDesc.Output.Value)
 		closeSummary.TimeLockedBalance += htlcValue
 	}
 

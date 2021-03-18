@@ -1,11 +1,11 @@
 package sweep
 
 import (
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 // weightEstimator wraps a standard weight estimator instance and adds to that
@@ -14,7 +14,7 @@ type weightEstimator struct {
 	estimator     input.TxWeightEstimator
 	feeRate       chainfee.SatPerKWeight
 	parents       map[chainhash.Hash]struct{}
-	parentsFee    btcutil.Amount
+	parentsFee    vclutil.Amount
 	parentsWeight int64
 }
 
@@ -90,7 +90,7 @@ func (w *weightEstimator) weight() int {
 
 // fee returns the tx fee to use for the aggregated inputs and outputs, taking
 // into account unconfirmed parent transactions (cpfp).
-func (w *weightEstimator) fee() btcutil.Amount {
+func (w *weightEstimator) fee() vclutil.Amount {
 	// Calculate fee and weight for just this tx.
 	childWeight := int64(w.estimator.Weight())
 

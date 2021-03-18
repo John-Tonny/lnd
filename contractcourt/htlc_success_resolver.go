@@ -5,16 +5,16 @@ import (
 	"io"
 	"sync"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/labels"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/sweep"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/lightningnetwork/lnd/chainntnfs"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/labels"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/sweep"
 )
 
 // htlcSuccessResolver is a resolver that's capable of sweeping an incoming
@@ -455,7 +455,7 @@ func (h *htlcSuccessResolver) checkpointClaim(spendTx *chainhash.Hash,
 	outcome channeldb.ResolverOutcome) error {
 
 	// Create a resolver report for claiming of the htlc itself.
-	amt := btcutil.Amount(h.htlcResolution.SweepSignDesc.Output.Value)
+	amt := vclutil.Amount(h.htlcResolution.SweepSignDesc.Output.Value)
 	reports := []*channeldb.ResolverReport{
 		{
 			OutPoint:        h.htlcResolution.ClaimOutpoint,
@@ -524,7 +524,7 @@ func (h *htlcSuccessResolver) initReport() {
 	// resolvers not handled by the nursery.
 	finalAmt := h.htlc.Amt.ToSatoshis()
 	if h.htlcResolution.SignedSuccessTx != nil {
-		finalAmt = btcutil.Amount(
+		finalAmt = vclutil.Amount(
 			h.htlcResolution.SignedSuccessTx.TxOut[0].Value,
 		)
 	}

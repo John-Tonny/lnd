@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/lightningnetwork/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
 )
 
 // OutPoint displays an outpoint string in the form "<txid>:<output-index>".

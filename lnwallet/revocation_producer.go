@@ -3,8 +3,8 @@
 package lnwallet
 
 import (
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/shachain"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/shachain"
 )
 
 // nextRevocationProducer creates a new revocation producer, deriving the

@@ -4,17 +4,17 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/wire"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
 
-	"github.com/btcsuite/btcwallet/chain"
-	"github.com/btcsuite/btcwallet/wallet"
+	"github.com/John-Tonny/vclsuite_vclwallet/chain"
+	"github.com/John-Tonny/vclsuite_vclwallet/wallet"
 
 	// This is required to register bdb as a valid walletdb driver. In the
 	// init function of the package, it registers itself. The import is used
 	// to activate the side effects w/o actually binding the package name to
 	// a file-level variable.
-	_ "github.com/btcsuite/btcwallet/walletdb/bdb"
+	_ "github.com/John-Tonny/vclsuite_vclwallet/walletdb/bdb"
 )
 
 var (

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/lightningnetwork/lnd/tlv"
+	"github.com/John-Tonny/lnd/tlv"
 )
 
 // AMPOnionType is the type used in the onion to reference the AMP fields:

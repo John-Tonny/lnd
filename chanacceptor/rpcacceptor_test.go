@@ -5,12 +5,12 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/lnwallet/chancloser"
-	"github.com/lightningnetwork/lnd/lnwire"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lnwallet/chancloser"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/stretchr/testify/require"
 )
 
@@ -26,7 +26,7 @@ func TestValidateAcceptorResponse(t *testing.T) {
 
 	tests := []struct {
 		name        string
-		dustLimit   btcutil.Amount
+		dustLimit   vclutil.Amount
 		response    lnrpc.ChannelAcceptResponse
 		accept      bool
 		acceptorErr error

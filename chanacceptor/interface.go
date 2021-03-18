@@ -3,9 +3,9 @@ package chanacceptor
 import (
 	"errors"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/lnwire"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 var (
@@ -46,7 +46,7 @@ type ChannelAcceptResponse struct {
 
 	// Reserve is the amount that require the remote peer hold in reserve
 	// on the channel.
-	Reserve btcutil.Amount
+	Reserve vclutil.Amount
 
 	// InFlightTotal is the maximum amount that we allow the remote peer to
 	// hold in outstanding htlcs.
@@ -71,7 +71,7 @@ type ChannelAcceptResponse struct {
 // error.
 func NewChannelAcceptResponse(accept bool, acceptErr error,
 	upfrontShutdown lnwire.DeliveryAddress, csvDelay, htlcLimit,
-	minDepth uint16, reserve btcutil.Amount, inFlight,
+	minDepth uint16, reserve vclutil.Amount, inFlight,
 	minHtlcIn lnwire.MilliSatoshi) *ChannelAcceptResponse {
 
 	resp := &ChannelAcceptResponse{

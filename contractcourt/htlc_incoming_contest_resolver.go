@@ -7,12 +7,12 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/htlcswitch/hop"
-	"github.com/lightningnetwork/lnd/invoices"
-	"github.com/lightningnetwork/lnd/lntypes"
-	"github.com/lightningnetwork/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/htlcswitch/hop"
+	"github.com/John-Tonny/lnd/invoices"
+	"github.com/John-Tonny/lnd/lntypes"
+	"github.com/John-Tonny/lnd/lnwallet"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 // htlcIncomingContestResolver is a ContractResolver that's able to resolve an
@@ -357,7 +357,7 @@ func (h *htlcIncomingContestResolver) report() *ContractReport {
 
 	finalAmt := h.htlc.Amt.ToSatoshis()
 	if h.htlcResolution.SignedSuccessTx != nil {
-		finalAmt = btcutil.Amount(
+		finalAmt = vclutil.Amount(
 			h.htlcResolution.SignedSuccessTx.TxOut[0].Value,
 		)
 	}

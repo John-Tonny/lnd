@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"sync"
 
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/macaroons"
+	"github.com/John-Tonny/lnd/monitoring"
 	"github.com/btcsuite/btclog"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/macaroons"
-	"github.com/lightningnetwork/lnd/monitoring"
 	"google.golang.org/grpc"
 	"gopkg.in/macaroon-bakery.v2/bakery"
 )

@@ -5,9 +5,9 @@ import (
 
 	"reflect"
 
+	"github.com/John-Tonny/lnd/lnwire"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/go-errors/errors"
-	"github.com/lightningnetwork/lnd/lnwire"
 )
 
 // TestWaitingProofStore tests add/get/remove functions of the waiting proof

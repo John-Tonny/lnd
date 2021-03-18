@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/lntest/mock"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/lntest/mock"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 // TestDetermineFeePerKw tests that given a fee preference, the
@@ -169,7 +169,7 @@ var sweepScript = []byte{
 	0xe, 0x6e, 0xf8, 0xef,
 }
 
-var deliveryAddr = func() btcutil.Address {
+var deliveryAddr = func() vclutil.Address {
 	_, addrs, _, err := txscript.ExtractPkScriptAddrs(
 		sweepScript, &chaincfg.TestNet3Params,
 	)

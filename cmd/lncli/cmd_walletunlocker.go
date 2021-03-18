@@ -10,9 +10,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/lightningnetwork/lnd/lncfg"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/walletunlocker"
+	"github.com/John-Tonny/lnd/lncfg"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/walletunlocker"
 	"github.com/urfave/cli"
 )
 

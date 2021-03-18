@@ -3,7 +3,7 @@ package bitcoind_test
 import (
 	"testing"
 
-	lnwallettest "github.com/lightningnetwork/lnd/lnwallet/test"
+	lnwallettest "github.com/John-Tonny/lnd/lnwallet/test"
 )
 
 // TestLightningWallet tests LightningWallet powered by bitcoind against our

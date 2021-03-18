@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/btcsuite/btcutil"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 type mockSparseConfFeeSource struct {
@@ -46,7 +46,7 @@ func TestFeeRateTypes(t *testing.T) {
 
 		// The resulting transaction fee should be the same when using
 		// both rates.
-		expectedFee := btcutil.Amount(feePerKw * weight / 1000)
+		expectedFee := vclutil.Amount(feePerKw * weight / 1000)
 		fee1 := feePerKw.FeeForWeight(weight)
 		if fee1 != expectedFee {
 			t.Fatalf("expected fee of %d sats, got %d sats",
@@ -70,7 +70,7 @@ func TestFeeRateTypes(t *testing.T) {
 
 		// The resulting transaction fee should be the same when using
 		// both rates.
-		expectedFee := btcutil.Amount(feePerKB * vsize / 1000)
+		expectedFee := vclutil.Amount(feePerKB * vsize / 1000)
 		fee1 := feePerKB.FeeForVSize(vsize)
 		if fee1 != expectedFee {
 			t.Fatalf("expected fee of %d sats, got %d sats",

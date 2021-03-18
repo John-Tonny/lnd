@@ -5,7 +5,7 @@ package etcd
 import (
 	"strconv"
 
-	"github.com/btcsuite/btcwallet/walletdb"
+	"github.com/John-Tonny/vclsuite_vclwallet/walletdb"
 )
 
 // readWriteBucket stores the bucket id and the buckets transaction.

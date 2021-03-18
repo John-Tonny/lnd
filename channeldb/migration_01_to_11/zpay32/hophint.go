@@ -1,6 +1,6 @@
 package zpay32
 
-import "github.com/btcsuite/btcd/btcec"
+import "github.com/John-Tonny/vclsuite_vcld/btcec"
 
 const (
 	// DefaultFinalCLTVDelta is the default value to be used as the final

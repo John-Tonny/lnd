@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/lnrpc/routerrpc"
-	"github.com/lightningnetwork/lnd/lntest"
-	"github.com/lightningnetwork/lnd/lntest/wait"
+	"github.com/John-Tonny/lnd/lnrpc/routerrpc"
+	"github.com/John-Tonny/lnd/lntest"
+	"github.com/John-Tonny/lnd/lntest/wait"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/stretchr/testify/require"
 )
 
@@ -36,7 +36,7 @@ func testMultiHopRemoteForceCloseOnChainHtlcTimeout(net *lntest.NetworkHarness,
 	// opens up the base for out tests.
 	const (
 		finalCltvDelta = 40
-		htlcAmt        = btcutil.Amount(30000)
+		htlcAmt        = vclutil.Amount(30000)
 	)
 
 	ctx, cancel := context.WithCancel(ctxb)

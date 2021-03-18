@@ -4,19 +4,19 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/btcsuite/btcd/blockchain"
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/vclsuite_vcld/blockchain"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/stretchr/testify/require"
 
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/lnwallet"
 )
 
 const (
@@ -28,7 +28,7 @@ const (
 	// without the trailing sighash flag.
 	maxDERSignatureSize = 72
 
-	testAmt = btcutil.MaxSatoshi
+	testAmt = vclutil.MaxSatoshi
 )
 
 var (
@@ -59,7 +59,7 @@ var (
 func TestTxWeightEstimator(t *testing.T) {
 	netParams := &chaincfg.MainNetParams
 
-	p2pkhAddr, err := btcutil.NewAddressPubKeyHash(
+	p2pkhAddr, err := vclutil.NewAddressPubKeyHash(
 		make([]byte, 20), netParams)
 	if err != nil {
 		t.Fatalf("Failed to generate address: %v", err)
@@ -69,7 +69,7 @@ func TestTxWeightEstimator(t *testing.T) {
 		t.Fatalf("Failed to generate scriptPubKey: %v", err)
 	}
 
-	p2wkhAddr, err := btcutil.NewAddressWitnessPubKeyHash(
+	p2wkhAddr, err := vclutil.NewAddressWitnessPubKeyHash(
 		make([]byte, 20), netParams)
 	if err != nil {
 		t.Fatalf("Failed to generate address: %v", err)
@@ -79,7 +79,7 @@ func TestTxWeightEstimator(t *testing.T) {
 		t.Fatalf("Failed to generate scriptPubKey: %v", err)
 	}
 
-	p2wshAddr, err := btcutil.NewAddressWitnessScriptHash(
+	p2wshAddr, err := vclutil.NewAddressWitnessScriptHash(
 		make([]byte, 32), netParams)
 	if err != nil {
 		t.Fatalf("Failed to generate address: %v", err)
@@ -89,7 +89,7 @@ func TestTxWeightEstimator(t *testing.T) {
 		t.Fatalf("Failed to generate scriptPubKey: %v", err)
 	}
 
-	p2shAddr, err := btcutil.NewAddressScriptHash([]byte{0}, netParams)
+	p2shAddr, err := vclutil.NewAddressScriptHash([]byte{0}, netParams)
 	if err != nil {
 		t.Fatalf("Failed to generate address: %v", err)
 	}
@@ -314,7 +314,7 @@ func TestTxWeightEstimator(t *testing.T) {
 			tx.AddTxOut(&wire.TxOut{PkScript: p2shScript})
 		}
 
-		expectedWeight := blockchain.GetTransactionWeight(btcutil.NewTx(tx))
+		expectedWeight := blockchain.GetTransactionWeight(vclutil.NewTx(tx))
 		if weightEstimate.Weight() != int(expectedWeight) {
 			t.Errorf("Case %d: Got wrong weight: expected %d, got %d",
 				i, expectedWeight, weightEstimate.Weight())
@@ -1003,7 +1003,7 @@ func TestTxSizes(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			tx := test.genTx(t)
 
-			weight := blockchain.GetTransactionWeight(btcutil.NewTx(tx))
+			weight := blockchain.GetTransactionWeight(vclutil.NewTx(tx))
 			if weight != test.expWeight {
 				t.Fatalf("size mismatch, want: %v, got: %v",
 					test.expWeight, weight)

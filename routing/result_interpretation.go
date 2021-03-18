@@ -3,9 +3,9 @@ package routing
 import (
 	"fmt"
 
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/routing/route"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/routing/route"
 )
 
 // Instantiate variables to allow taking a reference from the failure reason.

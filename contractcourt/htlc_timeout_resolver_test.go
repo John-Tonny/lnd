@@ -8,17 +8,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/chainntnfs"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/lntest/mock"
-	"github.com/lightningnetwork/lnd/lntypes"
-	"github.com/lightningnetwork/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/lntest/mock"
+	"github.com/John-Tonny/lnd/lntypes"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/stretchr/testify/require"
 )
 
@@ -460,7 +460,7 @@ func TestHtlcTimeoutResolver(t *testing.T) {
 		// Add a report to our set of expected reports with the outcome
 		// that the test specifies (either success or timeout).
 		spendTxID := spendingTx.TxHash()
-		amt := btcutil.Amount(fakeSignDesc.Output.Value)
+		amt := vclutil.Amount(fakeSignDesc.Output.Value)
 
 		reports = append(reports, &channeldb.ResolverReport{
 			OutPoint:        testChanPoint2,
@@ -507,7 +507,7 @@ func TestHtlcTimeoutSingleStage(t *testing.T) {
 	sweepTxid := sweepTx.TxHash()
 	claim := &channeldb.ResolverReport{
 		OutPoint:        commitOutpoint,
-		Amount:          btcutil.Amount(testSignDesc.Output.Value),
+		Amount:          vclutil.Amount(testSignDesc.Output.Value),
 		ResolverType:    channeldb.ResolverTypeOutgoingHtlc,
 		ResolverOutcome: channeldb.ResolverOutcomeTimeout,
 		SpendTxID:       &sweepTxid,
@@ -615,7 +615,7 @@ func TestHtlcTimeoutSecondStage(t *testing.T) {
 
 	secondState := &channeldb.ResolverReport{
 		OutPoint:        htlcOutpoint,
-		Amount:          btcutil.Amount(testSignDesc.Output.Value),
+		Amount:          vclutil.Amount(testSignDesc.Output.Value),
 		ResolverType:    channeldb.ResolverTypeOutgoingHtlc,
 		ResolverOutcome: channeldb.ResolverOutcomeTimeout,
 		SpendTxID:       &sweepHash,
@@ -731,7 +731,7 @@ func TestHtlcTimeoutSingleStageRemoteSpend(t *testing.T) {
 
 	claim := &channeldb.ResolverReport{
 		OutPoint:        htlcOutpoint,
-		Amount:          btcutil.Amount(testSignDesc.Output.Value),
+		Amount:          vclutil.Amount(testSignDesc.Output.Value),
 		ResolverType:    channeldb.ResolverTypeOutgoingHtlc,
 		ResolverOutcome: channeldb.ResolverOutcomeClaimed,
 		SpendTxID:       &spendTxHash,
@@ -841,7 +841,7 @@ func TestHtlcTimeoutSecondStageRemoteSpend(t *testing.T) {
 
 	claim := &channeldb.ResolverReport{
 		OutPoint:        commitOutpoint,
-		Amount:          btcutil.Amount(testSignDesc.Output.Value),
+		Amount:          vclutil.Amount(testSignDesc.Output.Value),
 		ResolverType:    channeldb.ResolverTypeOutgoingHtlc,
 		ResolverOutcome: channeldb.ResolverOutcomeClaimed,
 		SpendTxID:       &successTxid,
@@ -999,7 +999,7 @@ func TestHtlcTimeoutSecondStageSweeper(t *testing.T) {
 
 	secondState := &channeldb.ResolverReport{
 		OutPoint:        reSignedOutPoint,
-		Amount:          btcutil.Amount(testSignDesc.Output.Value),
+		Amount:          vclutil.Amount(testSignDesc.Output.Value),
 		ResolverType:    channeldb.ResolverTypeOutgoingHtlc,
 		ResolverOutcome: channeldb.ResolverOutcomeTimeout,
 		SpendTxID:       &sweepHash,
@@ -1174,7 +1174,7 @@ func TestHtlcTimeoutSecondStageSweeperRemoteSpend(t *testing.T) {
 
 	claim := &channeldb.ResolverReport{
 		OutPoint:        htlcOutpoint,
-		Amount:          btcutil.Amount(testSignDesc.Output.Value),
+		Amount:          vclutil.Amount(testSignDesc.Output.Value),
 		ResolverType:    channeldb.ResolverTypeOutgoingHtlc,
 		ResolverOutcome: channeldb.ResolverOutcomeClaimed,
 		SpendTxID:       &spendTxHash,

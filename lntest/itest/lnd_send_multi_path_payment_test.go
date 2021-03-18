@@ -4,10 +4,10 @@ import (
 	"context"
 	"encoding/hex"
 
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/lnrpc/routerrpc"
-	"github.com/lightningnetwork/lnd/lntest"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lnrpc/routerrpc"
+	"github.com/John-Tonny/lnd/lntest"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 // testSendMultiPathPayment tests that we are able to successfully route a
@@ -18,7 +18,7 @@ func testSendMultiPathPayment(net *lntest.NetworkHarness, t *harnessTest) {
 	ctx := newMppTestContext(t, net)
 	defer ctx.shutdownNodes()
 
-	const paymentAmt = btcutil.Amount(300000)
+	const paymentAmt = vclutil.Amount(300000)
 
 	// Set up a network with three different paths Alice <-> Bob. Channel
 	// capacities are set such that the payment can only succeed if (at

@@ -1,17 +1,17 @@
 package btcwallet
 
 import (
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcwallet/waddrmgr"
-	"github.com/btcsuite/btcwallet/walletdb"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	"github.com/John-Tonny/vclsuite_vclwallet/waddrmgr"
+	"github.com/John-Tonny/vclsuite_vclwallet/walletdb"
 	"github.com/go-errors/errors"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/lnwallet"
 )
 
 // FetchInputInfo queries for the WalletController's knowledge of the passed
@@ -37,7 +37,7 @@ func (b *BtcWallet) FetchInputInfo(prevOut *wire.OutPoint) (*lnwallet.Utxo, erro
 
 	return &lnwallet.Utxo{
 		AddressType:   addressType,
-		Value:         btcutil.Amount(txOut.Value),
+		Value:         vclutil.Amount(txOut.Value),
 		PkScript:      txOut.PkScript,
 		Confirmations: confirmations,
 		OutPoint:      *prevOut,
@@ -119,8 +119,8 @@ func (b *BtcWallet) fetchPrivKey(keyDesc *keychain.KeyDescriptor) (*btcec.Privat
 		return b.deriveKeyByLocator(keyDesc.KeyLocator)
 	}
 
-	hash160 := btcutil.Hash160(keyDesc.PubKey.SerializeCompressed())
-	addr, err := btcutil.NewAddressWitnessPubKeyHash(hash160, b.netParams)
+	hash160 := vclutil.Hash160(keyDesc.PubKey.SerializeCompressed())
+	addr, err := vclutil.NewAddressWitnessPubKeyHash(hash160, b.netParams)
 	if err != nil {
 		return nil, err
 	}

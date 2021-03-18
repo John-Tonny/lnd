@@ -10,10 +10,10 @@ import (
 	"testing"
 	"testing/iotest"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/tor"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/tor"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
 )
 
 type maybeNetConn struct {

@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/rpcclient"
-	"github.com/lightningnetwork/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/rpcclient"
 )
 
 // createNewNotifier creates a new instance of the ChainNotifier interface

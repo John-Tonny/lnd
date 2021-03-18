@@ -3,15 +3,15 @@ package lookout
 import (
 	"errors"
 
-	"github.com/btcsuite/btcd/blockchain"
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcutil/txsort"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/watchtower/blob"
-	"github.com/lightningnetwork/lnd/watchtower/wtdb"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/watchtower/blob"
+	"github.com/John-Tonny/lnd/watchtower/wtdb"
+	"github.com/John-Tonny/vclsuite_vcld/blockchain"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	"github.com/John-Tonny/vclsuite_vclutil/txsort"
 )
 
 var (
@@ -176,9 +176,9 @@ func (p *JusticeDescriptor) assembleJusticeTxn(txWeight int64,
 
 	// First, construct add the breached inputs to our justice transaction
 	// and compute the total amount that will be swept.
-	var totalAmt btcutil.Amount
+	var totalAmt vclutil.Amount
 	for _, input := range inputs {
-		totalAmt += btcutil.Amount(input.txOut.Value)
+		totalAmt += vclutil.Amount(input.txOut.Value)
 		justiceTxn.AddTxIn(&wire.TxIn{
 			PreviousOutPoint: input.outPoint,
 			Sequence:         input.sequence,
@@ -204,7 +204,7 @@ func (p *JusticeDescriptor) assembleJusticeTxn(txWeight int64,
 	// Apply a BIP69 sort to the resulting transaction.
 	txsort.InPlaceSort(justiceTxn)
 
-	btx := btcutil.NewTx(justiceTxn)
+	btx := vclutil.NewTx(justiceTxn)
 	if err := blockchain.CheckTransactionSanity(btx); err != nil {
 		return nil, err
 	}

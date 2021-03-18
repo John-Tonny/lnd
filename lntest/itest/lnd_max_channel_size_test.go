@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/funding"
-	"github.com/lightningnetwork/lnd/lntest"
+	"github.com/John-Tonny/lnd/funding"
+	"github.com/John-Tonny/lnd/lntest"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 // testMaxChannelSize tests that lnd handles --maxchansize parameter
@@ -36,7 +36,7 @@ func testMaxChannelSize(net *lntest.NetworkHarness, t *harnessTest) {
 
 	// We'll send 11 BTC to the wumbo node so it can test the wumbo soft limit.
 	ctxb := context.Background()
-	err = net.SendCoins(ctxb, 11*btcutil.SatoshiPerBitcoin, wumboNode)
+	err = net.SendCoins(ctxb, 11*vclutil.SatoshiPerBitcoin, wumboNode)
 	if err != nil {
 		t.Fatalf("unable to send coins to wumbo node: %v", err)
 	}

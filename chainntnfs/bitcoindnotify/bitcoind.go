@@ -6,15 +6,15 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/btcsuite/btcd/btcjson"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcwallet/chain"
-	"github.com/lightningnetwork/lnd/chainntnfs"
-	"github.com/lightningnetwork/lnd/queue"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/queue"
+	"github.com/John-Tonny/vclsuite_vcld/btcjson"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	"github.com/John-Tonny/vclsuite_vclwallet/chain"
 )
 
 const (
@@ -423,7 +423,7 @@ out:
 					continue
 				}
 
-				tx := btcutil.NewTx(&item.TxRecord.MsgTx)
+				tx := vclutil.NewTx(&item.TxRecord.MsgTx)
 				err := b.txNotifier.ProcessRelevantSpendTx(
 					tx, uint32(item.Block.Height),
 				)
@@ -562,7 +562,7 @@ func (b *BitcoindNotifier) handleBlockConnected(block chainntnfs.BlockEpoch) err
 	if err != nil {
 		return fmt.Errorf("unable to get block: %v", err)
 	}
-	txns := btcutil.NewBlock(rawBlock).Transactions()
+	txns := vclutil.NewBlock(rawBlock).Transactions()
 
 	// We'll then extend the txNotifier's height with the information of
 	// this new block, which will handle all of the notification logic for

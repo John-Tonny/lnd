@@ -3,10 +3,10 @@ package autopilot
 import (
 	"net"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/lnwire"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 // DefaultConfTarget is the default confirmation target for autopilot channels.
@@ -45,7 +45,7 @@ type LocalChannel struct {
 	ChanID lnwire.ShortChannelID
 
 	// Balance is the local balance of the channel expressed in satoshis.
-	Balance btcutil.Amount
+	Balance vclutil.Amount
 
 	// Node is the peer that this channel has been established with.
 	Node NodeID
@@ -64,7 +64,7 @@ type ChannelEdge struct {
 	ChanID lnwire.ShortChannelID
 
 	// Capacity is the capacity of the channel expressed in satoshis.
-	Capacity btcutil.Amount
+	Capacity vclutil.Amount
 
 	// Peer is the peer that this channel creates an edge to in the channel
 	// graph.
@@ -108,7 +108,7 @@ type AttachmentDirective struct {
 
 	// ChanAmt is the size of the channel that should be opened, expressed
 	// in satoshis.
-	ChanAmt btcutil.Amount
+	ChanAmt vclutil.Amount
 
 	// Addrs is a list of addresses that the target peer may be reachable
 	// at.
@@ -141,7 +141,7 @@ type AttachmentHeuristic interface {
 	// NOTE: A NodeID not found in the returned map is implicitly given a
 	// score of 0.
 	NodeScores(g ChannelGraph, chans []LocalChannel,
-		chanSize btcutil.Amount, nodes map[NodeID]struct{}) (
+		chanSize vclutil.Amount, nodes map[NodeID]struct{}) (
 		map[NodeID]*NodeScore, error)
 }
 
@@ -209,7 +209,7 @@ type ChannelController interface {
 	// slightly less to account for fees. This function should un-block
 	// immediately after the funding transaction that marks the channel
 	// open has been broadcast.
-	OpenChannel(target *btcec.PublicKey, amt btcutil.Amount) error
+	OpenChannel(target *btcec.PublicKey, amt vclutil.Amount) error
 
 	// CloseChannel attempts to close out the target channel.
 	//

@@ -1,9 +1,9 @@
 package htlcswitch
 
 import (
+	"github.com/John-Tonny/lnd/build"
+	"github.com/John-Tonny/lnd/htlcswitch/hop"
 	"github.com/btcsuite/btclog"
-	"github.com/lightningnetwork/lnd/build"
-	"github.com/lightningnetwork/lnd/htlcswitch/hop"
 )
 
 // log is a logger that is initialized with no output filters.  This

@@ -6,15 +6,15 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/btcsuite/btcd/btcec"
-	bitcoinCfg "github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcutil"
-	sphinx "github.com/lightningnetwork/lightning-onion"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/htlcswitch"
-	"github.com/lightningnetwork/lnd/htlcswitch/hop"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/lnwire"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/htlcswitch"
+	"github.com/John-Tonny/lnd/htlcswitch/hop"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	bitcoinCfg "github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	sphinx "github.com/lJohn-Tonny/lightning-onion"
 )
 
 var (
@@ -127,8 +127,8 @@ func TestCircuitMapInit(t *testing.T) {
 
 var halfCircuitTests = []struct {
 	hash      [32]byte
-	inValue   btcutil.Amount
-	outValue  btcutil.Amount
+	inValue   vclutil.Amount
+	outValue  vclutil.Amount
 	chanID    lnwire.ShortChannelID
 	htlcID    uint64
 	encrypter hop.ErrorEncrypter

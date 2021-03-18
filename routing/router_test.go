@@ -10,20 +10,20 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/stretchr/testify/require"
 
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/clock"
-	"github.com/lightningnetwork/lnd/htlcswitch"
-	"github.com/lightningnetwork/lnd/lntypes"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/record"
-	"github.com/lightningnetwork/lnd/routing/route"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/clock"
+	"github.com/John-Tonny/lnd/htlcswitch"
+	"github.com/John-Tonny/lnd/lntypes"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/record"
+	"github.com/John-Tonny/lnd/routing/route"
 )
 
 var uniquePaymentID uint64 = 1 // to be used atomically
@@ -341,7 +341,7 @@ func TestChannelUpdateValidation(t *testing.T) {
 	t.Parallel()
 
 	// Setup a three node network.
-	chanCapSat := btcutil.Amount(100000)
+	chanCapSat := vclutil.Amount(100000)
 	testChannels := []*testChannel{
 		symmetricTestChannel("a", "b", chanCapSat, &testChannelPolicy{
 			Expiry:  144,
@@ -2485,7 +2485,7 @@ func TestUnknownErrorSource(t *testing.T) {
 
 	// Setup a network. It contains two paths to c: a->b->c and an
 	// alternative a->d->c.
-	chanCapSat := btcutil.Amount(100000)
+	chanCapSat := vclutil.Amount(100000)
 	testChannels := []*testChannel{
 		symmetricTestChannel("a", "b", chanCapSat, &testChannelPolicy{
 			Expiry:  144,
@@ -2637,7 +2637,7 @@ func TestSendToRouteStructuredError(t *testing.T) {
 	t.Parallel()
 
 	// Setup a three node network.
-	chanCapSat := btcutil.Amount(100000)
+	chanCapSat := vclutil.Amount(100000)
 	testChannels := []*testChannel{
 		symmetricTestChannel("a", "b", chanCapSat, &testChannelPolicy{
 			Expiry:  144,
@@ -2879,7 +2879,7 @@ func TestSendToRouteMaxHops(t *testing.T) {
 	t.Parallel()
 
 	// Setup a two node network.
-	chanCapSat := btcutil.Amount(100000)
+	chanCapSat := vclutil.Amount(100000)
 	testChannels := []*testChannel{
 		symmetricTestChannel("a", "b", chanCapSat, &testChannelPolicy{
 			Expiry:  144,
@@ -2944,7 +2944,7 @@ func TestSendToRouteMaxHops(t *testing.T) {
 // TestBuildRoute tests whether correct routes are built.
 func TestBuildRoute(t *testing.T) {
 	// Setup a three node network.
-	chanCapSat := btcutil.Amount(100000)
+	chanCapSat := vclutil.Amount(100000)
 	paymentAddrFeatures := lnwire.NewFeatureVector(
 		lnwire.NewRawFeatureVector(lnwire.PaymentAddrOptional),
 		lnwire.Features,

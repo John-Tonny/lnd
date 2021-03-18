@@ -4,9 +4,9 @@ import (
 	"context"
 	"strings"
 
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/funding"
-	"github.com/lightningnetwork/lnd/lntest"
+	"github.com/John-Tonny/lnd/funding"
+	"github.com/John-Tonny/lnd/lntest"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 // testWumboChannels tests that only a node that signals wumbo channel
@@ -35,7 +35,7 @@ func testWumboChannels(net *lntest.NetworkHarness, t *harnessTest) {
 	// We'll send coins to the wumbo node, as it'll be the one imitating
 	// the channel funding.
 	ctxb := context.Background()
-	err = net.SendCoins(ctxb, btcutil.SatoshiPerBitcoin, wumboNode)
+	err = net.SendCoins(ctxb, vclutil.SatoshiPerBitcoin, wumboNode)
 	if err != nil {
 		t.Fatalf("unable to send coins to carol: %v", err)
 	}

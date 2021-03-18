@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/lightningnetwork/lnd/clock"
-	"github.com/lightningnetwork/lnd/lntypes"
+	"github.com/John-Tonny/lnd/clock"
+	"github.com/John-Tonny/lnd/lntypes"
 )
 
 // invoiceExpiryWatcherTest holds a test fixture and implements checks

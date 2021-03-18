@@ -5,14 +5,14 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 
-	"github.com/btcsuite/btcwallet/chain"
-	"github.com/lightninglabs/neutrino"
-	"github.com/lightninglabs/neutrino/headerfs"
-	"github.com/lightningnetwork/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/neutrino"
+	"github.com/John-Tonny/neutrino/headerfs"
+	"github.com/John-Tonny/vclsuite_vclwallet/chain"
 )
 
 var (
@@ -87,7 +87,7 @@ func (b *BtcWallet) GetUtxo(op *wire.OutPoint, pkScript []byte,
 
 		// We'll ensure we properly convert the amount given in BTC to
 		// satoshis.
-		amt, err := btcutil.NewAmount(txout.Value)
+		amt, err := vclutil.NewAmount(txout.Value)
 		if err != nil {
 			return nil, err
 		}
@@ -112,7 +112,7 @@ func (b *BtcWallet) GetUtxo(op *wire.OutPoint, pkScript []byte,
 
 		// Sadly, gettxout returns the output value in BTC instead of
 		// satoshis.
-		amt, err := btcutil.NewAmount(txout.Value)
+		amt, err := vclutil.NewAmount(txout.Value)
 		if err != nil {
 			return nil, err
 		}

@@ -7,22 +7,22 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/watchtower/blob"
+	"github.com/John-Tonny/lnd/watchtower/wtdb"
+	"github.com/John-Tonny/lnd/watchtower/wtmock"
+	"github.com/John-Tonny/lnd/watchtower/wtpolicy"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/watchtower/blob"
-	"github.com/lightningnetwork/lnd/watchtower/wtdb"
-	"github.com/lightningnetwork/lnd/watchtower/wtmock"
-	"github.com/lightningnetwork/lnd/watchtower/wtpolicy"
 )
 
 const csvDelay uint32 = 144
@@ -67,7 +67,7 @@ type backupTaskTest struct {
 	breachInfo       *lnwallet.BreachRetribution
 	expToLocalInput  input.Input
 	expToRemoteInput input.Input
-	expTotalAmt      btcutil.Amount
+	expTotalAmt      vclutil.Amount
 	expSweepAmt      int64
 	expRewardAmt     int64
 	expRewardScript  []byte
@@ -231,7 +231,7 @@ func genTaskTest(
 		breachInfo:       breachInfo,
 		expToLocalInput:  toLocalInput,
 		expToRemoteInput: toRemoteInput,
-		expTotalAmt:      btcutil.Amount(toLocalAmt + toRemoteAmt),
+		expTotalAmt:      vclutil.Amount(toLocalAmt + toRemoteAmt),
 		expSweepAmt:      expSweepAmt,
 		expRewardAmt:     expRewardAmt,
 		expRewardScript:  rewardScript,
@@ -257,7 +257,7 @@ var (
 
 	blobTypeCommitReward = (blob.FlagCommitOutputs | blob.FlagReward).Type()
 
-	addr, _ = btcutil.DecodeAddress(
+	addr, _ = vclutil.DecodeAddress(
 		"mrX9vMRYLfVy1BnZbc5gZjuyaqH3ZW2ZHz", &chaincfg.TestNet3Params,
 	)
 

@@ -9,20 +9,20 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/clock"
+	"github.com/John-Tonny/lnd/contractcourt"
+	"github.com/John-Tonny/lnd/htlcswitch/hop"
+	"github.com/John-Tonny/lnd/lntypes"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/ticker"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/lightningnetwork/lnd/chainntnfs"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	"github.com/lightningnetwork/lnd/clock"
-	"github.com/lightningnetwork/lnd/contractcourt"
-	"github.com/lightningnetwork/lnd/htlcswitch/hop"
-	"github.com/lightningnetwork/lnd/lntypes"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/ticker"
 )
 
 const (
@@ -1541,8 +1541,8 @@ func (s *Switch) htlcForwarder() {
 	// TODO(roasbeef): cleared vs settled distinction
 	var (
 		totalNumUpdates uint64
-		totalSatSent    btcutil.Amount
-		totalSatRecv    btcutil.Amount
+		totalSatSent    vclutil.Amount
+		totalSatRecv    vclutil.Amount
 	)
 	s.cfg.LogEventTicker.Resume()
 	defer s.cfg.LogEventTicker.Stop()
@@ -1660,8 +1660,8 @@ out:
 
 			var (
 				newNumUpdates uint64
-				newSatSent    btcutil.Amount
-				newSatRecv    btcutil.Amount
+				newSatSent    vclutil.Amount
+				newSatRecv    vclutil.Amount
 			)
 
 			// Next, we'll run through all the registered links and
@@ -1679,8 +1679,8 @@ out:
 
 			var (
 				diffNumUpdates uint64
-				diffSatSent    btcutil.Amount
-				diffSatRecv    btcutil.Amount
+				diffSatSent    vclutil.Amount
+				diffSatRecv    vclutil.Amount
 			)
 
 			// If this is the first time we're computing these

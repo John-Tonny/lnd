@@ -3,10 +3,10 @@ package sweep
 import (
 	"testing"
 
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/stretchr/testify/require"
 )
 
@@ -37,7 +37,7 @@ func TestTxInputSet(t *testing.T) {
 	}
 
 	fee := set.weightEstimate(true).fee()
-	require.Equal(t, btcutil.Amount(439), fee)
+	require.Equal(t, vclutil.Amount(439), fee)
 
 	// The tx output should now be 700-439 = 261 sats. The dust limit isn't
 	// reached yet.
@@ -103,7 +103,7 @@ func TestTxInputSetFromWallet(t *testing.T) {
 }
 
 // createP2WKHInput returns a P2WKH test input with the specified amount.
-func createP2WKHInput(amt btcutil.Amount) input.Input {
+func createP2WKHInput(amt vclutil.Amount) input.Input {
 	input := createTestInput(int64(amt), input.WitnessKeyHash)
 	return &input
 }
@@ -171,7 +171,7 @@ func TestTxInputSetRequiredOutput(t *testing.T) {
 
 	// The fee needed to pay for this input and output should be 439 sats.
 	fee := set.weightEstimate(false).fee()
-	require.Equal(t, btcutil.Amount(439), fee)
+	require.Equal(t, vclutil.Amount(439), fee)
 
 	// Since the tx set currently pays no fees, we expect the current
 	// change to actually be negative, since this is what it would cost us

@@ -3,7 +3,7 @@ package chanfitness
 import (
 	"time"
 
-	"github.com/btcsuite/btcd/wire"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
 )
 
 // peerMonitor is an interface implemented by entities that monitor our peers

@@ -17,58 +17,58 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/btcsuite/btcd/blockchain"
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcutil/psbt"
-	"github.com/btcsuite/btcwallet/wallet/txauthor"
+	"github.com/John-Tonny/lnd/autopilot"
+	"github.com/John-Tonny/lnd/build"
+	"github.com/John-Tonny/lnd/chainreg"
+	"github.com/John-Tonny/lnd/chanacceptor"
+	"github.com/John-Tonny/lnd/chanbackup"
+	"github.com/John-Tonny/lnd/chanfitness"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/channelnotifier"
+	"github.com/John-Tonny/lnd/contractcourt"
+	"github.com/John-Tonny/lnd/discovery"
+	"github.com/John-Tonny/lnd/feature"
+	"github.com/John-Tonny/lnd/funding"
+	"github.com/John-Tonny/lnd/htlcswitch"
+	"github.com/John-Tonny/lnd/htlcswitch/hop"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/invoices"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/labels"
+	"github.com/John-Tonny/lnd/lncfg"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lnrpc/invoicesrpc"
+	"github.com/John-Tonny/lnd/lnrpc/routerrpc"
+	"github.com/John-Tonny/lnd/lntypes"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet/btcwallet"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/lnwallet/chancloser"
+	"github.com/John-Tonny/lnd/lnwallet/chanfunding"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/macaroons"
+	"github.com/John-Tonny/lnd/peer"
+	"github.com/John-Tonny/lnd/peernotifier"
+	"github.com/John-Tonny/lnd/record"
+	"github.com/John-Tonny/lnd/routing"
+	"github.com/John-Tonny/lnd/routing/route"
+	"github.com/John-Tonny/lnd/rpcperms"
+	"github.com/John-Tonny/lnd/signal"
+	"github.com/John-Tonny/lnd/sweep"
+	"github.com/John-Tonny/lnd/watchtower"
+	"github.com/John-Tonny/lnd/zpay32"
+	"github.com/John-Tonny/vclsuite_vcld/blockchain"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	"github.com/John-Tonny/vclsuite_vclutil/psbt"
+	"github.com/John-Tonny/vclsuite_vclwallet/wallet/txauthor"
 	"github.com/davecgh/go-spew/spew"
 	proxy "github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/lightningnetwork/lnd/autopilot"
-	"github.com/lightningnetwork/lnd/build"
-	"github.com/lightningnetwork/lnd/chainreg"
-	"github.com/lightningnetwork/lnd/chanacceptor"
-	"github.com/lightningnetwork/lnd/chanbackup"
-	"github.com/lightningnetwork/lnd/chanfitness"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	"github.com/lightningnetwork/lnd/channelnotifier"
-	"github.com/lightningnetwork/lnd/contractcourt"
-	"github.com/lightningnetwork/lnd/discovery"
-	"github.com/lightningnetwork/lnd/feature"
-	"github.com/lightningnetwork/lnd/funding"
-	"github.com/lightningnetwork/lnd/htlcswitch"
-	"github.com/lightningnetwork/lnd/htlcswitch/hop"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/invoices"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/labels"
-	"github.com/lightningnetwork/lnd/lncfg"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/lnrpc/invoicesrpc"
-	"github.com/lightningnetwork/lnd/lnrpc/routerrpc"
-	"github.com/lightningnetwork/lnd/lntypes"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/btcwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
-	"github.com/lightningnetwork/lnd/lnwallet/chancloser"
-	"github.com/lightningnetwork/lnd/lnwallet/chanfunding"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/macaroons"
-	"github.com/lightningnetwork/lnd/peer"
-	"github.com/lightningnetwork/lnd/peernotifier"
-	"github.com/lightningnetwork/lnd/record"
-	"github.com/lightningnetwork/lnd/routing"
-	"github.com/lightningnetwork/lnd/routing/route"
-	"github.com/lightningnetwork/lnd/rpcperms"
-	"github.com/lightningnetwork/lnd/signal"
-	"github.com/lightningnetwork/lnd/sweep"
-	"github.com/lightningnetwork/lnd/watchtower"
-	"github.com/lightningnetwork/lnd/zpay32"
 	"github.com/tv42/zbase32"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -572,7 +572,7 @@ func (r *rpcServer) addDeps(s *server, macService *macaroons.Service,
 	graph := s.localChanDB.ChannelGraph()
 	routerBackend := &routerrpc.RouterBackend{
 		SelfNode: selfNode.PubKeyBytes,
-		FetchChannelCapacity: func(chanID uint64) (btcutil.Amount,
+		FetchChannelCapacity: func(chanID uint64) (vclutil.Amount,
 			error) {
 
 			info, _, _, err := graph.FetchChannelEdgesByID(chanID)
@@ -847,7 +847,7 @@ func addrPairsToOutputs(addrPairs map[string]int64,
 
 	outputs := make([]*wire.TxOut, 0, len(addrPairs))
 	for addr, amt := range addrPairs {
-		addr, err := btcutil.DecodeAddress(addr, params)
+		addr, err := vclutil.DecodeAddress(addr, params)
 		if err != nil {
 			return nil, err
 		}
@@ -1085,12 +1085,12 @@ func (r *rpcServer) SendCoins(ctx context.Context,
 
 	rpcsLog.Infof("[sendcoins] addr=%v, amt=%v, sat/kw=%v, min_confs=%v, "+
 		"send_all=%v",
-		in.Addr, btcutil.Amount(in.Amount), int64(feePerKw), minConfs,
+		in.Addr, vclutil.Amount(in.Amount), int64(feePerKw), minConfs,
 		in.SendAll)
 
 	// Decode the address receiving the coins, we need to check whether the
 	// address is valid for this network.
-	targetAddr, err := btcutil.DecodeAddress(
+	targetAddr, err := vclutil.DecodeAddress(
 		in.Addr, r.cfg.ActiveNetParams.Params,
 	)
 	if err != nil {
@@ -1157,7 +1157,7 @@ func (r *rpcServer) SendCoins(ctx context.Context,
 
 		// Before we publish the transaction we make sure it won't
 		// violate our reserved wallet value.
-		var reservedVal btcutil.Amount
+		var reservedVal vclutil.Amount
 		err = wallet.WithCoinSelectLock(func() error {
 			var err error
 			reservedVal, err = wallet.CheckReservedValueTx(
@@ -1336,7 +1336,7 @@ func (r *rpcServer) NewAddress(ctx context.Context,
 	// Translate the gRPC proto address type to the wallet controller's
 	// available address types.
 	var (
-		addr btcutil.Address
+		addr vclutil.Address
 		err  error
 	)
 	switch in.Type {
@@ -1648,7 +1648,7 @@ func newFundingShimAssembler(chanPointShim *lnrpc.ChanPointShim, initiator bool,
 	// to pass into the wallet.
 	return chanfunding.NewCannedAssembler(
 		chanPointShim.ThawHeight, *chanPoint,
-		btcutil.Amount(chanPointShim.Amt), &localKeyDesc,
+		vclutil.Amount(chanPointShim.Amt), &localKeyDesc,
 		remoteKey, initiator,
 	), nil
 }
@@ -1694,7 +1694,7 @@ func newPsbtAssembler(req *lnrpc.OpenChannelRequest, normalizedMinConfs int32,
 	// With all the parts assembled, we can now make the canned assembler
 	// to pass into the wallet.
 	return chanfunding.NewPsbtAssembler(
-		btcutil.Amount(req.LocalFundingAmount), packet, netParams,
+		vclutil.Amount(req.LocalFundingAmount), packet, netParams,
 		!psbtShim.NoPublish,
 	), nil
 }
@@ -1731,8 +1731,8 @@ func (r *rpcServer) parseOpenChannelReq(in *lnrpc.OpenChannelRequest,
 		"allocation(us=%v, them=%v)", in.NodePubkey,
 		in.LocalFundingAmount, in.PushSat)
 
-	localFundingAmt := btcutil.Amount(in.LocalFundingAmount)
-	remoteInitialBalance := btcutil.Amount(in.PushSat)
+	localFundingAmt := vclutil.Amount(in.LocalFundingAmount)
+	remoteInitialBalance := vclutil.Amount(in.PushSat)
 	minHtlcIn := lnwire.MilliSatoshi(in.MinHtlcMsat)
 	remoteCsvDelay := uint16(in.RemoteCsvDelay)
 	maxValue := lnwire.MilliSatoshi(in.RemoteMaxValueInFlightMsat)
@@ -2207,7 +2207,7 @@ func (r *rpcServer) CloseChannel(in *lnrpc.CloseChannelRequest,
 		// If a delivery address to close out to was specified, decode it.
 		if len(in.DeliveryAddress) > 0 {
 			// Decode the address provided.
-			addr, err := btcutil.DecodeAddress(
+			addr, err := vclutil.DecodeAddress(
 				in.DeliveryAddress, r.cfg.ActiveNetParams.Params,
 			)
 			if err != nil {
@@ -2890,7 +2890,7 @@ func (r *rpcServer) PendingChannels(ctx context.Context,
 		// TODO(roasbeef): query for funding tx from wallet, display
 		// that also?
 		localCommitment := pendingChan.LocalCommitment
-		utx := btcutil.NewTx(localCommitment.CommitTx)
+		utx := vclutil.NewTx(localCommitment.CommitTx)
 		commitBaseWeight := blockchain.GetTransactionWeight(utx)
 		commitWeight := commitBaseWeight + input.WitnessCommitmentTxWeight
 
@@ -3447,7 +3447,7 @@ func createRPCOpenChannel(r *rpcServer, graph *channeldb.ChannelGraph,
 	// the transaction if it were to be immediately unilaterally
 	// broadcast.
 	localCommit := dbChannel.LocalCommitment
-	utx := btcutil.NewTx(localCommit.CommitTx)
+	utx := vclutil.NewTx(localCommit.CommitTx)
 	commitBaseWeight := blockchain.GetTransactionWeight(utx)
 	commitWeight := commitBaseWeight + input.WitnessCommitmentTxWeight
 
@@ -3461,9 +3461,9 @@ func createRPCOpenChannel(r *rpcServer, graph *channeldb.ChannelGraph,
 	// from mSAT -> SAT, we may at any point be adding an
 	// additional SAT to miners fees. As a result, we display a
 	// commitment fee that accounts for this externally.
-	var sumOutputs btcutil.Amount
+	var sumOutputs vclutil.Amount
 	for _, txOut := range localCommit.CommitTx.TxOut {
-		sumOutputs += btcutil.Amount(txOut.Value)
+		sumOutputs += vclutil.Amount(txOut.Value)
 	}
 	externalCommitFee := dbChannel.Capacity - sumOutputs
 
@@ -5176,7 +5176,7 @@ func (r *rpcServer) GetNodeInfo(ctx context.Context,
 	// edges to gather some basic statistics about its out going channels.
 	var (
 		numChannels   uint32
-		totalCapacity btcutil.Amount
+		totalCapacity vclutil.Amount
 		channels      []*lnrpc.ChannelEdge
 	)
 
@@ -5259,10 +5259,10 @@ func (r *rpcServer) GetNetworkInfo(ctx context.Context,
 		numNodes             uint32
 		numChannels          uint32
 		maxChanOut           uint32
-		totalNetworkCapacity btcutil.Amount
-		minChannelSize       btcutil.Amount = math.MaxInt64
-		maxChannelSize       btcutil.Amount
-		medianChanSize       btcutil.Amount
+		totalNetworkCapacity vclutil.Amount
+		minChannelSize       vclutil.Amount = math.MaxInt64
+		maxChannelSize       vclutil.Amount
+		medianChanSize       vclutil.Amount
 	)
 
 	// We'll use this map to de-duplicate channels during our traversal.
@@ -5272,7 +5272,7 @@ func (r *rpcServer) GetNetworkInfo(ctx context.Context,
 
 	// We also keep a list of all encountered capacities, in order to
 	// calculate the median channel size.
-	var allChans []btcutil.Amount
+	var allChans []vclutil.Amount
 
 	// We'll run through all the known nodes in the within our view of the
 	// network, tallying up the total number of nodes, and also gathering
@@ -6579,7 +6579,7 @@ func (r *rpcServer) FundingStateStep(ctx context.Context,
 			return nil, err
 		}
 		req := &chanfunding.Request{
-			RemoteAmt: btcutil.Amount(rpcShimIntent.Amt),
+			RemoteAmt: vclutil.Amount(rpcShimIntent.Amt),
 		}
 		shimIntent, err := shimAssembler.ProvisionChannel(req)
 		if err != nil {

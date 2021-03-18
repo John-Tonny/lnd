@@ -7,12 +7,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/lnwallet/chancloser"
-	"github.com/lightningnetwork/lnd/lnwire"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lnwallet/chancloser"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 var (
@@ -308,7 +308,7 @@ func (r *RPCAcceptor) sendAcceptRequests(errChan chan error,
 				uint16(resp.CsvDelay),
 				uint16(resp.MaxHtlcCount),
 				uint16(resp.MinAcceptDepth),
-				btcutil.Amount(resp.ReserveSat),
+				vclutil.Amount(resp.ReserveSat),
 				lnwire.MilliSatoshi(resp.InFlightMaxMsat),
 				lnwire.MilliSatoshi(resp.MinHtlcIn),
 			)
@@ -331,7 +331,7 @@ func (r *RPCAcceptor) sendAcceptRequests(errChan chan error,
 // validateAcceptorResponse validates the response we get from the channel
 // acceptor, returning a boolean indicating whether to accept the channel, an
 // error to send to the peer, and any validation errors that occurred.
-func (r *RPCAcceptor) validateAcceptorResponse(dustLimit btcutil.Amount,
+func (r *RPCAcceptor) validateAcceptorResponse(dustLimit vclutil.Amount,
 	req lnrpc.ChannelAcceptResponse) (bool, error, lnwire.DeliveryAddress,
 	error) {
 
@@ -351,7 +351,7 @@ func (r *RPCAcceptor) validateAcceptorResponse(dustLimit btcutil.Amount,
 	// Ensure that the reserve that has been proposed, if it is set, is at
 	// least the dust limit that was proposed by the remote peer. This is
 	// required by BOLT 2.
-	reserveSat := btcutil.Amount(req.ReserveSat)
+	reserveSat := vclutil.Amount(req.ReserveSat)
 	if reserveSat != 0 && reserveSat < dustLimit {
 		log.Errorf("Remote reserve: %v sat for channel: %v must be "+
 			"at least equal to proposed dust limit: %v",

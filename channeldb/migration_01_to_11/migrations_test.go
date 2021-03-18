@@ -10,12 +10,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	lnwire "github.com/John-Tonny/lnd/channeldb/migration/lnwire21"
+	"github.com/John-Tonny/lnd/lntypes"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/go-errors/errors"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	lnwire "github.com/lightningnetwork/lnd/channeldb/migration/lnwire21"
-	"github.com/lightningnetwork/lnd/lntypes"
 )
 
 // TestPaymentStatusesMigration checks that already completed payments will have
@@ -225,7 +225,7 @@ func TestMigrateOptionalChannelCloseSummaryFields(t *testing.T) {
 				CloseHeight:    100,
 				RemotePub:      chanState.IdentityPub,
 				Capacity:       chanState.Capacity,
-				SettledBalance: btcutil.Amount(50000),
+				SettledBalance: vclutil.Amount(50000),
 				CloseType:      RemoteForceClose,
 				IsPending:      true,
 
@@ -269,7 +269,7 @@ func TestMigrateOptionalChannelCloseSummaryFields(t *testing.T) {
 				CloseHeight:             100,
 				RemotePub:               chanState.IdentityPub,
 				Capacity:                chanState.Capacity,
-				SettledBalance:          btcutil.Amount(50000),
+				SettledBalance:          vclutil.Amount(50000),
 				CloseType:               RemoteForceClose,
 				IsPending:               true,
 				RemoteCurrentRevocation: chanState.RemoteCurrentRevocation,
@@ -322,7 +322,7 @@ func TestMigrateOptionalChannelCloseSummaryFields(t *testing.T) {
 				CloseHeight:             100,
 				RemotePub:               chanState.IdentityPub,
 				Capacity:                chanState.Capacity,
-				SettledBalance:          btcutil.Amount(50000),
+				SettledBalance:          vclutil.Amount(50000),
 				CloseType:               RemoteForceClose,
 				IsPending:               true,
 				RemoteCurrentRevocation: chanState.RemoteCurrentRevocation,

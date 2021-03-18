@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/lightningnetwork/lnd"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/lntest"
+	"github.com/John-Tonny/lnd"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lntest"
 	"github.com/stretchr/testify/require"
 )
 

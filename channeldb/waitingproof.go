@@ -8,9 +8,9 @@ import (
 
 	"bytes"
 
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/lnwire"
 	"github.com/go-errors/errors"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	"github.com/lightningnetwork/lnd/lnwire"
 )
 
 var (

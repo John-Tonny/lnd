@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/lnrpc/invoicesrpc"
-	"github.com/lightningnetwork/lnd/lntest"
-	"github.com/lightningnetwork/lnd/lntypes"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lnrpc/invoicesrpc"
+	"github.com/John-Tonny/lnd/lntest"
+	"github.com/John-Tonny/lnd/lntypes"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 func testMultiHopHtlcClaims(net *lntest.NetworkHarness, t *harnessTest) {
@@ -218,13 +218,13 @@ func createThreeHopNetwork(t *harnessTest, net *lntest.NetworkHarness,
 	// Make sure there are enough utxos for anchoring.
 	for i := 0; i < 2; i++ {
 		ctxt, _ = context.WithTimeout(context.Background(), defaultTimeout)
-		err = net.SendCoins(ctxt, btcutil.SatoshiPerBitcoin, alice)
+		err = net.SendCoins(ctxt, vclutil.SatoshiPerBitcoin, alice)
 		if err != nil {
 			t.Fatalf("unable to send coins to Alice: %v", err)
 		}
 
 		ctxt, _ = context.WithTimeout(context.Background(), defaultTimeout)
-		err = net.SendCoins(ctxt, btcutil.SatoshiPerBitcoin, bob)
+		err = net.SendCoins(ctxt, vclutil.SatoshiPerBitcoin, bob)
 		if err != nil {
 			t.Fatalf("unable to send coins to Bob: %v", err)
 		}
@@ -275,7 +275,7 @@ func createThreeHopNetwork(t *harnessTest, net *lntest.NetworkHarness,
 	// positively-yielding transaction.
 	for i := 0; i < 2; i++ {
 		ctxt, _ = context.WithTimeout(context.Background(), defaultTimeout)
-		err = net.SendCoins(ctxt, btcutil.SatoshiPerBitcoin, carol)
+		err = net.SendCoins(ctxt, vclutil.SatoshiPerBitcoin, carol)
 		if err != nil {
 			t.Fatalf("unable to send coins to Carol: %v", err)
 		}

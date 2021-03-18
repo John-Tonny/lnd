@@ -10,18 +10,18 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	_ "github.com/btcsuite/btcwallet/walletdb/bdb"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/clock"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/lntest/channels"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/shachain"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	_ "github.com/John-Tonny/vclsuite_vclwallet/walletdb/bdb"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	"github.com/lightningnetwork/lnd/clock"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/lntest/channels"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/shachain"
 )
 
 var (
@@ -223,9 +223,9 @@ func createTestChannelState(t *testing.T, cdb *DB) *OpenChannel {
 
 	localCfg := ChannelConfig{
 		ChannelConstraints: ChannelConstraints{
-			DustLimit:        btcutil.Amount(rand.Int63()),
+			DustLimit:        vclutil.Amount(rand.Int63()),
 			MaxPendingAmount: lnwire.MilliSatoshi(rand.Int63()),
-			ChanReserve:      btcutil.Amount(rand.Int63()),
+			ChanReserve:      vclutil.Amount(rand.Int63()),
 			MinHTLC:          lnwire.MilliSatoshi(rand.Int63()),
 			MaxAcceptedHtlcs: uint16(rand.Int31()),
 			CsvDelay:         uint16(rand.Int31()),
@@ -248,9 +248,9 @@ func createTestChannelState(t *testing.T, cdb *DB) *OpenChannel {
 	}
 	remoteCfg := ChannelConfig{
 		ChannelConstraints: ChannelConstraints{
-			DustLimit:        btcutil.Amount(rand.Int63()),
+			DustLimit:        vclutil.Amount(rand.Int63()),
 			MaxPendingAmount: lnwire.MilliSatoshi(rand.Int63()),
-			ChanReserve:      btcutil.Amount(rand.Int63()),
+			ChanReserve:      vclutil.Amount(rand.Int63()),
 			MinHTLC:          lnwire.MilliSatoshi(rand.Int63()),
 			MaxAcceptedHtlcs: uint16(rand.Int31()),
 			CsvDelay:         uint16(rand.Int31()),
@@ -302,7 +302,7 @@ func createTestChannelState(t *testing.T, cdb *DB) *OpenChannel {
 		IsInitiator:       true,
 		IsPending:         true,
 		IdentityPub:       pubKey,
-		Capacity:          btcutil.Amount(10000),
+		Capacity:          vclutil.Amount(10000),
 		LocalChanCfg:      localCfg,
 		RemoteChanCfg:     remoteCfg,
 		TotalMSatSent:     8,
@@ -311,8 +311,8 @@ func createTestChannelState(t *testing.T, cdb *DB) *OpenChannel {
 			CommitHeight:  0,
 			LocalBalance:  lnwire.MilliSatoshi(9000),
 			RemoteBalance: lnwire.MilliSatoshi(3000),
-			CommitFee:     btcutil.Amount(rand.Int63()),
-			FeePerKw:      btcutil.Amount(5000),
+			CommitFee:     vclutil.Amount(rand.Int63()),
+			FeePerKw:      vclutil.Amount(5000),
 			CommitTx:      channels.TestFundingTx,
 			CommitSig:     bytes.Repeat([]byte{1}, 71),
 		},
@@ -320,8 +320,8 @@ func createTestChannelState(t *testing.T, cdb *DB) *OpenChannel {
 			CommitHeight:  0,
 			LocalBalance:  lnwire.MilliSatoshi(3000),
 			RemoteBalance: lnwire.MilliSatoshi(9000),
-			CommitFee:     btcutil.Amount(rand.Int63()),
-			FeePerKw:      btcutil.Amount(5000),
+			CommitFee:     vclutil.Amount(rand.Int63()),
+			FeePerKw:      vclutil.Amount(5000),
 			CommitTx:      channels.TestFundingTx,
 			CommitSig:     bytes.Repeat([]byte{1}, 71),
 		},
@@ -418,8 +418,8 @@ func TestOpenChannelPutGetDelete(t *testing.T) {
 	closeSummary := &ChannelCloseSummary{
 		ChanPoint:         state.FundingOutpoint,
 		RemotePub:         state.IdentityPub,
-		SettledBalance:    btcutil.Amount(500),
-		TimeLockedBalance: btcutil.Amount(10000),
+		SettledBalance:    vclutil.Amount(500),
+		TimeLockedBalance: vclutil.Amount(10000),
 		IsPending:         false,
 		CloseType:         CooperativeClose,
 	}
@@ -826,8 +826,8 @@ func TestChannelStateTransition(t *testing.T) {
 	closeSummary := &ChannelCloseSummary{
 		ChanPoint:         channel.FundingOutpoint,
 		RemotePub:         channel.IdentityPub,
-		SettledBalance:    btcutil.Amount(500),
-		TimeLockedBalance: btcutil.Amount(10000),
+		SettledBalance:    vclutil.Amount(500),
+		TimeLockedBalance: vclutil.Amount(10000),
 		IsPending:         false,
 		CloseType:         RemoteForceClose,
 	}

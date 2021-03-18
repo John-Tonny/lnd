@@ -7,13 +7,13 @@ import (
 	"io"
 	"net"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/shachain"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/shachain"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 // writeOutpoint writes an outpoint to the passed writer using the minimal
@@ -137,7 +137,7 @@ func WriteElement(w io.Writer, element interface{}) error {
 			return err
 		}
 
-	case btcutil.Amount:
+	case vclutil.Amount:
 		if err := binary.Write(w, byteOrder, uint64(e)); err != nil {
 			return err
 		}
@@ -324,13 +324,13 @@ func ReadElement(r io.Reader, element interface{}) error {
 			return err
 		}
 
-	case *btcutil.Amount:
+	case *vclutil.Amount:
 		var a uint64
 		if err := binary.Read(r, byteOrder, &a); err != nil {
 			return err
 		}
 
-		*e = btcutil.Amount(a)
+		*e = vclutil.Amount(a)
 
 	case *lnwire.MilliSatoshi:
 		var a uint64

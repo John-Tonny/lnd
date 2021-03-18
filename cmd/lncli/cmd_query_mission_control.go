@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/lightningnetwork/lnd/lnrpc/routerrpc"
+	"github.com/John-Tonny/lnd/lnrpc/routerrpc"
 
 	"github.com/urfave/cli"
 )

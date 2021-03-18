@@ -1,8 +1,8 @@
 package chainreg
 
 import (
+	"github.com/John-Tonny/lnd/build"
 	"github.com/btcsuite/btclog"
-	"github.com/lightningnetwork/lnd/build"
 )
 
 // Subsystem defines the logging code for this subsystem.

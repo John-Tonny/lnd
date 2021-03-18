@@ -8,22 +8,22 @@ import (
 	"sync"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcutil/psbt"
-	"github.com/btcsuite/btcwallet/chain"
-	"github.com/btcsuite/btcwallet/waddrmgr"
-	base "github.com/btcsuite/btcwallet/wallet"
-	"github.com/btcsuite/btcwallet/wallet/txauthor"
-	"github.com/btcsuite/btcwallet/wallet/txrules"
-	"github.com/btcsuite/btcwallet/walletdb"
-	"github.com/btcsuite/btcwallet/wtxmgr"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	"github.com/John-Tonny/vclsuite_vclutil/psbt"
+	"github.com/John-Tonny/vclsuite_vclwallet/chain"
+	"github.com/John-Tonny/vclsuite_vclwallet/waddrmgr"
+	base "github.com/John-Tonny/vclsuite_vclwallet/wallet"
+	"github.com/John-Tonny/vclsuite_vclwallet/wallet/txauthor"
+	"github.com/John-Tonny/vclsuite_vclwallet/wallet/txrules"
+	"github.com/John-Tonny/vclsuite_vclwallet/walletdb"
+	"github.com/John-Tonny/vclsuite_vclwallet/wtxmgr"
 )
 
 const (
@@ -219,8 +219,8 @@ func (b *BtcWallet) Stop() error {
 // final sum.
 //
 // This is a part of the WalletController interface.
-func (b *BtcWallet) ConfirmedBalance(confs int32) (btcutil.Amount, error) {
-	var balance btcutil.Amount
+func (b *BtcWallet) ConfirmedBalance(confs int32) (vclutil.Amount, error) {
+	var balance vclutil.Amount
 
 	witnessOutputs, err := b.ListUnspentWitness(confs, math.MaxInt32)
 	if err != nil {
@@ -240,7 +240,7 @@ func (b *BtcWallet) ConfirmedBalance(confs int32) (btcutil.Amount, error) {
 // returned.
 //
 // This is a part of the WalletController interface.
-func (b *BtcWallet) NewAddress(t lnwallet.AddressType, change bool) (btcutil.Address, error) {
+func (b *BtcWallet) NewAddress(t lnwallet.AddressType, change bool) (vclutil.Address, error) {
 	var keyScope waddrmgr.KeyScope
 
 	switch t {
@@ -266,7 +266,7 @@ func (b *BtcWallet) NewAddress(t lnwallet.AddressType, change bool) (btcutil.Add
 // NewAddress it can derive a specified address type, and also optionally a
 // change address.
 func (b *BtcWallet) LastUnusedAddress(addrType lnwallet.AddressType) (
-	btcutil.Address, error) {
+	vclutil.Address, error) {
 
 	var keyScope waddrmgr.KeyScope
 
@@ -285,7 +285,7 @@ func (b *BtcWallet) LastUnusedAddress(addrType lnwallet.AddressType) (
 // IsOurAddress checks if the passed address belongs to this wallet
 //
 // This is a part of the WalletController interface.
-func (b *BtcWallet) IsOurAddress(a btcutil.Address) bool {
+func (b *BtcWallet) IsOurAddress(a vclutil.Address) bool {
 	result, err := b.wallet.HaveAddress(a)
 	return result && (err == nil)
 }
@@ -302,7 +302,7 @@ func (b *BtcWallet) SendOutputs(outputs []*wire.TxOut,
 
 	// Convert our fee rate from sat/kw to sat/kb since it's required by
 	// SendOutputs.
-	feeSatPerKB := btcutil.Amount(feeRate.FeePerKVByte())
+	feeSatPerKB := vclutil.Amount(feeRate.FeePerKVByte())
 
 	// Sanity check outputs.
 	if len(outputs) < 1 {
@@ -337,7 +337,7 @@ func (b *BtcWallet) CreateSimpleTx(outputs []*wire.TxOut,
 
 	// The fee rate is passed in using units of sat/kw, so we'll convert
 	// this to sat/KB as the CreateSimpleTx method requires this unit.
-	feeSatPerKB := btcutil.Amount(feeRate.FeePerKVByte())
+	feeSatPerKB := vclutil.Amount(feeRate.FeePerKVByte())
 
 	// Sanity check outputs.
 	if len(outputs) < 1 {
@@ -457,7 +457,7 @@ func (b *BtcWallet) ListUnspentWitness(minConfs, maxConfs int32) (
 
 			// We'll ensure we properly convert the amount given in
 			// BTC to satoshis.
-			amt, err := btcutil.NewAmount(output.Amount)
+			amt, err := vclutil.NewAmount(output.Amount)
 			if err != nil {
 				return nil, err
 			}
@@ -526,16 +526,16 @@ func (b *BtcWallet) LabelTransaction(hash chainhash.Hash, label string,
 func extractBalanceDelta(
 	txSummary base.TransactionSummary,
 	tx *wire.MsgTx,
-) (btcutil.Amount, error) {
+) (vclutil.Amount, error) {
 	// For each input we debit the wallet's outflow for this transaction,
 	// and for each output we credit the wallet's inflow for this
 	// transaction.
-	var balanceDelta btcutil.Amount
+	var balanceDelta vclutil.Amount
 	for _, input := range txSummary.MyInputs {
 		balanceDelta -= input.PreviousAmount
 	}
 	for _, output := range txSummary.MyOutputs {
-		balanceDelta += btcutil.Amount(tx.TxOut[output.Index].Value)
+		balanceDelta += vclutil.Amount(tx.TxOut[output.Index].Value)
 	}
 
 	return balanceDelta, nil
@@ -558,7 +558,7 @@ func minedTransactionsToDetails(
 			return nil, err
 		}
 
-		var destAddresses []btcutil.Address
+		var destAddresses []vclutil.Address
 		for _, txOut := range wireTx.TxOut {
 			_, outAddresses, _, err := txscript.ExtractPkScriptAddrs(
 				txOut.PkScript, chainParams,
@@ -610,7 +610,7 @@ func unminedTransactionsToDetail(
 		return nil, err
 	}
 
-	var destAddresses []btcutil.Address
+	var destAddresses []vclutil.Address
 	for _, txOut := range wireTx.TxOut {
 		_, outAddresses, _, err :=
 			txscript.ExtractPkScriptAddrs(txOut.PkScript, chainParams)
@@ -712,7 +712,7 @@ func (b *BtcWallet) FundPsbt(packet *psbt.Packet,
 
 	// The fee rate is passed in using units of sat/kw, so we'll convert
 	// this to sat/KB as the CreateSimpleTx method requires this unit.
-	feeSatPerKB := btcutil.Amount(feeRate.FeePerKVByte())
+	feeSatPerKB := vclutil.Amount(feeRate.FeePerKVByte())
 
 	// Let the wallet handle coin selection and/or fee estimation based on
 	// the partial TX information in the packet.
@@ -955,7 +955,7 @@ func (b *BtcWallet) GetRecoveryInfo() (bool, float64, error) {
 	// Next, query the chain backend to grab the info about the tip of the
 	// main chain.
 	//
-	// NOTE: The actual recovery process is handled by the btcsuite/btcwallet.
+	// NOTE: The actual recovery process is handled by the John-Tonny/vclsuite_vclwallet.
 	// The process purposefully doesn't update the best height. It might create
 	// a small difference between the height queried here and the height used
 	// in the recovery process, ie, the bestHeight used here might be greater,

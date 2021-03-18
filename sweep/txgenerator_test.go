@@ -3,9 +3,9 @@ package sweep
 import (
 	"testing"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/lightningnetwork/lnd/input"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
 )
 
 var (

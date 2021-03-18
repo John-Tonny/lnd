@@ -3,18 +3,18 @@ package wtclient
 import (
 	"fmt"
 
-	"github.com/btcsuite/btcd/blockchain"
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcutil/txsort"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/watchtower/blob"
-	"github.com/lightningnetwork/lnd/watchtower/wtdb"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/watchtower/blob"
+	"github.com/John-Tonny/lnd/watchtower/wtdb"
+	"github.com/John-Tonny/vclsuite_vcld/blockchain"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	"github.com/John-Tonny/vclsuite_vclutil/txsort"
 )
 
 // backupTask is an internal struct for computing the justice transaction for a
@@ -45,7 +45,7 @@ type backupTask struct {
 
 	toLocalInput  input.Input
 	toRemoteInput input.Input
-	totalAmt      btcutil.Amount
+	totalAmt      vclutil.Amount
 	sweepPkScript []byte
 
 	// session-dependent variables
@@ -131,7 +131,7 @@ func newBackupTask(chanID *lnwire.ChannelID,
 		chanType:      chanType,
 		toLocalInput:  toLocalInput,
 		toRemoteInput: toRemoteInput,
-		totalAmt:      btcutil.Amount(totalAmt),
+		totalAmt:      vclutil.Amount(totalAmt),
 		sweepPkScript: sweepPkScript,
 	}
 }
@@ -279,7 +279,7 @@ func (t *backupTask) craftSessionPayload(
 
 	// Check that the justice transaction meets basic validity requirements
 	// before attempting to attach the witnesses.
-	btx := btcutil.NewTx(justiceTxn)
+	btx := vclutil.NewTx(justiceTxn)
 	if err := blockchain.CheckTransactionSanity(btx); err != nil {
 		return hint, nil, err
 	}

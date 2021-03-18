@@ -7,9 +7,9 @@ import (
 	"os"
 	"strings"
 
+	"github.com/John-Tonny/lnd"
+	"github.com/John-Tonny/lnd/signal"
 	flags "github.com/jessevdk/go-flags"
-	"github.com/lightningnetwork/lnd"
-	"github.com/lightningnetwork/lnd/signal"
 )
 
 // Start starts lnd in a new goroutine.

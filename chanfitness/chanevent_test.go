@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/wire"
-	"github.com/lightningnetwork/lnd/clock"
+	"github.com/John-Tonny/lnd/clock"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
 	"github.com/stretchr/testify/require"
 )
 

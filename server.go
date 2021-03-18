@@ -17,60 +17,60 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/connmgr"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/lnd/autopilot"
+	"github.com/John-Tonny/lnd/brontide"
+	"github.com/John-Tonny/lnd/cert"
+	"github.com/John-Tonny/lnd/chainreg"
+	"github.com/John-Tonny/lnd/chanacceptor"
+	"github.com/John-Tonny/lnd/chanbackup"
+	"github.com/John-Tonny/lnd/chanfitness"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/channelnotifier"
+	"github.com/John-Tonny/lnd/clock"
+	"github.com/John-Tonny/lnd/contractcourt"
+	"github.com/John-Tonny/lnd/discovery"
+	"github.com/John-Tonny/lnd/feature"
+	"github.com/John-Tonny/lnd/funding"
+	"github.com/John-Tonny/lnd/healthcheck"
+	"github.com/John-Tonny/lnd/htlcswitch"
+	"github.com/John-Tonny/lnd/htlcswitch/hop"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/invoices"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/lncfg"
+	"github.com/John-Tonny/lnd/lnpeer"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lnrpc/routerrpc"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/nat"
+	"github.com/John-Tonny/lnd/netann"
+	"github.com/John-Tonny/lnd/peer"
+	"github.com/John-Tonny/lnd/peernotifier"
+	"github.com/John-Tonny/lnd/pool"
+	"github.com/John-Tonny/lnd/queue"
+	"github.com/John-Tonny/lnd/routing"
+	"github.com/John-Tonny/lnd/routing/localchans"
+	"github.com/John-Tonny/lnd/routing/route"
+	"github.com/John-Tonny/lnd/subscribe"
+	"github.com/John-Tonny/lnd/sweep"
+	"github.com/John-Tonny/lnd/ticker"
+	"github.com/John-Tonny/lnd/tor"
+	"github.com/John-Tonny/lnd/walletunlocker"
+	"github.com/John-Tonny/lnd/watchtower/blob"
+	"github.com/John-Tonny/lnd/watchtower/wtclient"
+	"github.com/John-Tonny/lnd/watchtower/wtpolicy"
+	"github.com/John-Tonny/lnd/watchtower/wtserver"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/connmgr"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/go-errors/errors"
-	sphinx "github.com/lightningnetwork/lightning-onion"
-	"github.com/lightningnetwork/lnd/autopilot"
-	"github.com/lightningnetwork/lnd/brontide"
-	"github.com/lightningnetwork/lnd/cert"
-	"github.com/lightningnetwork/lnd/chainreg"
-	"github.com/lightningnetwork/lnd/chanacceptor"
-	"github.com/lightningnetwork/lnd/chanbackup"
-	"github.com/lightningnetwork/lnd/chanfitness"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	"github.com/lightningnetwork/lnd/channelnotifier"
-	"github.com/lightningnetwork/lnd/clock"
-	"github.com/lightningnetwork/lnd/contractcourt"
-	"github.com/lightningnetwork/lnd/discovery"
-	"github.com/lightningnetwork/lnd/feature"
-	"github.com/lightningnetwork/lnd/funding"
-	"github.com/lightningnetwork/lnd/healthcheck"
-	"github.com/lightningnetwork/lnd/htlcswitch"
-	"github.com/lightningnetwork/lnd/htlcswitch/hop"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/invoices"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/lncfg"
-	"github.com/lightningnetwork/lnd/lnpeer"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/lnrpc/routerrpc"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/nat"
-	"github.com/lightningnetwork/lnd/netann"
-	"github.com/lightningnetwork/lnd/peer"
-	"github.com/lightningnetwork/lnd/peernotifier"
-	"github.com/lightningnetwork/lnd/pool"
-	"github.com/lightningnetwork/lnd/queue"
-	"github.com/lightningnetwork/lnd/routing"
-	"github.com/lightningnetwork/lnd/routing/localchans"
-	"github.com/lightningnetwork/lnd/routing/route"
-	"github.com/lightningnetwork/lnd/subscribe"
-	"github.com/lightningnetwork/lnd/sweep"
-	"github.com/lightningnetwork/lnd/ticker"
-	"github.com/lightningnetwork/lnd/tor"
-	"github.com/lightningnetwork/lnd/walletunlocker"
-	"github.com/lightningnetwork/lnd/watchtower/blob"
-	"github.com/lightningnetwork/lnd/watchtower/wtclient"
-	"github.com/lightningnetwork/lnd/watchtower/wtpolicy"
-	"github.com/lightningnetwork/lnd/watchtower/wtserver"
+	sphinx "github.com/lJohn-Tonny/lightning-onion"
 )
 
 const (
@@ -1051,7 +1051,7 @@ func newServer(cfg *Config, listenAddrs []net.Addr,
 		},
 		DefaultRoutingPolicy: cc.RoutingPolicy,
 		DefaultMinHtlcIn:     cc.MinHtlcIn,
-		NumRequiredConfs: func(chanAmt btcutil.Amount,
+		NumRequiredConfs: func(chanAmt vclutil.Amount,
 			pushAmt lnwire.MilliSatoshi) uint16 {
 			// For large channels we increase the number
 			// of confirmations we require for the
@@ -1097,7 +1097,7 @@ func newServer(cfg *Config, listenAddrs []net.Addr,
 			}
 			return uint16(conf)
 		},
-		RequiredRemoteDelay: func(chanAmt btcutil.Amount) uint16 {
+		RequiredRemoteDelay: func(chanAmt vclutil.Amount) uint16 {
 			// We scale the remote CSV delay (the time the
 			// remote have to claim funds in case of a unilateral
 			// close) linearly from minRemoteDelay blocks
@@ -1120,7 +1120,7 @@ func newServer(cfg *Config, listenAddrs []net.Addr,
 			}
 
 			// If not we scale according to channel size.
-			delay := uint16(btcutil.Amount(maxRemoteDelay) *
+			delay := uint16(vclutil.Amount(maxRemoteDelay) *
 				chanAmt / MaxFundingAmount)
 			if delay < minRemoteDelay {
 				delay = minRemoteDelay
@@ -1155,7 +1155,7 @@ func newServer(cfg *Config, listenAddrs []net.Addr,
 			return s.htlcSwitch.UpdateShortChanID(cid)
 		},
 		RequiredRemoteChanReserve: func(chanAmt,
-			dustLimit btcutil.Amount) btcutil.Amount {
+			dustLimit vclutil.Amount) vclutil.Amount {
 
 			// By default, we'll require the remote peer to maintain
 			// at least 1% of the total channel capacity at all
@@ -1169,14 +1169,14 @@ func newServer(cfg *Config, listenAddrs []net.Addr,
 
 			return reserve
 		},
-		RequiredRemoteMaxValue: func(chanAmt btcutil.Amount) lnwire.MilliSatoshi {
+		RequiredRemoteMaxValue: func(chanAmt vclutil.Amount) lnwire.MilliSatoshi {
 			// By default, we'll allow the remote peer to fully
 			// utilize the full bandwidth of the channel, minus our
 			// required reserve.
 			reserve := lnwire.NewMSatFromSatoshis(chanAmt / 100)
 			return lnwire.NewMSatFromSatoshis(chanAmt) - reserve
 		},
-		RequiredRemoteMaxHTLCs: func(chanAmt btcutil.Amount) uint16 {
+		RequiredRemoteMaxHTLCs: func(chanAmt vclutil.Amount) uint16 {
 			if cfg.DefaultRemoteMaxHtlcs > 0 {
 				return cfg.DefaultRemoteMaxHtlcs
 			}
@@ -1187,8 +1187,8 @@ func newServer(cfg *Config, listenAddrs []net.Addr,
 		},
 		ZombieSweeperInterval:         1 * time.Minute,
 		ReservationTimeout:            10 * time.Minute,
-		MinChanSize:                   btcutil.Amount(cfg.MinChanSize),
-		MaxChanSize:                   btcutil.Amount(cfg.MaxChanSize),
+		MinChanSize:                   vclutil.Amount(cfg.MinChanSize),
+		MaxChanSize:                   vclutil.Amount(cfg.MaxChanSize),
 		MaxPendingChannels:            cfg.MaxPendingChannels,
 		RejectPush:                    cfg.RejectPush,
 		MaxLocalCSVDelay:              chainCfg.MaxLocalDelay,

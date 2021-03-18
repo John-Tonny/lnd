@@ -4,10 +4,10 @@ import (
 	"crypto/sha256"
 	"fmt"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcwallet/waddrmgr"
-	"github.com/btcsuite/btcwallet/wallet"
-	"github.com/btcsuite/btcwallet/walletdb"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vclwallet/waddrmgr"
+	"github.com/John-Tonny/vclsuite_vclwallet/wallet"
+	"github.com/John-Tonny/vclsuite_vclwallet/walletdb"
 )
 
 const (

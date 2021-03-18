@@ -4,8 +4,8 @@ import (
 	"net"
 	"sync"
 
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/ticker"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/ticker"
 )
 
 // HostAnnouncerConfig is the main config for the HostAnnouncer.

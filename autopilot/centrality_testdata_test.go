@@ -3,8 +3,8 @@ package autopilot
 import (
 	"testing"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/stretchr/testify/require"
 )
 
@@ -48,7 +48,7 @@ func buildTestGraph(t *testing.T,
 		nodes[i] = key
 	}
 
-	const chanCapacity = btcutil.SatoshiPerBitcoin
+	const chanCapacity = vclutil.SatoshiPerBitcoin
 	for u, neighbors := range desc.edges {
 		for _, v := range neighbors {
 			_, _, err := graph.addRandChannel(

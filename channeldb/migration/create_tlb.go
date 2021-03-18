@@ -3,7 +3,7 @@ package migration
 import (
 	"fmt"
 
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
 )
 
 // CreateTLB creates a new top-level bucket with the passed bucket identifier.

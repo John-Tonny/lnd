@@ -3,7 +3,7 @@ package lnwire
 import (
 	"io"
 
-	"github.com/btcsuite/btcd/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
 )
 
 // FundingLocked is the message that both parties to a new channel creation

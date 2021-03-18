@@ -1,13 +1,13 @@
 package lnwallet
 
 import (
+	"github.com/John-Tonny/vclsuite_vclwallet/chain"
+	btcwallet "github.com/John-Tonny/vclsuite_vclwallet/wallet"
+	"github.com/John-Tonny/vclsuite_vclwallet/wtxmgr"
 	"github.com/btcsuite/btclog"
-	"github.com/btcsuite/btcwallet/chain"
-	btcwallet "github.com/btcsuite/btcwallet/wallet"
-	"github.com/btcsuite/btcwallet/wtxmgr"
 
-	"github.com/lightningnetwork/lnd/build"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/build"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
 )
 
 // walletLog is a logger that is initialized with no output filters.  This

@@ -10,11 +10,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/btcsuite/btcd/btcec"
-	sphinx "github.com/lightningnetwork/lightning-onion"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/record"
-	"github.com/lightningnetwork/lnd/tlv"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/record"
+	"github.com/John-Tonny/lnd/tlv"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	sphinx "github.com/lJohn-Tonny/lightning-onion"
 )
 
 // VertexSize is the size of the array to store a vertex.

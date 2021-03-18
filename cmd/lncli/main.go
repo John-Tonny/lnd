@@ -12,11 +12,11 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/build"
-	"github.com/lightningnetwork/lnd/lncfg"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/macaroons"
+	"github.com/John-Tonny/lnd/build"
+	"github.com/John-Tonny/lnd/lncfg"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/macaroons"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/urfave/cli"
 
 	"golang.org/x/crypto/ssh/terminal"
@@ -34,7 +34,7 @@ const (
 )
 
 var (
-	defaultLndDir      = btcutil.AppDataDir("lnd", false)
+	defaultLndDir      = vclutil.AppDataDir("lnd", false)
 	defaultTLSCertPath = filepath.Join(defaultLndDir, defaultTLSCertFilename)
 
 	// maxMsgRecvSize is the largest message our client will receive. We

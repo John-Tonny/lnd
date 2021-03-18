@@ -9,12 +9,12 @@ import (
 	"net"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	lnwire "github.com/lightningnetwork/lnd/channeldb/migration/lnwire21"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	lnwire "github.com/John-Tonny/lnd/channeldb/migration/lnwire21"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 var (
@@ -439,7 +439,7 @@ type ChannelEdgeInfo struct {
 
 	// Capacity is the total capacity of the channel, this is determined by
 	// the value output in the outpoint that created this channel.
-	Capacity btcutil.Amount
+	Capacity vclutil.Amount
 
 	// ExtraOpaqueData is the set of data that was appended to this
 	// message, some of which we may not actually know how to iterate or

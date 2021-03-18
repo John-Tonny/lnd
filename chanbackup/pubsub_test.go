@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/wire"
-	"github.com/lightningnetwork/lnd/keychain"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
 )
 
 type mockSwapper struct {

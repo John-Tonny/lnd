@@ -3,7 +3,7 @@ package watchtowerrpc
 import (
 	"net"
 
-	"github.com/btcsuite/btcd/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
 )
 
 // WatchtowerBackend abstracts access to the watchtower information that is

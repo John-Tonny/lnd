@@ -10,11 +10,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcwallet/walletdb"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/lntypes"
+	"github.com/John-Tonny/lnd/record"
+	"github.com/John-Tonny/vclsuite_vclwallet/walletdb"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	"github.com/lightningnetwork/lnd/lntypes"
-	"github.com/lightningnetwork/lnd/record"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

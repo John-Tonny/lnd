@@ -5,15 +5,15 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/autopilot"
-	"github.com/lightningnetwork/lnd/chainreg"
-	"github.com/lightningnetwork/lnd/funding"
-	"github.com/lightningnetwork/lnd/lncfg"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/tor"
+	"github.com/John-Tonny/lnd/autopilot"
+	"github.com/John-Tonny/lnd/chainreg"
+	"github.com/John-Tonny/lnd/funding"
+	"github.com/John-Tonny/lnd/lncfg"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/tor"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 // validateAtplConfig is a helper method that makes sure the passed
@@ -85,7 +85,7 @@ type chanController struct {
 // specified amount. This function should un-block immediately after the
 // funding transaction that marks the channel open has been broadcast.
 func (c *chanController) OpenChannel(target *btcec.PublicKey,
-	amt btcutil.Amount) error {
+	amt vclutil.Amount) error {
 
 	// With the connection established, we'll now establish our connection
 	// to the target peer, waiting for the first update before we exit.
@@ -147,8 +147,8 @@ func initAutoPilot(svr *server, cfg *lncfg.AutoPilot,
 
 	// Set up the constraints the autopilot heuristics must adhere to.
 	atplConstraints := autopilot.NewConstraints(
-		btcutil.Amount(cfg.MinChannelSize),
-		btcutil.Amount(cfg.MaxChannelSize),
+		vclutil.Amount(cfg.MinChannelSize),
+		vclutil.Amount(cfg.MaxChannelSize),
 		uint16(cfg.MaxChannels),
 		10,
 		cfg.Allocation,
@@ -179,7 +179,7 @@ func initAutoPilot(svr *server, cfg *lncfg.AutoPilot,
 			chanMinHtlcIn: chainCfg.MinHTLCIn,
 			netParams:     netParams,
 		},
-		WalletBalance: func() (btcutil.Amount, error) {
+		WalletBalance: func() (vclutil.Amount, error) {
 			return svr.cc.Wallet.ConfirmedBalance(cfg.MinConfs)
 		},
 		Graph:       autopilot.ChannelGraphFromDatabase(svr.localChanDB.ChannelGraph()),

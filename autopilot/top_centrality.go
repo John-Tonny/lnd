@@ -3,7 +3,7 @@ package autopilot
 import (
 	"runtime"
 
-	"github.com/btcsuite/btcutil"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 // TopCentrality is a simple greedy technique to create connections to nodes
@@ -51,7 +51,7 @@ func (g *TopCentrality) Name() string {
 // NodeScores will recalculate the centrality values on every call, which is
 // slow for large graphs.
 func (g *TopCentrality) NodeScores(graph ChannelGraph, chans []LocalChannel,
-	chanSize btcutil.Amount, nodes map[NodeID]struct{}) (
+	chanSize vclutil.Amount, nodes map[NodeID]struct{}) (
 	map[NodeID]*NodeScore, error) {
 
 	// Calculate betweenness centrality for the whole graph.

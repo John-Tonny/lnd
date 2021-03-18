@@ -13,18 +13,18 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/btcjson"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/integration/rpctest"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcwallet/chain"
-	"github.com/btcsuite/btcwallet/walletdb"
-	"github.com/lightninglabs/neutrino"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/neutrino"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/btcjson"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/integration/rpctest"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	"github.com/John-Tonny/vclsuite_vclwallet/chain"
+	"github.com/John-Tonny/vclsuite_vclwallet/walletdb"
 )
 
 var (
@@ -46,8 +46,8 @@ func randPubKeyHashScript() ([]byte, *btcec.PrivateKey, error) {
 		return nil, nil, err
 	}
 
-	pubKeyHash := btcutil.Hash160(privKey.PubKey().SerializeCompressed())
-	addrScript, err := btcutil.NewAddressPubKeyHash(pubKeyHash, NetParams)
+	pubKeyHash := vclutil.Hash160(privKey.PubKey().SerializeCompressed())
+	addrScript, err := vclutil.NewAddressPubKeyHash(pubKeyHash, NetParams)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -8,12 +8,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcutil/bech32"
-	lnwire "github.com/lightningnetwork/lnd/channeldb/migration/lnwire21"
+	lnwire "github.com/John-Tonny/lnd/channeldb/migration/lnwire21"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	"github.com/John-Tonny/vclsuite_vclutil/bech32"
 )
 
 // Decode parses the provided encoded invoice and returns a decoded Invoice if
@@ -378,13 +378,13 @@ func parseMinFinalCLTVExpiry(data []byte) (*uint64, error) {
 
 // parseFallbackAddr converts the data (encoded in base32) into a fallback
 // on-chain address.
-func parseFallbackAddr(data []byte, net *chaincfg.Params) (btcutil.Address, error) {
+func parseFallbackAddr(data []byte, net *chaincfg.Params) (vclutil.Address, error) {
 	// Checks if the data is empty or contains a version without an address.
 	if len(data) < 2 {
 		return nil, fmt.Errorf("empty fallback address field")
 	}
 
-	var addr btcutil.Address
+	var addr vclutil.Address
 
 	version := data[0]
 	switch version {
@@ -396,9 +396,9 @@ func parseFallbackAddr(data []byte, net *chaincfg.Params) (btcutil.Address, erro
 
 		switch len(witness) {
 		case 20:
-			addr, err = btcutil.NewAddressWitnessPubKeyHash(witness, net)
+			addr, err = vclutil.NewAddressWitnessPubKeyHash(witness, net)
 		case 32:
-			addr, err = btcutil.NewAddressWitnessScriptHash(witness, net)
+			addr, err = vclutil.NewAddressWitnessScriptHash(witness, net)
 		default:
 			return nil, fmt.Errorf("unknown witness program length %d",
 				len(witness))
@@ -413,7 +413,7 @@ func parseFallbackAddr(data []byte, net *chaincfg.Params) (btcutil.Address, erro
 			return nil, err
 		}
 
-		addr, err = btcutil.NewAddressPubKeyHash(pubKeyHash, net)
+		addr, err = vclutil.NewAddressPubKeyHash(pubKeyHash, net)
 		if err != nil {
 			return nil, err
 		}
@@ -423,7 +423,7 @@ func parseFallbackAddr(data []byte, net *chaincfg.Params) (btcutil.Address, erro
 			return nil, err
 		}
 
-		addr, err = btcutil.NewAddressScriptHashFromHash(scriptHash, net)
+		addr, err = vclutil.NewAddressScriptHashFromHash(scriptHash, net)
 		if err != nil {
 			return nil, err
 		}

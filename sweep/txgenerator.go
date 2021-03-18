@@ -5,12 +5,12 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/btcsuite/btcd/blockchain"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/vclsuite_vcld/blockchain"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 var (
@@ -135,7 +135,7 @@ func generateInputPartitionings(sweepableInputs []txInput,
 // sending any leftover change to the change script.
 func createSweepTx(inputs []input.Input, outputs []*wire.TxOut,
 	changePkScript []byte, currentBlockHeight uint32,
-	feePerKw chainfee.SatPerKWeight, dustLimit btcutil.Amount,
+	feePerKw chainfee.SatPerKWeight, dustLimit vclutil.Amount,
 	signer input.Signer) (*wire.MsgTx, error) {
 
 	inputs, estimator := getWeightEstimate(inputs, outputs, feePerKw)
@@ -151,8 +151,8 @@ func createSweepTx(inputs []input.Input, outputs []*wire.TxOut,
 
 		// We keep track of total input amount, and required output
 		// amount to use for calculating the change amount below.
-		totalInput     btcutil.Amount
-		requiredOutput btcutil.Amount
+		totalInput     vclutil.Amount
+		requiredOutput vclutil.Amount
 
 		// We'll add the inputs as we go so we know the final ordering
 		// of inputs to sign.
@@ -184,8 +184,8 @@ func createSweepTx(inputs []input.Input, outputs []*wire.TxOut,
 			locktime = int32(lt)
 		}
 
-		totalInput += btcutil.Amount(o.SignDesc().Output.Value)
-		requiredOutput += btcutil.Amount(o.RequiredTxOut().Value)
+		totalInput += vclutil.Amount(o.SignDesc().Output.Value)
+		requiredOutput += vclutil.Amount(o.RequiredTxOut().Value)
 	}
 
 	// Sum up the value contained in the remaining inputs, and add them to
@@ -209,13 +209,13 @@ func createSweepTx(inputs []input.Input, outputs []*wire.TxOut,
 			locktime = int32(lt)
 		}
 
-		totalInput += btcutil.Amount(o.SignDesc().Output.Value)
+		totalInput += vclutil.Amount(o.SignDesc().Output.Value)
 	}
 
 	// Add the outputs given, if any.
 	for _, o := range outputs {
 		sweepTx.AddTxOut(o)
-		requiredOutput += btcutil.Amount(o.Value)
+		requiredOutput += vclutil.Amount(o.Value)
 	}
 
 	if requiredOutput+txFee > totalInput {
@@ -252,7 +252,7 @@ func createSweepTx(inputs []input.Input, outputs []*wire.TxOut,
 	// TODO(conner): add more control to sanity checks, allowing us to
 	// delay spending "problem" outputs, e.g. possibly batching with other
 	// classes if fees are too low.
-	btx := btcutil.NewTx(sweepTx)
+	btx := vclutil.NewTx(sweepTx)
 	if err := blockchain.CheckTransactionSanity(btx); err != nil {
 		return nil, err
 	}

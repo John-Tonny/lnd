@@ -20,38 +20,38 @@ import (
 	"sync"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcwallet/wallet"
-	"github.com/btcsuite/btcwallet/walletdb"
+	"github.com/John-Tonny/neutrino"
+	"github.com/John-Tonny/neutrino/headerfs"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	"github.com/John-Tonny/vclsuite_vclwallet/wallet"
+	"github.com/John-Tonny/vclsuite_vclwallet/walletdb"
 	proxy "github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/lightninglabs/neutrino"
-	"github.com/lightninglabs/neutrino/headerfs"
 	"golang.org/x/crypto/acme/autocert"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"gopkg.in/macaroon-bakery.v2/bakery"
 	"gopkg.in/macaroon.v2"
 
-	"github.com/lightningnetwork/lnd/autopilot"
-	"github.com/lightningnetwork/lnd/build"
-	"github.com/lightningnetwork/lnd/cert"
-	"github.com/lightningnetwork/lnd/chainreg"
-	"github.com/lightningnetwork/lnd/chanacceptor"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/lncfg"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/btcwallet"
-	"github.com/lightningnetwork/lnd/macaroons"
-	"github.com/lightningnetwork/lnd/monitoring"
-	"github.com/lightningnetwork/lnd/rpcperms"
-	"github.com/lightningnetwork/lnd/signal"
-	"github.com/lightningnetwork/lnd/tor"
-	"github.com/lightningnetwork/lnd/walletunlocker"
-	"github.com/lightningnetwork/lnd/watchtower"
-	"github.com/lightningnetwork/lnd/watchtower/wtdb"
+	"github.com/John-Tonny/lnd/autopilot"
+	"github.com/John-Tonny/lnd/build"
+	"github.com/John-Tonny/lnd/cert"
+	"github.com/John-Tonny/lnd/chainreg"
+	"github.com/John-Tonny/lnd/chanacceptor"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/lncfg"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet/btcwallet"
+	"github.com/John-Tonny/lnd/macaroons"
+	"github.com/John-Tonny/lnd/monitoring"
+	"github.com/John-Tonny/lnd/rpcperms"
+	"github.com/John-Tonny/lnd/signal"
+	"github.com/John-Tonny/lnd/tor"
+	"github.com/John-Tonny/lnd/walletunlocker"
+	"github.com/John-Tonny/lnd/watchtower"
+	"github.com/John-Tonny/lnd/watchtower/wtdb"
 )
 
 // WalletUnlockerAuthOptions returns a list of DialOptions that can be used to
@@ -657,7 +657,7 @@ func Main(cfg *Config, lisCfg ListenerCfg, shutdownChan <-chan struct{}) error {
 			DB:             towerDB,
 			EpochRegistrar: activeChainControl.ChainNotifier,
 			Net:            cfg.net,
-			NewAddress: func() (btcutil.Address, error) {
+			NewAddress: func() (vclutil.Address, error) {
 				return activeChainControl.Wallet.NewAddress(
 					lnwallet.WitnessPubKey, false,
 				)
@@ -1017,7 +1017,7 @@ func getTLSConfig(cfg *Config) ([]grpc.ServerOption, []grpc.DialOption,
 }
 
 // fileExists reports whether the named file or directory exists.
-// This function is taken from https://github.com/btcsuite/btcd
+// This function is taken from https://github.com/John-Tonny/vclsuite_vcld
 func fileExists(name string) bool {
 	if _, err := os.Stat(name); err != nil {
 		if os.IsNotExist(err) {

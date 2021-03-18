@@ -4,20 +4,20 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/blockchain"
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcutil/txsort"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/watchtower/blob"
-	"github.com/lightningnetwork/lnd/watchtower/lookout"
-	"github.com/lightningnetwork/lnd/watchtower/wtdb"
-	"github.com/lightningnetwork/lnd/watchtower/wtmock"
-	"github.com/lightningnetwork/lnd/watchtower/wtpolicy"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/watchtower/blob"
+	"github.com/John-Tonny/lnd/watchtower/lookout"
+	"github.com/John-Tonny/lnd/watchtower/wtdb"
+	"github.com/John-Tonny/lnd/watchtower/wtmock"
+	"github.com/John-Tonny/lnd/watchtower/wtpolicy"
+	"github.com/John-Tonny/vclsuite_vcld/blockchain"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	"github.com/John-Tonny/vclsuite_vclutil/txsort"
 	"github.com/stretchr/testify/require"
 )
 
@@ -86,8 +86,8 @@ func testJusticeDescriptor(t *testing.T, blobType blob.Type) {
 	isAnchorChannel := blobType.IsAnchorChannel()
 
 	const (
-		localAmount  = btcutil.Amount(100000)
-		remoteAmount = btcutil.Amount(200000)
+		localAmount  = vclutil.Amount(100000)
+		remoteAmount = vclutil.Amount(200000)
 		totalAmount  = localAmount + remoteAmount
 	)
 
@@ -298,7 +298,7 @@ func testJusticeDescriptor(t *testing.T, blobType blob.Type) {
 	}
 
 	// Verify that our test justice transaction is sane.
-	btx := btcutil.NewTx(justiceTxn)
+	btx := vclutil.NewTx(justiceTxn)
 	err = blockchain.CheckTransactionSanity(btx)
 	require.Nil(t, err)
 

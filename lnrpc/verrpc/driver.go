@@ -3,7 +3,7 @@ package verrpc
 import (
 	"fmt"
 
-	"github.com/lightningnetwork/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lnrpc"
 )
 
 func init() {

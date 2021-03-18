@@ -16,23 +16,23 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/lnd/batch"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/lnpeer"
+	"github.com/John-Tonny/lnd/lntest/mock"
+	"github.com/John-Tonny/lnd/lntest/wait"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/netann"
+	"github.com/John-Tonny/lnd/routing"
+	"github.com/John-Tonny/lnd/routing/route"
+	"github.com/John-Tonny/lnd/ticker"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/go-errors/errors"
-	"github.com/lightningnetwork/lnd/batch"
-	"github.com/lightningnetwork/lnd/chainntnfs"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/lnpeer"
-	"github.com/lightningnetwork/lnd/lntest/mock"
-	"github.com/lightningnetwork/lnd/lntest/wait"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/netann"
-	"github.com/lightningnetwork/lnd/routing"
-	"github.com/lightningnetwork/lnd/routing/route"
-	"github.com/lightningnetwork/lnd/ticker"
 	"github.com/stretchr/testify/require"
 )
 
@@ -3657,7 +3657,7 @@ func TestProcessChannelAnnouncementOptionalMsgFields(t *testing.T) {
 	// assertOptionalMsgFields is a helper closure that ensures the optional
 	// message fields were set as intended.
 	assertOptionalMsgFields := func(chanID lnwire.ShortChannelID,
-		capacity btcutil.Amount, channelPoint wire.OutPoint) {
+		capacity vclutil.Amount, channelPoint wire.OutPoint) {
 
 		t.Helper()
 
@@ -3682,7 +3682,7 @@ func TestProcessChannelAnnouncementOptionalMsgFields(t *testing.T) {
 
 	// Providing the capacity and channel point as optional fields should
 	// propagate them all the way down to the router.
-	capacity := btcutil.Amount(1000)
+	capacity := vclutil.Amount(1000)
 	channelPoint := wire.OutPoint{Index: 1}
 	sendLocalMsg(
 		t, ctx, chanAnn2, ChannelCapacity(capacity),

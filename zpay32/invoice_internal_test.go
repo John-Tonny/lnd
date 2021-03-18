@@ -7,11 +7,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcutil/bech32"
-	"github.com/lightningnetwork/lnd/lnwire"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	"github.com/John-Tonny/vclsuite_vclutil/bech32"
 )
 
 // TestDecodeAmount ensures that the amount string in the hrp of the Invoice
@@ -599,7 +599,7 @@ func TestParseFallbackAddr(t *testing.T) {
 		data   []byte
 		net    *chaincfg.Params
 		valid  bool
-		result btcutil.Address
+		result vclutil.Address
 	}{
 		{
 			data:  []byte{},

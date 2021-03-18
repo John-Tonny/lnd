@@ -5,17 +5,17 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcutil/psbt"
-	"github.com/btcsuite/btcwallet/wallet/txauthor"
-	"github.com/btcsuite/btcwallet/wtxmgr"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	"github.com/John-Tonny/vclsuite_vclutil/psbt"
+	"github.com/John-Tonny/vclsuite_vclwallet/wallet/txauthor"
+	"github.com/John-Tonny/vclsuite_vclwallet/wtxmgr"
 
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
 )
 
 var (
@@ -43,7 +43,7 @@ func (w *WalletController) FetchInputInfo(
 
 	utxo := &lnwallet.Utxo{
 		AddressType:   lnwallet.WitnessPubKey,
-		Value:         10 * btcutil.SatoshiPerBitcoin,
+		Value:         10 * vclutil.SatoshiPerBitcoin,
 		PkScript:      []byte("dummy"),
 		Confirmations: 1,
 		OutPoint:      *prevOut,
@@ -52,15 +52,15 @@ func (w *WalletController) FetchInputInfo(
 }
 
 // ConfirmedBalance currently returns dummy values.
-func (w *WalletController) ConfirmedBalance(confs int32) (btcutil.Amount, error) {
+func (w *WalletController) ConfirmedBalance(confs int32) (vclutil.Amount, error) {
 	return 0, nil
 }
 
 // NewAddress is called to get new addresses for delivery, change etc.
 func (w *WalletController) NewAddress(addrType lnwallet.AddressType,
-	change bool) (btcutil.Address, error) {
+	change bool) (vclutil.Address, error) {
 
-	addr, _ := btcutil.NewAddressPubKey(
+	addr, _ := vclutil.NewAddressPubKey(
 		w.RootKey.PubKey().SerializeCompressed(), &chaincfg.MainNetParams,
 	)
 	return addr, nil
@@ -68,12 +68,12 @@ func (w *WalletController) NewAddress(addrType lnwallet.AddressType,
 
 // LastUnusedAddress currently returns dummy values.
 func (w *WalletController) LastUnusedAddress(addrType lnwallet.AddressType) (
-	btcutil.Address, error) {
+	vclutil.Address, error) {
 	return nil, nil
 }
 
 // IsOurAddress currently returns a dummy value.
-func (w *WalletController) IsOurAddress(a btcutil.Address) bool {
+func (w *WalletController) IsOurAddress(a vclutil.Address) bool {
 	return false
 }
 
@@ -104,7 +104,7 @@ func (w *WalletController) ListUnspentWitness(minconfirms,
 	// Otherwise create one to return.
 	utxo := &lnwallet.Utxo{
 		AddressType: lnwallet.WitnessPubKey,
-		Value:       btcutil.Amount(10 * btcutil.SatoshiPerBitcoin),
+		Value:       vclutil.Amount(10 * vclutil.SatoshiPerBitcoin),
 		PkScript:    CoinPkScript,
 		OutPoint: wire.OutPoint{
 			Hash:  chainhash.Hash{},

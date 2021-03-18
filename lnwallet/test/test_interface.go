@@ -17,34 +17,34 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/btcjson"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/integration/rpctest"
-	"github.com/btcsuite/btcd/mempool"
-	"github.com/btcsuite/btcd/rpcclient"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcwallet/chain"
-	"github.com/btcsuite/btcwallet/walletdb"
-	_ "github.com/btcsuite/btcwallet/walletdb/bdb"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/chainntnfs/btcdnotify"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/labels"
+	"github.com/John-Tonny/lnd/lntest/wait"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet/btcwallet"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/lnwallet/chanfunding"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/neutrino"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/btcjson"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/integration/rpctest"
+	"github.com/John-Tonny/vclsuite_vcld/mempool"
+	"github.com/John-Tonny/vclsuite_vcld/rpcclient"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	"github.com/John-Tonny/vclsuite_vclwallet/chain"
+	"github.com/John-Tonny/vclsuite_vclwallet/walletdb"
+	_ "github.com/John-Tonny/vclsuite_vclwallet/walletdb/bdb"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/lightninglabs/neutrino"
-	"github.com/lightningnetwork/lnd/chainntnfs"
-	"github.com/lightningnetwork/lnd/chainntnfs/btcdnotify"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/labels"
-	"github.com/lightningnetwork/lnd/lntest/wait"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/btcwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
-	"github.com/lightningnetwork/lnd/lnwallet/chanfunding"
-	"github.com/lightningnetwork/lnd/lnwire"
 	"github.com/stretchr/testify/require"
 )
 
@@ -244,7 +244,7 @@ func loadTestCredits(miner *rpctest.Harness, w *lnwallet.LightningWallet,
 	}
 	// Using the mining node, spend from a coinbase output numOutputs to
 	// give us btcPerOutput with each output.
-	satoshiPerOutput, err := btcutil.NewAmount(btcPerOutput)
+	satoshiPerOutput, err := vclutil.NewAmount(btcPerOutput)
 	if err != nil {
 		return fmt.Errorf("unable to create amt: %v", err)
 	}
@@ -252,8 +252,8 @@ func loadTestCredits(miner *rpctest.Harness, w *lnwallet.LightningWallet,
 	if err != nil {
 		return err
 	}
-	expectedBalance += btcutil.Amount(int64(satoshiPerOutput) * int64(numOutputs))
-	addrs := make([]btcutil.Address, 0, numOutputs)
+	expectedBalance += vclutil.Amount(int64(satoshiPerOutput) * int64(numOutputs))
+	addrs := make([]vclutil.Address, 0, numOutputs)
 	for i := 0; i < numOutputs; i++ {
 		// Grab a fresh address from the wallet to house this output.
 		walletAddr, err := w.NewAddress(lnwallet.WitnessPubKey, false)
@@ -338,7 +338,7 @@ func createTestWallet(tempTestDir string, miningNode *rpctest.Harness,
 		FeeEstimator:     chainfee.NewStaticEstimator(2500, 0),
 		DefaultConstraints: channeldb.ChannelConstraints{
 			DustLimit:        500,
-			MaxPendingAmount: lnwire.NewMSatFromSatoshis(btcutil.SatoshiPerBitcoin) * 100,
+			MaxPendingAmount: lnwire.NewMSatFromSatoshis(vclutil.SatoshiPerBitcoin) * 100,
 			ChanReserve:      100,
 			MinHTLC:          400,
 			MaxAcceptedHtlcs: 900,
@@ -411,7 +411,7 @@ func testGetRecoveryInfo(miner *rpctest.Harness,
 func testDualFundingReservationWorkflow(miner *rpctest.Harness,
 	alice, bob *lnwallet.LightningWallet, t *testing.T) {
 
-	fundingAmount, err := btcutil.NewAmount(5)
+	fundingAmount, err := vclutil.NewAmount(5)
 	if err != nil {
 		t.Fatalf("unable to create amt: %v", err)
 	}
@@ -625,7 +625,7 @@ func testFundingTransactionLockedOutputs(miner *rpctest.Harness,
 	alice, _ *lnwallet.LightningWallet, t *testing.T) {
 
 	// Create a single channel asking for 16 BTC total.
-	fundingAmount, err := btcutil.NewAmount(8)
+	fundingAmount, err := vclutil.NewAmount(8)
 	if err != nil {
 		t.Fatalf("unable to create amt: %v", err)
 	}
@@ -652,7 +652,7 @@ func testFundingTransactionLockedOutputs(miner *rpctest.Harness,
 	// Now attempt to reserve funds for another channel, this time
 	// requesting 900 BTC. We only have around 64BTC worth of outpoints
 	// that aren't locked, so this should fail.
-	amt, err := btcutil.NewAmount(900)
+	amt, err := vclutil.NewAmount(900)
 	if err != nil {
 		t.Fatalf("unable to create amt: %v", err)
 	}
@@ -689,7 +689,7 @@ func testFundingCancellationNotEnoughFunds(miner *rpctest.Harness,
 	}
 
 	// Create a reservation for 44 BTC.
-	fundingAmount, err := btcutil.NewAmount(44)
+	fundingAmount, err := vclutil.NewAmount(44)
 	if err != nil {
 		t.Fatalf("unable to create amt: %v", err)
 	}
@@ -779,13 +779,13 @@ func testReservationInitiatorBalanceBelowDustCancel(miner *rpctest.Harness,
 	// commitment fee rate. This should push our balance into the negative
 	// and result in a failure to create the reservation.
 	const numBTC = 4
-	fundingAmount, err := btcutil.NewAmount(numBTC)
+	fundingAmount, err := vclutil.NewAmount(numBTC)
 	if err != nil {
 		t.Fatalf("unable to create amt: %v", err)
 	}
 
 	feePerKw := chainfee.SatPerKWeight(
-		numBTC * numBTC * btcutil.SatoshiPerBitcoin,
+		numBTC * numBTC * vclutil.SatoshiPerBitcoin,
 	)
 	req := &lnwallet.InitFundingReserveMsg{
 		ChainHash:        chainHash,
@@ -863,11 +863,11 @@ func testSingleFunderReservationWorkflow(miner *rpctest.Harness,
 	// First, Alice will Initialize a reservation for a channel with 4 BTC
 	// funded solely by us. We'll also initially push 1 BTC of the channel
 	// towards Bob's side.
-	fundingAmt, err := btcutil.NewAmount(4)
+	fundingAmt, err := vclutil.NewAmount(4)
 	if err != nil {
 		t.Fatalf("unable to create amt: %v", err)
 	}
-	pushAmt := lnwire.NewMSatFromSatoshis(btcutil.SatoshiPerBitcoin)
+	pushAmt := lnwire.NewMSatFromSatoshis(vclutil.SatoshiPerBitcoin)
 	feePerKw, err := alice.Cfg.FeeEstimator.EstimateFeePerKW(1)
 	if err != nil {
 		t.Fatalf("unable to query fee estimator: %v", err)
@@ -1135,7 +1135,7 @@ func testListTransactionDetails(miner *rpctest.Harness,
 
 	// Create 5 new outputs spendable by the wallet.
 	const numTxns = 5
-	const outputAmt = btcutil.SatoshiPerBitcoin
+	const outputAmt = vclutil.SatoshiPerBitcoin
 	txids := make(map[chainhash.Hash]struct{})
 	for i := 0; i < numTxns; i++ {
 		addr, err := alice.NewAddress(lnwallet.WitnessPubKey, false)
@@ -1238,7 +1238,7 @@ func testListTransactionDetails(miner *rpctest.Harness,
 			t.Fatalf("tx (%v) not found in block (%v)",
 				txDetail.Hash, txDetail.BlockHash)
 		} else {
-			var destinationAddresses []btcutil.Address
+			var destinationAddresses []vclutil.Address
 
 			for _, txOut := range txOuts {
 				_, addrs, _, err :=
@@ -1428,7 +1428,7 @@ func testTransactionSubscriptions(miner *rpctest.Harness,
 	defer txClient.Cancel()
 
 	const (
-		outputAmt = btcutil.SatoshiPerBitcoin
+		outputAmt = vclutil.SatoshiPerBitcoin
 		numTxns   = 3
 	)
 	errCh1 := make(chan error, 1)
@@ -1584,8 +1584,8 @@ func testTransactionSubscriptions(miner *rpctest.Harness,
 
 // scriptFromKey creates a P2WKH script from the given pubkey.
 func scriptFromKey(pubkey *btcec.PublicKey) ([]byte, error) {
-	pubkeyHash := btcutil.Hash160(pubkey.SerializeCompressed())
-	keyAddr, err := btcutil.NewAddressWitnessPubKeyHash(
+	pubkeyHash := vclutil.Hash160(pubkey.SerializeCompressed())
+	keyAddr, err := vclutil.NewAddressWitnessPubKeyHash(
 		pubkeyHash, &chaincfg.RegressionNetParams,
 	)
 	if err != nil {
@@ -1636,7 +1636,7 @@ func mineAndAssert(r *rpctest.Harness, tx *wire.MsgTx) error {
 // txFromOutput takes a tx paying to fromPubKey, and creates a new tx that
 // spends the output from this tx, to an address derived from payToPubKey.
 func txFromOutput(tx *wire.MsgTx, signer input.Signer, fromPubKey,
-	payToPubKey *btcec.PublicKey, txFee btcutil.Amount,
+	payToPubKey *btcec.PublicKey, txFee vclutil.Amount,
 	rbf bool) (*wire.MsgTx, error) {
 
 	// Generate the script we want to spend from.
@@ -1739,7 +1739,7 @@ func newTx(t *testing.T, r *rpctest.Harness, pubKey *btcec.PublicKey,
 	// Instruct the wallet to fund the output with a newly created
 	// transaction.
 	newOutput := &wire.TxOut{
-		Value:    btcutil.SatoshiPerBitcoin,
+		Value:    vclutil.SatoshiPerBitcoin,
 		PkScript: keyScript,
 	}
 	tx, err := alice.SendOutputs(
@@ -1756,7 +1756,7 @@ func newTx(t *testing.T, r *rpctest.Harness, pubKey *btcec.PublicKey,
 	}
 
 	// Create a new unconfirmed tx that spends this output.
-	txFee := btcutil.Amount(0.001 * btcutil.SatoshiPerBitcoin)
+	txFee := vclutil.Amount(0.001 * vclutil.SatoshiPerBitcoin)
 	tx1, err := txFromOutput(
 		tx, alice.Cfg.Signer, pubKey, pubKey, txFee, rbf,
 	)
@@ -1837,7 +1837,7 @@ func testPublishTransaction(r *rpctest.Harness,
 	// We'll do the next mempool check on both RBF and non-RBF enabled
 	// transactions.
 	var (
-		txFee         = btcutil.Amount(0.005 * btcutil.SatoshiPerBitcoin)
+		txFee         = vclutil.Amount(0.005 * vclutil.SatoshiPerBitcoin)
 		tx3, tx3Spend *wire.MsgTx
 	)
 
@@ -2016,8 +2016,8 @@ func testSignOutputUsingTweaks(r *rpctest.Harness,
 
 		// Using the given key for the current iteration, we'll
 		// generate a regular p2wkh from that.
-		pubkeyHash := btcutil.Hash160(tweakedKey.SerializeCompressed())
-		keyAddr, err := btcutil.NewAddressWitnessPubKeyHash(pubkeyHash,
+		pubkeyHash := vclutil.Hash160(tweakedKey.SerializeCompressed())
+		keyAddr, err := vclutil.NewAddressWitnessPubKeyHash(pubkeyHash,
 			&chaincfg.RegressionNetParams)
 		if err != nil {
 			t.Fatalf("unable to create addr: %v", err)
@@ -2030,7 +2030,7 @@ func testSignOutputUsingTweaks(r *rpctest.Harness,
 		// With the script fully assembled, instruct the wallet to fund
 		// the output with a newly created transaction.
 		newOutput := &wire.TxOut{
-			Value:    btcutil.SatoshiPerBitcoin,
+			Value:    vclutil.SatoshiPerBitcoin,
 			PkScript: keyScript,
 		}
 		tx, err := alice.SendOutputs(
@@ -2108,7 +2108,7 @@ func testSignOutputUsingTweaks(r *rpctest.Harness,
 		// the proper private key.
 		vm, err := txscript.NewEngine(keyScript,
 			sweepTx, 0, txscript.StandardVerifyFlags, nil,
-			nil, int64(btcutil.SatoshiPerBitcoin))
+			nil, int64(vclutil.SatoshiPerBitcoin))
 		if err != nil {
 			t.Fatalf("unable to create engine: %v", err)
 		}
@@ -2324,7 +2324,7 @@ func testChangeOutputSpendConfirmation(r *rpctest.Harness,
 	// TODO(wilmer): replace this once SendOutputs easily supports sending
 	// all funds in one transaction.
 	txFeeRate := chainfee.SatPerKWeight(2500)
-	txFee := btcutil.Amount(14380)
+	txFee := vclutil.Amount(14380)
 	output := &wire.TxOut{
 		Value:    int64(aliceBalance - txFee),
 		PkScript: bobPkScript,
@@ -2348,7 +2348,7 @@ func testChangeOutputSpendConfirmation(r *rpctest.Harness,
 	// Now, we'll send an output back to Alice from Bob of 1 BTC.
 	alicePkScript := newPkScript(t, alice, lnwallet.WitnessPubKey)
 	output = &wire.TxOut{
-		Value:    btcutil.SatoshiPerBitcoin,
+		Value:    vclutil.SatoshiPerBitcoin,
 		PkScript: alicePkScript,
 	}
 	tx = sendCoins(t, r, bob, alice, output, txFeeRate, true, 1)
@@ -2360,7 +2360,7 @@ func testChangeOutputSpendConfirmation(r *rpctest.Harness,
 	// output, which is what the test expects. Therefore, we'll generate one
 	// by sending Bob back some coins.
 	output = &wire.TxOut{
-		Value:    btcutil.SatoshiPerBitcent,
+		Value:    vclutil.SatoshiPerBitcent,
 		PkScript: bobPkScript,
 	}
 	tx = sendCoins(t, r, alice, bob, output, txFeeRate, true, 1)
@@ -2396,7 +2396,7 @@ func testSpendUnconfirmed(miner *rpctest.Harness,
 	if err != nil {
 		t.Fatalf("unable to retrieve bob's balance: %v", err)
 	}
-	txFee := btcutil.Amount(28760)
+	txFee := vclutil.Amount(28760)
 	output := &wire.TxOut{
 		Value:    int64(bobBalance - txFee),
 		PkScript: alicePkScript,
@@ -2408,7 +2408,7 @@ func testSpendUnconfirmed(miner *rpctest.Harness,
 
 	// Verify that bob doesn't have enough balance to send coins.
 	output = &wire.TxOut{
-		Value:    btcutil.SatoshiPerBitcoin * 0.5,
+		Value:    vclutil.SatoshiPerBitcoin * 0.5,
 		PkScript: alicePkScript,
 	}
 	_, err = bob.SendOutputs(
@@ -2421,7 +2421,7 @@ func testSpendUnconfirmed(miner *rpctest.Harness,
 	// Next we will send a transaction to bob but leave it in an
 	// unconfirmed state.
 	output = &wire.TxOut{
-		Value:    btcutil.SatoshiPerBitcoin,
+		Value:    vclutil.SatoshiPerBitcoin,
 		PkScript: bobPkScript,
 	}
 	tx = sendCoins(t, miner, alice, bob, output, txFeeRate, false, 1)
@@ -2431,7 +2431,7 @@ func testSpendUnconfirmed(miner *rpctest.Harness,
 
 	// Now, try to spend some of the unconfirmed funds from bob's wallet.
 	output = &wire.TxOut{
-		Value:    btcutil.SatoshiPerBitcoin * 0.5,
+		Value:    vclutil.SatoshiPerBitcoin * 0.5,
 		PkScript: alicePkScript,
 	}
 
@@ -2468,7 +2468,7 @@ func testSpendUnconfirmed(miner *rpctest.Harness,
 	// Finally, send the remainder of bob's wallet balance back to him so
 	// that these money movements dont mess up later tests.
 	output = &wire.TxOut{
-		Value:    int64(bobBalance) - (btcutil.SatoshiPerBitcoin * 0.4),
+		Value:    int64(bobBalance) - (vclutil.SatoshiPerBitcoin * 0.4),
 		PkScript: bobPkScript,
 	}
 	tx = sendCoins(t, miner, alice, bob, output, txFeeRate, true, 1)
@@ -2882,7 +2882,7 @@ func clearWalletStates(a, b *lnwallet.LightningWallet) error {
 
 func waitForMempoolTx(r *rpctest.Harness, txid *chainhash.Hash) error {
 	var found bool
-	var tx *btcutil.Tx
+	var tx *vclutil.Tx
 	var err error
 	timeout := time.After(30 * time.Second)
 	for !found {
@@ -2976,7 +2976,7 @@ func testSingleFunderExternalFundingTx(miner *rpctest.Harness,
 
 	// We'll now set up for them to open a 4 BTC channel, with 1 BTC pushed
 	// to Bob's side.
-	chanAmt := 4 * btcutil.SatoshiPerBitcoin
+	chanAmt := 4 * vclutil.SatoshiPerBitcoin
 
 	// Simulating external funding negotiation, we'll now create the
 	// funding transaction for both parties. Utilizing existing tools,
@@ -2993,10 +2993,10 @@ func testSingleFunderExternalFundingTx(miner *rpctest.Harness,
 	// bind the keys we obtained above, and finally obtain our funding
 	// transaction and outpoint.
 	fundingIntent, err := aliceChanFunder.ProvisionChannel(&chanfunding.Request{
-		LocalAmt: btcutil.Amount(chanAmt),
+		LocalAmt: vclutil.Amount(chanAmt),
 		MinConfs: 1,
 		FeeRate:  253,
-		ChangeAddr: func() (btcutil.Address, error) {
+		ChangeAddr: func() (vclutil.Address, error) {
 			return alice.NewAddress(lnwallet.WitnessPubKey, true)
 		},
 	})
@@ -3031,17 +3031,17 @@ func testSingleFunderExternalFundingTx(miner *rpctest.Harness,
 	// shim intent for Bob.
 	thawHeight := uint32(200)
 	aliceExternalFunder := chanfunding.NewCannedAssembler(
-		thawHeight, *chanPoint, btcutil.Amount(chanAmt), &aliceFundingKey,
+		thawHeight, *chanPoint, vclutil.Amount(chanAmt), &aliceFundingKey,
 		bobFundingKey.PubKey, true,
 	)
 	bobShimIntent, err := chanfunding.NewCannedAssembler(
-		thawHeight, *chanPoint, btcutil.Amount(chanAmt), &bobFundingKey,
+		thawHeight, *chanPoint, vclutil.Amount(chanAmt), &bobFundingKey,
 		aliceFundingKey.PubKey, false,
 	).ProvisionChannel(&chanfunding.Request{
-		LocalAmt: btcutil.Amount(chanAmt),
+		LocalAmt: vclutil.Amount(chanAmt),
 		MinConfs: 1,
 		FeeRate:  253,
-		ChangeAddr: func() (btcutil.Address, error) {
+		ChangeAddr: func() (vclutil.Address, error) {
 			return bob.NewAddress(lnwallet.WitnessPubKey, true)
 		},
 	})

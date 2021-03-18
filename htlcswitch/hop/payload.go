@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"io"
 
-	sphinx "github.com/lightningnetwork/lightning-onion"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/record"
-	"github.com/lightningnetwork/lnd/tlv"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/record"
+	"github.com/John-Tonny/lnd/tlv"
+	sphinx "github.com/lJohn-Tonny/lightning-onion"
 )
 
 // PayloadViolation is an enum encapsulating the possible invalid payload

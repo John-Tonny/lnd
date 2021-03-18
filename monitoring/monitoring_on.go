@@ -8,8 +8,8 @@ import (
 
 	"google.golang.org/grpc"
 
+	"github.com/John-Tonny/lnd/lncfg"
 	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
-	"github.com/lightningnetwork/lnd/lncfg"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 

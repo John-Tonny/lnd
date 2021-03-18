@@ -7,7 +7,7 @@ import (
 	"testing"
 	"testing/quick"
 
-	"github.com/lightningnetwork/lnd/tlv"
+	"github.com/John-Tonny/lnd/tlv"
 )
 
 // TestExtraOpaqueDataEncodeDecode tests that we're able to encode/decode

@@ -1,3 +1,3 @@
-module github.com/lightningnetwork/lnd/clock
+module github.com/John-Tonny/lnd/clock
 
 go 1.13

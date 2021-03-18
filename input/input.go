@@ -1,10 +1,10 @@
 package input
 
 import (
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/lntypes"
+	"github.com/John-Tonny/lnd/lntypes"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 // Input represents an abstract UTXO which is to be spent using a sweeping
@@ -62,7 +62,7 @@ type Input interface {
 // TxInfo describes properties of a parent tx that are relevant for CPFP.
 type TxInfo struct {
 	// Fee is the fee of the tx.
-	Fee btcutil.Amount
+	Fee vclutil.Amount
 
 	// Weight is the weight of the tx.
 	Weight int64

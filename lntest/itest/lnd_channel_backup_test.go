@@ -12,13 +12,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/chanbackup"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/lnrpc/walletrpc"
-	"github.com/lightningnetwork/lnd/lntest"
-	"github.com/lightningnetwork/lnd/lntest/wait"
+	"github.com/John-Tonny/lnd/chanbackup"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lnrpc/walletrpc"
+	"github.com/John-Tonny/lnd/lntest"
+	"github.com/John-Tonny/lnd/lntest/wait"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/stretchr/testify/require"
 )
 
@@ -485,7 +485,7 @@ func testChannelBackupUpdates(net *lntest.NetworkHarness, t *harnessTest) {
 	// Next, we'll open two channels between Alice and Carol back to back.
 	var chanPoints []*lnrpc.ChannelPoint
 	numChans := 2
-	chanAmt := btcutil.Amount(1000000)
+	chanAmt := vclutil.Amount(1000000)
 	for i := 0; i < numChans; i++ {
 		ctxt, _ := context.WithTimeout(ctxb, channelOpenTimeout)
 		chanPoint := openChannelAndAssert(
@@ -619,7 +619,7 @@ func testExportChannelBackup(net *lntest.NetworkHarness, t *harnessTest) {
 	// Next, we'll open two channels between Alice and Carol back to back.
 	var chanPoints []*lnrpc.ChannelPoint
 	numChans := 2
-	chanAmt := btcutil.Amount(1000000)
+	chanAmt := vclutil.Amount(1000000)
 	for i := 0; i < numChans; i++ {
 		ctxt, _ := context.WithTimeout(ctxb, channelOpenTimeout)
 		chanPoint := openChannelAndAssert(
@@ -819,8 +819,8 @@ func testChanRestoreScenario(t *harnessTest, net *lntest.NetworkHarness,
 	testCase *chanRestoreTestCase, password []byte) {
 
 	const (
-		chanAmt = btcutil.Amount(10000000)
-		pushAmt = btcutil.Amount(5000000)
+		chanAmt = vclutil.Amount(10000000)
+		pushAmt = vclutil.Amount(5000000)
 	)
 
 	ctxb := context.Background()
@@ -853,12 +853,12 @@ func testChanRestoreScenario(t *harnessTest, net *lntest.NetworkHarness,
 	// Now that our new nodes are created, we'll give them some coins for
 	// channel opening and anchor sweeping.
 	ctxt, _ := context.WithTimeout(ctxb, defaultTimeout)
-	err = net.SendCoins(ctxt, btcutil.SatoshiPerBitcoin, carol)
+	err = net.SendCoins(ctxt, vclutil.SatoshiPerBitcoin, carol)
 	if err != nil {
 		t.Fatalf("unable to send coins to dave: %v", err)
 	}
 	ctxt, _ = context.WithTimeout(ctxb, defaultTimeout)
-	err = net.SendCoins(ctxt, btcutil.SatoshiPerBitcoin, dave)
+	err = net.SendCoins(ctxt, vclutil.SatoshiPerBitcoin, dave)
 	if err != nil {
 		t.Fatalf("unable to send coins to dave: %v", err)
 	}
@@ -1115,7 +1115,7 @@ func testChanRestoreScenario(t *harnessTest, net *lntest.NetworkHarness,
 // revocation producer format by using PSBT to signal a special pending channel
 // ID.
 func createLegacyRevocationChannel(net *lntest.NetworkHarness, t *harnessTest,
-	chanAmt, pushAmt btcutil.Amount, from, to *lntest.HarnessNode) {
+	chanAmt, pushAmt vclutil.Amount, from, to *lntest.HarnessNode) {
 
 	ctxb := context.Background()
 

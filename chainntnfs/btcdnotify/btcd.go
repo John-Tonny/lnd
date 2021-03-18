@@ -7,15 +7,15 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/btcsuite/btcd/btcjson"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/rpcclient"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/chainntnfs"
-	"github.com/lightningnetwork/lnd/queue"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/queue"
+	"github.com/John-Tonny/vclsuite_vcld/btcjson"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/rpcclient"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 const (
@@ -40,7 +40,7 @@ type chainUpdate struct {
 // the registered RPC client. This struct is used as an element within an
 // unbounded queue in order to avoid blocking the main rpc dispatch rule.
 type txUpdate struct {
-	tx      *btcutil.Tx
+	tx      *vclutil.Tx
 	details *btcjson.BlockDetails
 }
 
@@ -252,7 +252,7 @@ func (b *BtcdNotifier) onBlockConnected(hash *chainhash.Hash, height int32, t ti
 type filteredBlock struct {
 	hash   chainhash.Hash
 	height uint32
-	txns   []*btcutil.Tx
+	txns   []*vclutil.Tx
 
 	// connected is true if this update is a new block and false if it is a
 	// disconnected block.
@@ -275,7 +275,7 @@ func (b *BtcdNotifier) onBlockDisconnected(hash *chainhash.Hash, height int32, t
 }
 
 // onRedeemingTx implements on OnRedeemingTx callback for rpcclient.
-func (b *BtcdNotifier) onRedeemingTx(tx *btcutil.Tx, details *btcjson.BlockDetails) {
+func (b *BtcdNotifier) onRedeemingTx(tx *vclutil.Tx, details *btcjson.BlockDetails) {
 	// Append this new transaction update to the end of the queue of new
 	// chain updates.
 	select {
@@ -623,7 +623,7 @@ func (b *BtcdNotifier) handleBlockConnected(epoch chainntnfs.BlockEpoch) error {
 	newBlock := &filteredBlock{
 		hash:    *epoch.Hash,
 		height:  uint32(epoch.Height),
-		txns:    btcutil.NewBlock(rawBlock).Transactions(),
+		txns:    vclutil.NewBlock(rawBlock).Transactions(),
 		connect: true,
 	}
 

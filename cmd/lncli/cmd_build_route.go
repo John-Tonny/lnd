@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/lightningnetwork/lnd/chainreg"
-	"github.com/lightningnetwork/lnd/lnrpc/routerrpc"
-	"github.com/lightningnetwork/lnd/routing/route"
+	"github.com/John-Tonny/lnd/chainreg"
+	"github.com/John-Tonny/lnd/lnrpc/routerrpc"
+	"github.com/John-Tonny/lnd/routing/route"
 	"github.com/urfave/cli"
 )
 

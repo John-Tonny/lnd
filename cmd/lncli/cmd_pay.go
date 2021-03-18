@@ -14,16 +14,16 @@ import (
 	"strings"
 	"time"
 
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lnrpc/routerrpc"
+	"github.com/John-Tonny/lnd/lntypes"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/record"
+	"github.com/John-Tonny/lnd/routing/route"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/jedib0t/go-pretty/table"
 	"github.com/jedib0t/go-pretty/text"
 	"github.com/lightninglabs/protobuf-hex-display/jsonpb"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/lnrpc/routerrpc"
-	"github.com/lightningnetwork/lnd/lntypes"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/record"
-	"github.com/lightningnetwork/lnd/routing/route"
 	"github.com/urfave/cli"
 )
 
@@ -385,7 +385,7 @@ func sendPaymentRequest(ctx *cli.Context,
 
 	case ctx.Uint64(maxShardSizeSatFlag.Name) != 0:
 		req.MaxShardSizeMsat = uint64(lnwire.NewMSatFromSatoshis(
-			btcutil.Amount(ctx.Uint64(maxShardSizeSatFlag.Name)),
+			vclutil.Amount(ctx.Uint64(maxShardSizeSatFlag.Name)),
 		))
 	}
 

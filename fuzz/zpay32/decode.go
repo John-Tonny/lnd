@@ -3,8 +3,8 @@
 package zpay32fuzz
 
 import (
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/lightningnetwork/lnd/zpay32"
+	"github.com/John-Tonny/lnd/zpay32"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
 )
 
 // Fuzz_decode is used by go-fuzz.

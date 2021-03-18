@@ -4,11 +4,11 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
-	"github.com/lightningnetwork/lnd/watchtower/blob"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/watchtower/blob"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 const (
@@ -154,8 +154,8 @@ func (p Policy) Validate() error {
 // that pays no reward to the tower. The value is computed using the weight of
 // of the justice transaction and subtracting an amount that satisfies the
 // policy's fee rate.
-func (p *Policy) ComputeAltruistOutput(totalAmt btcutil.Amount,
-	txWeight int64) (btcutil.Amount, error) {
+func (p *Policy) ComputeAltruistOutput(totalAmt vclutil.Amount,
+	txWeight int64) (vclutil.Amount, error) {
 
 	txFee := p.SweepFeeRate.FeeForWeight(txWeight)
 	if txFee > totalAmt {
@@ -179,8 +179,8 @@ func (p *Policy) ComputeAltruistOutput(totalAmt btcutil.Amount,
 // transaction between the victim and the tower, according to the sweep fee rate
 // and reward rate. The reward to he tower is subtracted first, before
 // splitting the remaining balance amongst the victim and fees.
-func (p *Policy) ComputeRewardOutputs(totalAmt btcutil.Amount,
-	txWeight int64) (btcutil.Amount, btcutil.Amount, error) {
+func (p *Policy) ComputeRewardOutputs(totalAmt vclutil.Amount,
+	txWeight int64) (vclutil.Amount, vclutil.Amount, error) {
 
 	txFee := p.SweepFeeRate.FeeForWeight(txWeight)
 	if txFee > totalAmt {
@@ -213,9 +213,9 @@ func (p *Policy) ComputeRewardOutputs(totalAmt btcutil.Amount,
 // proportional rate expressed in millionths, e.g. one million is equivalent to
 // one hundred percent of the total amount. The amount is rounded up to the
 // nearest whole satoshi.
-func ComputeRewardAmount(total btcutil.Amount, base, rate uint32) btcutil.Amount {
-	rewardBase := btcutil.Amount(base)
-	rewardRate := btcutil.Amount(rate)
+func ComputeRewardAmount(total vclutil.Amount, base, rate uint32) vclutil.Amount {
+	rewardBase := vclutil.Amount(base)
+	rewardRate := vclutil.Amount(rate)
 
 	// If the base reward exceeds the total, there is no more funds left
 	// from which to derive the proportional fee. We simply return the base,
@@ -242,7 +242,7 @@ func ComputeRewardAmount(total btcutil.Amount, base, rate uint32) btcutil.Amount
 // pkScript of the victim to which funds will be recovered. The rewardPkScript
 // is the pkScript of the tower where its reward will be deposited, and will be
 // ignored if the blob type does not specify a reward.
-func (p *Policy) ComputeJusticeTxOuts(totalAmt btcutil.Amount, txWeight int64,
+func (p *Policy) ComputeJusticeTxOuts(totalAmt vclutil.Amount, txWeight int64,
 	sweepPkScript, rewardPkScript []byte) ([]*wire.TxOut, error) {
 
 	var outputs []*wire.TxOut

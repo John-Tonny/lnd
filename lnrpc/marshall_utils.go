@@ -5,11 +5,11 @@ import (
 	"errors"
 	fmt "fmt"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwire"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 var (
@@ -30,7 +30,7 @@ func CalculateFeeLimit(feeLimit *FeeLimit,
 
 	case *FeeLimit_Fixed:
 		return lnwire.NewMSatFromSatoshis(
-			btcutil.Amount(feeLimit.GetFixed()),
+			vclutil.Amount(feeLimit.GetFixed()),
 		)
 
 	case *FeeLimit_FixedMsat:
@@ -54,7 +54,7 @@ func UnmarshallAmt(amtSat, amtMsat int64) (lnwire.MilliSatoshi, error) {
 	}
 
 	if amtSat != 0 {
-		return lnwire.NewMSatFromSatoshis(btcutil.Amount(amtSat)), nil
+		return lnwire.NewMSatFromSatoshis(vclutil.Amount(amtSat)), nil
 	}
 
 	return lnwire.MilliSatoshi(amtMsat), nil

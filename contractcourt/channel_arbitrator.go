@@ -8,18 +8,18 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/labels"
+	"github.com/John-Tonny/lnd/lntypes"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/sweep"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/labels"
-	"github.com/lightningnetwork/lnd/lntypes"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/sweep"
 )
 
 var (
@@ -188,7 +188,7 @@ type ContractReport struct {
 	Type ReportOutputType
 
 	// Amount is the final value that will be swept in back to the wallet.
-	Amount btcutil.Amount
+	Amount vclutil.Amount
 
 	// MaturityHeight is the absolute block height that this output will
 	// mature at.
@@ -202,11 +202,11 @@ type ContractReport struct {
 
 	// LimboBalance is the total number of frozen coins within this
 	// contract.
-	LimboBalance btcutil.Amount
+	LimboBalance vclutil.Amount
 
 	// RecoveredBalance is the total value that has been successfully swept
 	// back to the user's wallet.
-	RecoveredBalance btcutil.Amount
+	RecoveredBalance vclutil.Amount
 }
 
 // resolverReport creates a resolve report using some of the information in the

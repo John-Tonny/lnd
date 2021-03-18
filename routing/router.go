@@ -8,29 +8,29 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/go-errors/errors"
 
-	sphinx "github.com/lightningnetwork/lightning-onion"
-	"github.com/lightningnetwork/lnd/batch"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	"github.com/lightningnetwork/lnd/clock"
-	"github.com/lightningnetwork/lnd/htlcswitch"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/lntypes"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/chanvalidate"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/multimutex"
-	"github.com/lightningnetwork/lnd/record"
-	"github.com/lightningnetwork/lnd/routing/chainview"
-	"github.com/lightningnetwork/lnd/routing/route"
-	"github.com/lightningnetwork/lnd/ticker"
-	"github.com/lightningnetwork/lnd/zpay32"
+	"github.com/John-Tonny/lnd/batch"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/clock"
+	"github.com/John-Tonny/lnd/htlcswitch"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/lntypes"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet/chanvalidate"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/multimutex"
+	"github.com/John-Tonny/lnd/record"
+	"github.com/John-Tonny/lnd/routing/chainview"
+	"github.com/John-Tonny/lnd/routing/route"
+	"github.com/John-Tonny/lnd/ticker"
+	"github.com/John-Tonny/lnd/zpay32"
+	sphinx "github.com/lJohn-Tonny/lightning-onion"
 )
 
 const (
@@ -928,7 +928,7 @@ func (r *ChannelRouter) networkHandler() {
 	// subsystems or basic rpc calls that rely on calls such as GetBestBlock
 	// will hang due to excessive load.
 	//
-	// See https://github.com/lightningnetwork/lnd/issues/4892.
+	// See https://github.com/John-Tonny/lnd/issues/4892.
 	var validationBarrier *ValidationBarrier
 	if r.cfg.AssumeChannelValid {
 		validationBarrier = NewValidationBarrier(1000, r.quit)
@@ -1314,7 +1314,7 @@ func (r *ChannelRouter) processUpdate(msg interface{},
 
 		// TODO(roasbeef): this is a hack, needs to be removed
 		// after commitment fees are dynamic.
-		msg.Capacity = btcutil.Amount(chanUtxo.Value)
+		msg.Capacity = vclutil.Amount(chanUtxo.Value)
 		msg.ChannelPoint = *fundingPoint
 		if err := r.cfg.Graph.AddChannelEdge(msg, op...); err != nil {
 			return errors.Errorf("unable to add edge: %v", err)

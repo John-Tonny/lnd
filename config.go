@@ -18,25 +18,25 @@ import (
 	"strings"
 	"time"
 
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/lnd/autopilot"
+	"github.com/John-Tonny/lnd/build"
+	"github.com/John-Tonny/lnd/chainreg"
+	"github.com/John-Tonny/lnd/chanbackup"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/discovery"
+	"github.com/John-Tonny/lnd/funding"
+	"github.com/John-Tonny/lnd/htlcswitch"
+	"github.com/John-Tonny/lnd/htlcswitch/hodl"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/lncfg"
+	"github.com/John-Tonny/lnd/lnrpc/routerrpc"
+	"github.com/John-Tonny/lnd/lnrpc/signrpc"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/routing"
+	"github.com/John-Tonny/lnd/tor"
+	"github.com/John-Tonny/neutrino"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	flags "github.com/jessevdk/go-flags"
-	"github.com/lightninglabs/neutrino"
-	"github.com/lightningnetwork/lnd/autopilot"
-	"github.com/lightningnetwork/lnd/build"
-	"github.com/lightningnetwork/lnd/chainreg"
-	"github.com/lightningnetwork/lnd/chanbackup"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/discovery"
-	"github.com/lightningnetwork/lnd/funding"
-	"github.com/lightningnetwork/lnd/htlcswitch"
-	"github.com/lightningnetwork/lnd/htlcswitch/hodl"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/lncfg"
-	"github.com/lightningnetwork/lnd/lnrpc/routerrpc"
-	"github.com/lightningnetwork/lnd/lnrpc/signrpc"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/routing"
-	"github.com/lightningnetwork/lnd/tor"
 )
 
 const (
@@ -144,7 +144,7 @@ var (
 	//   C:\Users\<username>\AppData\Local\Lnd on Windows
 	//   ~/.lnd on Linux
 	//   ~/Library/Application Support/Lnd on MacOS
-	DefaultLndDir = btcutil.AppDataDir("lnd", false)
+	DefaultLndDir = vclutil.AppDataDir("lnd", false)
 
 	// DefaultConfigFile is the default full path of lnd's configuration
 	// file.
@@ -159,14 +159,14 @@ var (
 	defaultTLSKeyPath     = filepath.Join(DefaultLndDir, defaultTLSKeyFilename)
 	defaultLetsEncryptDir = filepath.Join(DefaultLndDir, defaultLetsEncryptDirname)
 
-	defaultBtcdDir         = btcutil.AppDataDir("btcd", false)
+	defaultBtcdDir         = vclutil.AppDataDir("btcd", false)
 	defaultBtcdRPCCertFile = filepath.Join(defaultBtcdDir, "rpc.cert")
 
-	defaultLtcdDir         = btcutil.AppDataDir("ltcd", false)
+	defaultLtcdDir         = vclutil.AppDataDir("ltcd", false)
 	defaultLtcdRPCCertFile = filepath.Join(defaultLtcdDir, "rpc.cert")
 
-	defaultBitcoindDir  = btcutil.AppDataDir("bitcoin", false)
-	defaultLitecoindDir = btcutil.AppDataDir("litecoin", false)
+	defaultBitcoindDir  = vclutil.AppDataDir("bitcoin", false)
+	defaultLitecoindDir = vclutil.AppDataDir("litecoin", false)
 
 	defaultTorSOCKS   = net.JoinHostPort("localhost", strconv.Itoa(defaultTorSOCKSPort))
 	defaultTorDNS     = net.JoinHostPort(defaultTorDNSHost, strconv.Itoa(defaultTorDNSPort))
@@ -1347,7 +1347,7 @@ func (c *Config) networkName() string {
 
 // CleanAndExpandPath expands environment variables and leading ~ in the
 // passed path, cleans the result, and returns it.
-// This function is taken from https://github.com/btcsuite/btcd
+// This function is taken from https://github.com/John-Tonny/vclsuite_vcld
 func CleanAndExpandPath(path string) string {
 	if path == "" {
 		return ""

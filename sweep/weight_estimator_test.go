@@ -3,12 +3,12 @@ package sweep
 import (
 	"testing"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/stretchr/testify/require"
 )
 
@@ -86,7 +86,7 @@ func TestWeightEstimator(t *testing.T) {
 func TestWeightEstimatorAddOutput(t *testing.T) {
 	testFeeRate := chainfee.SatPerKWeight(20000)
 
-	p2wkhAddr, err := btcutil.NewAddressWitnessPubKeyHash(
+	p2wkhAddr, err := vclutil.NewAddressWitnessPubKeyHash(
 		make([]byte, 20), &chaincfg.MainNetParams,
 	)
 	require.NoError(t, err)

@@ -148,19 +148,19 @@ A quick summary of test practices follows:
 - When you fix a bug, it should be accompanied by tests which exercise the bug
   to both prove it has been resolved and to prevent future regressions
 - Changes to publicly exported packages such as
-  [brontide](https://github.com/lightningnetwork/lnd/tree/master/brontide) should
+  [brontide](https://github.com/John-Tonny/lnd/tree/master/brontide) should
   be accompanied by unit tests exercising the new or changed behavior.
 - Changes to behavior within the daemon's interaction with the P2P protocol,
   or RPC's will need to be accompanied by integration tests which use the
-  [`networkHarness`framework](https://github.com/lightningnetwork/lnd/blob/master/lntest/harness.go)
+  [`networkHarness`framework](https://github.com/John-Tonny/lnd/blob/master/lntest/harness.go)
   contained within `lnd`. For example integration tests, see
-  [`lnd_test.go`](https://github.com/lightningnetwork/lnd/blob/master/lnd_test.go#L181). 
+  [`lnd_test.go`](https://github.com/John-Tonny/lnd/blob/master/lnd_test.go#L181). 
 - The itest log files are automatically scanned for `[ERR]` lines. There
   shouldn't be any of those in the logs, see [Use of Log Levels](#use-of-log-levels).
 
 Throughout the process of contributing to `lnd`, you'll likely also be
 extensively using the commands within our `Makefile`. As a result, we recommend
-[perusing the make file documentation](https://github.com/lightningnetwork/lnd/blob/master/docs/MAKEFILE.md).
+[perusing the make file documentation](https://github.com/John-Tonny/lnd/blob/master/docs/MAKEFILE.md).
 
 ## Code Documentation and Commenting
 
@@ -434,13 +434,13 @@ project uses [v3.4.0](https://github.com/google/protobuf/releases/tag/v3.4.0)
 of `protoc`.
 
 The following two libraries must be installed with the exact commit hash as
-described in [lnrpc README](https://github.com/lightningnetwork/lnd/blob/master/lnrpc/README.md)
+described in [lnrpc README](https://github.com/John-Tonny/lnd/blob/master/lnrpc/README.md)
 otherwise the CI pipeline on Travis will fail:
 - grpc-ecosystem/grpc-gateway
 - golang/protobuf
 
 For detailed instructions on how to compile modifications to `lnd`'s `protobuf`
-definitions, check out the [lnrpc README](https://github.com/lightningnetwork/lnd/blob/master/lnrpc/README.md).
+definitions, check out the [lnrpc README](https://github.com/John-Tonny/lnd/blob/master/lnrpc/README.md).
 
 ## Additional Style Constraints On Top of `gofmt`
 
@@ -486,7 +486,7 @@ automatically so developers don't need to manually edit the `go.mod` file:
 
 Here's an example replacing the `lightning-onion` version checked into `lnd` with a version in roasbeef's fork:
 ```shell
-⛰  go mod edit -replace=github.com/lightningnetwork/lightning-onion@v0.0.0-20180605012408-ac4d9da8f1d6=github.com/roasbeef/lightning-onion@2e5ae87696046298365ab43bcd1cf3a7a1d69695
+⛰  go mod edit -replace=github.com/lJohn-Tonny/lightning-onion@v0.0.0-20180605012408-ac4d9da8f1d6=github.com/roasbeef/lightning-onion@2e5ae87696046298365ab43bcd1cf3a7a1d69695
 ```
 
 ## Use of Log Levels
@@ -566,7 +566,7 @@ although this isn't a strong requirement (but we prefer it!). In order to keep
 these signatures intact, we prefer using merge commits. PR proposers can use
 `git rebase --signoff` to sign and rebase at the same time as a final step.
 
-Rejoice as you will now be listed as a [contributor](https://github.com/lightningnetwork/lnd/graphs/contributors)!
+Rejoice as you will now be listed as a [contributor](https://github.com/John-Tonny/lnd/graphs/contributors)!
 
 # Contribution Standards
 
@@ -598,11 +598,11 @@ Rejoice as you will now be listed as a [contributor](https://github.com/lightnin
 ## Licensing of Contributions
 ****
 All contributions must be licensed with the
-[MIT license](https://github.com/lightningnetwork/lnd/blob/master/LICENSE).  This is
+[MIT license](https://github.com/John-Tonny/lnd/blob/master/LICENSE).  This is
 the same license as all of the code found within lnd.
 
 
 # Acknowledgements
 This document was heavily inspired by a [similar document outlining the code
-contribution](https://github.com/btcsuite/btcd/blob/master/docs/code_contribution_guidelines.md)
+contribution](https://github.com/John-Tonny/vclsuite_vcld/blob/master/docs/code_contribution_guidelines.md)
 guidelines for btcd. 

@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/John-Tonny/lnd/clock"
+	"github.com/John-Tonny/lnd/lnwire"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/lightningnetwork/lnd/clock"
-	"github.com/lightningnetwork/lnd/lnwire"
 )
 
 const testExpiry = time.Minute

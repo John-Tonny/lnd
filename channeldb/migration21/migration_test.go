@@ -7,16 +7,16 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	lnwire "github.com/John-Tonny/lnd/channeldb/migration/lnwire21"
+	"github.com/John-Tonny/lnd/channeldb/migration21/common"
+	"github.com/John-Tonny/lnd/channeldb/migration21/current"
+	"github.com/John-Tonny/lnd/channeldb/migration21/legacy"
+	"github.com/John-Tonny/lnd/channeldb/migtest"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	lnwire "github.com/lightningnetwork/lnd/channeldb/migration/lnwire21"
-	"github.com/lightningnetwork/lnd/channeldb/migration21/common"
-	"github.com/lightningnetwork/lnd/channeldb/migration21/current"
-	"github.com/lightningnetwork/lnd/channeldb/migration21/legacy"
-	"github.com/lightningnetwork/lnd/channeldb/migtest"
 )
 
 var (

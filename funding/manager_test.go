@@ -16,27 +16,27 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/chainntnfs"
-	"github.com/lightningnetwork/lnd/chainreg"
-	"github.com/lightningnetwork/lnd/chanacceptor"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/channelnotifier"
-	"github.com/lightningnetwork/lnd/discovery"
-	"github.com/lightningnetwork/lnd/htlcswitch"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/lncfg"
-	"github.com/lightningnetwork/lnd/lnpeer"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/lntest/mock"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
-	"github.com/lightningnetwork/lnd/lnwire"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/chainreg"
+	"github.com/John-Tonny/lnd/chanacceptor"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/channelnotifier"
+	"github.com/John-Tonny/lnd/discovery"
+	"github.com/John-Tonny/lnd/htlcswitch"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/lncfg"
+	"github.com/John-Tonny/lnd/lnpeer"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lntest/mock"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/stretchr/testify/require"
 )
 
@@ -398,15 +398,15 @@ func createTestFundingManager(t *testing.T, privKey *btcec.PrivateKey,
 			TimeLockDelta: 10,
 		},
 		DefaultMinHtlcIn: 5,
-		NumRequiredConfs: func(chanAmt btcutil.Amount,
+		NumRequiredConfs: func(chanAmt vclutil.Amount,
 			pushAmt lnwire.MilliSatoshi) uint16 {
 			return 3
 		},
-		RequiredRemoteDelay: func(amt btcutil.Amount) uint16 {
+		RequiredRemoteDelay: func(amt vclutil.Amount) uint16 {
 			return 4
 		},
 		RequiredRemoteChanReserve: func(chanAmt,
-			dustLimit btcutil.Amount) btcutil.Amount {
+			dustLimit vclutil.Amount) vclutil.Amount {
 
 			reserve := chanAmt / 100
 			if reserve < dustLimit {
@@ -415,11 +415,11 @@ func createTestFundingManager(t *testing.T, privKey *btcec.PrivateKey,
 
 			return reserve
 		},
-		RequiredRemoteMaxValue: func(chanAmt btcutil.Amount) lnwire.MilliSatoshi {
+		RequiredRemoteMaxValue: func(chanAmt vclutil.Amount) lnwire.MilliSatoshi {
 			reserve := lnwire.NewMSatFromSatoshis(chanAmt / 100)
 			return lnwire.NewMSatFromSatoshis(chanAmt) - reserve
 		},
-		RequiredRemoteMaxHTLCs: func(chanAmt btcutil.Amount) uint16 {
+		RequiredRemoteMaxHTLCs: func(chanAmt vclutil.Amount) uint16 {
 			return uint16(input.MaxHTLCNumber / 2)
 		},
 		WatchNewChannel: func(*channeldb.OpenChannel, *btcec.PublicKey) error {
@@ -631,7 +631,7 @@ func tearDownFundingManagers(t *testing.T, a, b *testNode) {
 // openChannel takes the funding process to the point where the funding
 // transaction is confirmed on-chain. Returns the funding out point.
 func openChannel(t *testing.T, alice, bob *testNode, localFundingAmt,
-	pushAmt btcutil.Amount, numConfs uint32,
+	pushAmt vclutil.Amount, numConfs uint32,
 	updateChan chan *lnrpc.OpenStatusUpdate, announceChan bool) (
 	*wire.OutPoint, *wire.MsgTx) {
 
@@ -649,7 +649,7 @@ func openChannel(t *testing.T, alice, bob *testNode, localFundingAmt,
 // fundChannel takes the funding process to the point where the funding
 // transaction is confirmed on-chain. Returns the funding tx.
 func fundChannel(t *testing.T, alice, bob *testNode, localFundingAmt,
-	pushAmt btcutil.Amount, subtractFees bool, numConfs uint32,
+	pushAmt vclutil.Amount, subtractFees bool, numConfs uint32,
 	updateChan chan *lnrpc.OpenStatusUpdate, announceChan bool) *wire.MsgTx {
 
 	// Create a funding request and start the workflow.
@@ -980,7 +980,7 @@ func assertAddedToRouterGraph(t *testing.T, alice, bob *testNode,
 // advertised value will be checked against the other node's default min_htlc
 // value.
 func assertChannelAnnouncements(t *testing.T, alice, bob *testNode,
-	capacity btcutil.Amount, customMinHtlc []lnwire.MilliSatoshi,
+	capacity vclutil.Amount, customMinHtlc []lnwire.MilliSatoshi,
 	customMaxHtlc []lnwire.MilliSatoshi) {
 	t.Helper()
 
@@ -1201,8 +1201,8 @@ func TestFundingManagerNormalWorkflow(t *testing.T) {
 
 	// Run through the process of opening the channel, up until the funding
 	// transaction is broadcasted.
-	localAmt := btcutil.Amount(500000)
-	pushAmt := btcutil.Amount(0)
+	localAmt := vclutil.Amount(500000)
+	pushAmt := vclutil.Amount(0)
 	capacity := localAmt + pushAmt
 	fundingOutPoint, fundingTx := openChannel(
 		t, alice, bob, localAmt, pushAmt, 1, updateChan, true,
@@ -1298,7 +1298,7 @@ func testLocalCSVLimit(t *testing.T, aliceMaxCSV, bobRequiredCSV uint16) {
 	// Set a maximum local delay in alice's config to aliceMaxCSV and overwrite
 	// bob's required remote delay function to return bobRequiredCSV.
 	alice.fundingMgr.cfg.MaxLocalCSVDelay = aliceMaxCSV
-	bob.fundingMgr.cfg.RequiredRemoteDelay = func(_ btcutil.Amount) uint16 {
+	bob.fundingMgr.cfg.RequiredRemoteDelay = func(_ vclutil.Amount) uint16 {
 		return bobRequiredCSV
 	}
 
@@ -1437,8 +1437,8 @@ func TestFundingManagerRestartBehavior(t *testing.T) {
 
 	// Run through the process of opening the channel, up until the funding
 	// transaction is broadcasted.
-	localAmt := btcutil.Amount(500000)
-	pushAmt := btcutil.Amount(0)
+	localAmt := vclutil.Amount(500000)
+	pushAmt := vclutil.Amount(0)
 	capacity := localAmt + pushAmt
 	updateChan := make(chan *lnrpc.OpenStatusUpdate)
 	fundingOutPoint, fundingTx := openChannel(
@@ -1584,8 +1584,8 @@ func TestFundingManagerOfflinePeer(t *testing.T) {
 
 	// Run through the process of opening the channel, up until the funding
 	// transaction is broadcasted.
-	localAmt := btcutil.Amount(500000)
-	pushAmt := btcutil.Amount(0)
+	localAmt := vclutil.Amount(500000)
+	pushAmt := vclutil.Amount(0)
 	capacity := localAmt + pushAmt
 	updateChan := make(chan *lnrpc.OpenStatusUpdate)
 	fundingOutPoint, fundingTx := openChannel(
@@ -2059,8 +2059,8 @@ func TestFundingManagerReceiveFundingLockedTwice(t *testing.T) {
 
 	// Run through the process of opening the channel, up until the funding
 	// transaction is broadcasted.
-	localAmt := btcutil.Amount(500000)
-	pushAmt := btcutil.Amount(0)
+	localAmt := vclutil.Amount(500000)
+	pushAmt := vclutil.Amount(0)
 	capacity := localAmt + pushAmt
 	fundingOutPoint, fundingTx := openChannel(
 		t, alice, bob, localAmt, pushAmt, 1, updateChan, true,
@@ -2162,8 +2162,8 @@ func TestFundingManagerRestartAfterChanAnn(t *testing.T) {
 
 	// Run through the process of opening the channel, up until the funding
 	// transaction is broadcasted.
-	localAmt := btcutil.Amount(500000)
-	pushAmt := btcutil.Amount(0)
+	localAmt := vclutil.Amount(500000)
+	pushAmt := vclutil.Amount(0)
 	capacity := localAmt + pushAmt
 	fundingOutPoint, fundingTx := openChannel(
 		t, alice, bob, localAmt, pushAmt, 1, updateChan, true,
@@ -2250,8 +2250,8 @@ func TestFundingManagerRestartAfterReceivingFundingLocked(t *testing.T) {
 
 	// Run through the process of opening the channel, up until the funding
 	// transaction is broadcasted.
-	localAmt := btcutil.Amount(500000)
-	pushAmt := btcutil.Amount(0)
+	localAmt := vclutil.Amount(500000)
+	pushAmt := vclutil.Amount(0)
 	capacity := localAmt + pushAmt
 	fundingOutPoint, fundingTx := openChannel(
 		t, alice, bob, localAmt, pushAmt, 1, updateChan, true,
@@ -2334,8 +2334,8 @@ func TestFundingManagerPrivateChannel(t *testing.T) {
 
 	// Run through the process of opening the channel, up until the funding
 	// transaction is broadcasted.
-	localAmt := btcutil.Amount(500000)
-	pushAmt := btcutil.Amount(0)
+	localAmt := vclutil.Amount(500000)
+	pushAmt := vclutil.Amount(0)
 	capacity := localAmt + pushAmt
 	fundingOutPoint, fundingTx := openChannel(
 		t, alice, bob, localAmt, pushAmt, 1, updateChan, false,
@@ -2447,8 +2447,8 @@ func TestFundingManagerPrivateRestart(t *testing.T) {
 
 	// Run through the process of opening the channel, up until the funding
 	// transaction is broadcasted.
-	localAmt := btcutil.Amount(500000)
-	pushAmt := btcutil.Amount(0)
+	localAmt := vclutil.Amount(500000)
+	pushAmt := vclutil.Amount(0)
 	capacity := localAmt + pushAmt
 	fundingOutPoint, fundingTx := openChannel(
 		t, alice, bob, localAmt, pushAmt, 1, updateChan, false,
@@ -2585,8 +2585,8 @@ func TestFundingManagerCustomChannelParameters(t *testing.T) {
 	// needed.
 	updateChan := make(chan *lnrpc.OpenStatusUpdate)
 
-	localAmt := btcutil.Amount(5000000)
-	pushAmt := btcutil.Amount(0)
+	localAmt := vclutil.Amount(5000000)
+	pushAmt := vclutil.Amount(0)
 	capacity := localAmt + pushAmt
 
 	// Create a funding request with the custom parameters and start the
@@ -3176,8 +3176,8 @@ func TestFundingManagerFundAll(t *testing.T) {
 	allCoins := []*lnwallet.Utxo{
 		{
 			AddressType: lnwallet.WitnessPubKey,
-			Value: btcutil.Amount(
-				0.05 * btcutil.SatoshiPerBitcoin,
+			Value: vclutil.Amount(
+				0.05 * vclutil.SatoshiPerBitcoin,
 			),
 			PkScript: mock.CoinPkScript,
 			OutPoint: wire.OutPoint{
@@ -3187,8 +3187,8 @@ func TestFundingManagerFundAll(t *testing.T) {
 		},
 		{
 			AddressType: lnwallet.WitnessPubKey,
-			Value: btcutil.Amount(
-				0.06 * btcutil.SatoshiPerBitcoin,
+			Value: vclutil.Amount(
+				0.06 * vclutil.SatoshiPerBitcoin,
 			),
 			PkScript: mock.CoinPkScript,
 			OutPoint: wire.OutPoint{
@@ -3199,22 +3199,22 @@ func TestFundingManagerFundAll(t *testing.T) {
 	}
 
 	tests := []struct {
-		spendAmt btcutil.Amount
+		spendAmt vclutil.Amount
 		change   bool
 	}{
 		{
 			// We will spend all the funds in the wallet, and
 			// expects no change output.
-			spendAmt: btcutil.Amount(
-				0.11 * btcutil.SatoshiPerBitcoin,
+			spendAmt: vclutil.Amount(
+				0.11 * vclutil.SatoshiPerBitcoin,
 			),
 			change: false,
 		},
 		{
 			// We spend a little less than the funds in the wallet,
 			// so a change output should be created.
-			spendAmt: btcutil.Amount(
-				0.10 * btcutil.SatoshiPerBitcoin,
+			spendAmt: vclutil.Amount(
+				0.10 * vclutil.SatoshiPerBitcoin,
 			),
 			change: true,
 		},
@@ -3231,7 +3231,7 @@ func TestFundingManagerFundAll(t *testing.T) {
 		updateChan := make(chan *lnrpc.OpenStatusUpdate)
 
 		// Initiate a fund channel, and inspect the funding tx.
-		pushAmt := btcutil.Amount(0)
+		pushAmt := vclutil.Amount(0)
 		fundingTx := fundChannel(
 			t, alice, bob, test.spendAmt, pushAmt, true, 1,
 			updateChan, true,
@@ -3432,7 +3432,7 @@ func TestMaxChannelSizeConfig(t *testing.T) {
 	tearDownFundingManagers(t, alice, bob)
 	alice, bob = setupFundingManagers(t, func(cfg *Config) {
 		cfg.NoWumboChans = false
-		cfg.MaxChanSize = btcutil.Amount(100000000)
+		cfg.MaxChanSize = vclutil.Amount(100000000)
 	})
 
 	// Reset the Peer to the newly created one.
@@ -3440,7 +3440,7 @@ func TestMaxChannelSizeConfig(t *testing.T) {
 
 	// Attempt to create a channel above the limit
 	// imposed by --maxchansize, which should be rejected.
-	initReq.LocalFundingAmt = btcutil.SatoshiPerBitcoin + 1
+	initReq.LocalFundingAmt = vclutil.SatoshiPerBitcoin + 1
 
 	// After processing the funding open message, bob should respond with
 	// an error rejecting the channel that exceeds size limit.
@@ -3485,7 +3485,7 @@ func TestWumboChannelConfig(t *testing.T) {
 
 	// We'll now attempt to create a channel above the wumbo mark, which
 	// should be rejected.
-	initReq.LocalFundingAmt = btcutil.SatoshiPerBitcoin
+	initReq.LocalFundingAmt = vclutil.SatoshiPerBitcoin
 
 	// After processing the funding open message, bob should respond with
 	// an error rejecting the channel.

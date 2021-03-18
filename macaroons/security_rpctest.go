@@ -2,7 +2,7 @@
 
 package macaroons
 
-import "github.com/btcsuite/btcwallet/waddrmgr"
+import "github.com/John-Tonny/vclsuite_vclwallet/waddrmgr"
 
 var (
 	// Below are the reduced scrypt parameters that are used when creating

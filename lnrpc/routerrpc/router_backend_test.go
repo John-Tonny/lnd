@@ -6,14 +6,14 @@ import (
 	"encoding/hex"
 	"testing"
 
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/record"
-	"github.com/lightningnetwork/lnd/routing"
-	"github.com/lightningnetwork/lnd/routing/route"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/record"
+	"github.com/John-Tonny/lnd/routing"
+	"github.com/John-Tonny/lnd/routing/route"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 
-	"github.com/lightningnetwork/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lnrpc"
 )
 
 const (
@@ -189,7 +189,7 @@ func testQueryRoutes(t *testing.T, useMissionControl bool, useMsat bool) {
 		FindRoute: findRoute,
 		SelfNode:  route.Vertex{1, 2, 3},
 		FetchChannelCapacity: func(chanID uint64) (
-			btcutil.Amount, error) {
+			vclutil.Amount, error) {
 
 			return 1, nil
 		},

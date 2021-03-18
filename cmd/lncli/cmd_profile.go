@@ -7,8 +7,8 @@ import (
 	"path"
 	"strings"
 
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/lncfg"
+	"github.com/John-Tonny/lnd/lncfg"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/urfave/cli"
 	"gopkg.in/macaroon.v2"
 )
@@ -19,7 +19,7 @@ var (
 	//   C:\Users\<username>\AppData\Local\Lncli\ on Windows
 	//   ~/.lncli/ on Linux
 	//   ~/Library/Application Support/Lncli/ on MacOS
-	defaultLncliDir = btcutil.AppDataDir("lncli", false)
+	defaultLncliDir = vclutil.AppDataDir("lncli", false)
 
 	// defaultProfileFile is the full, absolute path of the profile file.
 	defaultProfileFile = path.Join(defaultLncliDir, "profiles.json")

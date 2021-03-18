@@ -3,9 +3,9 @@ package htlcswitch
 import (
 	"sync"
 
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
 	"github.com/go-errors/errors"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
 )
 
 // defaultSequenceBatchSize specifies the window of sequence numbers that are

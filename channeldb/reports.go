@@ -5,11 +5,11 @@ import (
 	"errors"
 	"io"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	"github.com/lightningnetwork/lnd/tlv"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/tlv"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 var (
@@ -105,7 +105,7 @@ type ResolverReport struct {
 	OutPoint wire.OutPoint
 
 	// Amount is the value of the output referenced above.
-	Amount btcutil.Amount
+	Amount vclutil.Amount
 
 	// ResolverType indicates the type of resolution that occurred.
 	ResolverType
@@ -284,7 +284,7 @@ func deserializeReport(r io.Reader) (*ResolverReport, error) {
 	}
 
 	report := &ResolverReport{
-		Amount:          btcutil.Amount(amt),
+		Amount:          vclutil.Amount(amt),
 		ResolverOutcome: ResolverOutcome(outcome),
 		ResolverType:    ResolverType(resolver),
 	}

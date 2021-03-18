@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 var (
@@ -255,7 +255,7 @@ func TestTxNotifierFutureConfDispatch(t *testing.T) {
 
 	// Include the transactions in a block and add it to the TxNotifier.
 	// This should confirm tx1, but not tx2.
-	block1 := btcutil.NewBlock(&wire.MsgBlock{
+	block1 := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{&tx1, &tx2},
 	})
 
@@ -320,7 +320,7 @@ func TestTxNotifierFutureConfDispatch(t *testing.T) {
 
 	// Create a new block and add it to the TxNotifier at the next height.
 	// This should confirm tx2.
-	block2 := btcutil.NewBlock(&wire.MsgBlock{})
+	block2 := vclutil.NewBlock(&wire.MsgBlock{})
 	err = n.ConnectTip(block2.Hash(), 12, block2.Transactions())
 	if err != nil {
 		t.Fatalf("Failed to connect block: %v", err)
@@ -471,7 +471,7 @@ func TestTxNotifierHistoricalConfDispatch(t *testing.T) {
 
 	// Create a new block and add it to the TxNotifier at the next height.
 	// This should confirm tx2.
-	block := btcutil.NewBlock(&wire.MsgBlock{
+	block := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{&tx3},
 	})
 
@@ -552,7 +552,7 @@ func TestTxNotifierFutureSpendDispatch(t *testing.T) {
 		SignatureScript:  testSigScript,
 	})
 	spendTxHash := spendTx.TxHash()
-	block := btcutil.NewBlock(&wire.MsgBlock{
+	block := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{spendTx},
 	})
 	err = n.ConnectTip(block.Hash(), 11, block.Transactions())
@@ -587,7 +587,7 @@ func TestTxNotifierFutureSpendDispatch(t *testing.T) {
 		PreviousOutPoint: prevOut,
 		SignatureScript:  testSigScript,
 	})
-	block = btcutil.NewBlock(&wire.MsgBlock{
+	block = vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{spendOfSpend},
 	})
 	err = n.ConnectTip(block.Hash(), 12, block.Transactions())
@@ -632,7 +632,7 @@ func TestTxNotifierFutureConfDispatchReuseSafe(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unable to register ntfn: %v", err)
 	}
-	block := btcutil.NewBlock(&wire.MsgBlock{
+	block := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{&tx1},
 	})
 	currentBlock++
@@ -691,7 +691,7 @@ func TestTxNotifierFutureConfDispatchReuseSafe(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unable to register ntfn: %v", err)
 	}
-	block2 := btcutil.NewBlock(&wire.MsgBlock{
+	block2 := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{&tx2},
 	})
 	currentBlock++
@@ -739,7 +739,7 @@ func TestTxNotifierFutureConfDispatchReuseSafe(t *testing.T) {
 
 	// Finally, mine a few empty blocks and expect both TXs to be confirmed.
 	for currentBlock < 15 {
-		block := btcutil.NewBlock(&wire.MsgBlock{})
+		block := vclutil.NewBlock(&wire.MsgBlock{})
 		currentBlock++
 		err = n.ConnectTip(
 			block.Hash(), currentBlock, block.Transactions(),
@@ -837,7 +837,7 @@ func TestTxNotifierHistoricalSpendDispatch(t *testing.T) {
 		PreviousOutPoint: prevOut,
 		SignatureScript:  testSigScript,
 	})
-	block := btcutil.NewBlock(&wire.MsgBlock{
+	block := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{spendOfSpend},
 	})
 	err = n.ConnectTip(block.Hash(), startingHeight+1, block.Transactions())
@@ -1170,7 +1170,7 @@ func TestTxNotifierCancelConf(t *testing.T) {
 	// Extend the chain with a block that will confirm both transactions.
 	// This will queue confirmation notifications to dispatch once their
 	// respective heights have been met.
-	block := btcutil.NewBlock(&wire.MsgBlock{
+	block := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{tx1, tx2},
 	})
 	tx1ConfDetails := &chainntnfs.TxConfirmation{
@@ -1226,7 +1226,7 @@ func TestTxNotifierCancelConf(t *testing.T) {
 	}
 
 	// Connect yet another block.
-	block1 := btcutil.NewBlock(&wire.MsgBlock{
+	block1 := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{},
 	})
 
@@ -1260,7 +1260,7 @@ func TestTxNotifierCancelConf(t *testing.T) {
 
 	// Finally, confirm a block that would trigger ntfn4 confirmation
 	// hadn't it already been canceled.
-	block2 := btcutil.NewBlock(&wire.MsgBlock{
+	block2 := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{},
 	})
 
@@ -1316,7 +1316,7 @@ func TestTxNotifierCancelSpend(t *testing.T) {
 		SpendingHeight:    startingHeight + 1,
 	}
 
-	block := btcutil.NewBlock(&wire.MsgBlock{
+	block := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{spendTx},
 	})
 
@@ -1414,7 +1414,7 @@ func TestTxNotifierConfReorg(t *testing.T) {
 	}
 
 	// Sync chain to block 10. Txs 1 & 2 should be confirmed.
-	block1 := btcutil.NewBlock(&wire.MsgBlock{
+	block1 := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{&tx1},
 	})
 	if err := n.ConnectTip(nil, 8, block1.Transactions()); err != nil {
@@ -1430,7 +1430,7 @@ func TestTxNotifierConfReorg(t *testing.T) {
 		t.Fatalf("unable to dispatch notifications: %v", err)
 	}
 
-	block2 := btcutil.NewBlock(&wire.MsgBlock{
+	block2 := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{&tx2, &tx3},
 	})
 	if err := n.ConnectTip(nil, 10, block2.Transactions()); err != nil {
@@ -1548,10 +1548,10 @@ func TestTxNotifierConfReorg(t *testing.T) {
 	}
 
 	// Now transactions 2 & 3 are re-included in a new block.
-	block3 := btcutil.NewBlock(&wire.MsgBlock{
+	block3 := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{&tx2, &tx3},
 	})
-	block4 := btcutil.NewBlock(&wire.MsgBlock{})
+	block4 := vclutil.NewBlock(&wire.MsgBlock{})
 
 	err = n.ConnectTip(block3.Hash(), 12, block3.Transactions())
 	if err != nil {
@@ -1702,7 +1702,7 @@ func TestTxNotifierSpendReorg(t *testing.T) {
 
 	// We'll extend the chain by connecting a new block at tip. This block
 	// will only contain the spending transaction of the first outpoint.
-	block1 := btcutil.NewBlock(&wire.MsgBlock{
+	block1 := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{spendTx1},
 	})
 	err = n.ConnectTip(block1.Hash(), startingHeight+1, block1.Transactions())
@@ -1732,7 +1732,7 @@ func TestTxNotifierSpendReorg(t *testing.T) {
 
 	// Now, we'll extend the chain again, this time with a block containing
 	// the spending transaction of the second outpoint.
-	block2 := btcutil.NewBlock(&wire.MsgBlock{
+	block2 := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{spendTx2},
 	})
 	err = n.ConnectTip(block2.Hash(), startingHeight+2, block2.Transactions())
@@ -1788,7 +1788,7 @@ func TestTxNotifierSpendReorg(t *testing.T) {
 
 	// We'll now extend the chain with an empty block, to ensure that we can
 	// properly detect when an outpoint has been re-spent at a later height.
-	emptyBlock := btcutil.NewBlock(&wire.MsgBlock{})
+	emptyBlock := vclutil.NewBlock(&wire.MsgBlock{})
 	err = n.ConnectTip(
 		emptyBlock.Hash(), startingHeight+2, emptyBlock.Transactions(),
 	)
@@ -1901,7 +1901,7 @@ func TestTxNotifierConfirmHintCache(t *testing.T) {
 	// Create a new block that will include the dummy transaction and extend
 	// the chain.
 	txDummy := wire.MsgTx{Version: 3}
-	block1 := btcutil.NewBlock(&wire.MsgBlock{
+	block1 := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{&txDummy},
 	})
 
@@ -1944,7 +1944,7 @@ func TestTxNotifierConfirmHintCache(t *testing.T) {
 
 	// We'll create another block that will include the first transaction
 	// and extend the chain.
-	block2 := btcutil.NewBlock(&wire.MsgBlock{
+	block2 := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{&tx1},
 	})
 
@@ -1979,7 +1979,7 @@ func TestTxNotifierConfirmHintCache(t *testing.T) {
 
 	// Next, we'll create another block that will include the second
 	// transaction and extend the chain.
-	block3 := btcutil.NewBlock(&wire.MsgBlock{
+	block3 := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{&tx2},
 	})
 
@@ -2092,7 +2092,7 @@ func TestTxNotifierSpendHintCache(t *testing.T) {
 	}
 
 	// Create a new empty block and extend the chain.
-	emptyBlock := btcutil.NewBlock(&wire.MsgBlock{})
+	emptyBlock := vclutil.NewBlock(&wire.MsgBlock{})
 	err = n.ConnectTip(
 		emptyBlock.Hash(), dummyHeight, emptyBlock.Transactions(),
 	)
@@ -2138,7 +2138,7 @@ func TestTxNotifierSpendHintCache(t *testing.T) {
 		PreviousOutPoint: op1,
 		SignatureScript:  testSigScript,
 	})
-	block1 := btcutil.NewBlock(&wire.MsgBlock{
+	block1 := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{spendTx1},
 	})
 	err = n.ConnectTip(block1.Hash(), op1Height, block1.Transactions())
@@ -2173,7 +2173,7 @@ func TestTxNotifierSpendHintCache(t *testing.T) {
 		PreviousOutPoint: op2,
 		SignatureScript:  testSigScript,
 	})
-	block2 := btcutil.NewBlock(&wire.MsgBlock{
+	block2 := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{spendTx2},
 	})
 	err = n.ConnectTip(block2.Hash(), op2Height, block2.Transactions())
@@ -2273,7 +2273,7 @@ func TestTxNotifierSpendDuringHistoricalRescan(t *testing.T) {
 
 	// Create a new empty block and extend the chain.
 	height := uint32(startingHeight) + 1
-	emptyBlock := btcutil.NewBlock(&wire.MsgBlock{})
+	emptyBlock := vclutil.NewBlock(&wire.MsgBlock{})
 	err = n.ConnectTip(
 		emptyBlock.Hash(), height, emptyBlock.Transactions(),
 	)
@@ -2301,7 +2301,7 @@ func TestTxNotifierSpendDuringHistoricalRescan(t *testing.T) {
 		height++
 
 		// Let the outpoint we are watching be spent midway.
-		var block *btcutil.Block
+		var block *vclutil.Block
 		if i == 5 {
 			// We'll create a new block that only contains the
 			// spending transaction of the outpoint.
@@ -2310,13 +2310,13 @@ func TestTxNotifierSpendDuringHistoricalRescan(t *testing.T) {
 				PreviousOutPoint: op1,
 				SignatureScript:  testSigScript,
 			})
-			block = btcutil.NewBlock(&wire.MsgBlock{
+			block = vclutil.NewBlock(&wire.MsgBlock{
 				Transactions: []*wire.MsgTx{spendTx1},
 			})
 			spendHeight = height
 		} else {
 			// Otherwise we just create an empty block.
-			block = btcutil.NewBlock(&wire.MsgBlock{})
+			block = vclutil.NewBlock(&wire.MsgBlock{})
 		}
 
 		err = n.ConnectTip(
@@ -2375,7 +2375,7 @@ func TestTxNotifierSpendDuringHistoricalRescan(t *testing.T) {
 		SignatureScript:  testSigScript,
 	})
 	height++
-	block2 := btcutil.NewBlock(&wire.MsgBlock{
+	block2 := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{spendTx2},
 	})
 	err = n.ConnectTip(block2.Hash(), height, block2.Transactions())
@@ -2399,7 +2399,7 @@ func TestTxNotifierSpendDuringHistoricalRescan(t *testing.T) {
 	// Now mine enough blocks for the spend notification to be forgotten.
 	for i := 0; i < 2*reorgSafety; i++ {
 		height++
-		block := btcutil.NewBlock(&wire.MsgBlock{})
+		block := vclutil.NewBlock(&wire.MsgBlock{})
 
 		err := n.ConnectTip(
 			block.Hash(), height, block.Transactions(),
@@ -2462,7 +2462,7 @@ func TestTxNotifierNtfnDone(t *testing.T) {
 		PreviousOutPoint: wire.OutPoint{Index: 1},
 		SignatureScript:  testSigScript,
 	})
-	block := btcutil.NewBlock(&wire.MsgBlock{
+	block := vclutil.NewBlock(&wire.MsgBlock{
 		Transactions: []*wire.MsgTx{tx, spendTx},
 	})
 
@@ -2543,7 +2543,7 @@ func TestTxNotifierNtfnDone(t *testing.T) {
 	// expect the done notifications to be dispatched.
 	nextHeight := uint32(12)
 	for i := nextHeight; i < nextHeight+reorgSafetyLimit; i++ {
-		dummyBlock := btcutil.NewBlock(&wire.MsgBlock{})
+		dummyBlock := vclutil.NewBlock(&wire.MsgBlock{})
 		if err := n.ConnectTip(dummyBlock.Hash(), i, nil); err != nil {
 			t.Fatalf("unable to connect block: %v", err)
 		}

@@ -1,14 +1,14 @@
 package channeldb
 
 import (
+	"github.com/John-Tonny/lnd/build"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	mig "github.com/John-Tonny/lnd/channeldb/migration"
+	"github.com/John-Tonny/lnd/channeldb/migration12"
+	"github.com/John-Tonny/lnd/channeldb/migration13"
+	"github.com/John-Tonny/lnd/channeldb/migration16"
+	"github.com/John-Tonny/lnd/channeldb/migration_01_to_11"
 	"github.com/btcsuite/btclog"
-	"github.com/lightningnetwork/lnd/build"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	mig "github.com/lightningnetwork/lnd/channeldb/migration"
-	"github.com/lightningnetwork/lnd/channeldb/migration12"
-	"github.com/lightningnetwork/lnd/channeldb/migration13"
-	"github.com/lightningnetwork/lnd/channeldb/migration16"
-	"github.com/lightningnetwork/lnd/channeldb/migration_01_to_11"
 )
 
 // log is a logger that is initialized with no output filters.  This

@@ -3,7 +3,7 @@ package amp_test
 import (
 	"testing"
 
-	"github.com/lightningnetwork/lnd/amp"
+	"github.com/John-Tonny/lnd/amp"
 	"github.com/stretchr/testify/require"
 )
 

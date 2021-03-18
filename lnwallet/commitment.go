@@ -3,19 +3,19 @@ package lnwallet
 import (
 	"fmt"
 
-	"github.com/btcsuite/btcd/blockchain"
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
-	"github.com/lightningnetwork/lnd/lnwire"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/vclsuite_vcld/blockchain"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 // anchorSize is the constant anchor output size.
-const anchorSize = btcutil.Amount(330)
+const anchorSize = vclutil.Amount(330)
 
 // DefaultAnchorsCommitMaxFeeRateSatPerVByte is the default max fee rate in
 // sat/vbyte the initiator will use for anchor channels. This should be enough
@@ -281,7 +281,7 @@ func CommitWeight(chanType channeldb.ChannelType) int64 {
 // HtlcTimeoutFee returns the fee in satoshis required for an HTLC timeout
 // transaction based on the current fee rate.
 func HtlcTimeoutFee(chanType channeldb.ChannelType,
-	feePerKw chainfee.SatPerKWeight) btcutil.Amount {
+	feePerKw chainfee.SatPerKWeight) vclutil.Amount {
 
 	// For zero-fee HTLC channels, this will always be zero, regardless of
 	// feerate.
@@ -299,7 +299,7 @@ func HtlcTimeoutFee(chanType channeldb.ChannelType,
 // HtlcSuccessFee returns the fee in satoshis required for an HTLC success
 // transaction based on the current fee rate.
 func HtlcSuccessFee(chanType channeldb.ChannelType,
-	feePerKw chainfee.SatPerKWeight) btcutil.Amount {
+	feePerKw chainfee.SatPerKWeight) vclutil.Amount {
 
 	// For zero-fee HTLC channels, this will always be zero, regardless of
 	// feerate.
@@ -404,7 +404,7 @@ type unsignedCommitmentTx struct {
 	txn *wire.MsgTx
 
 	// fee is the total fee of the commitment transaction.
-	fee btcutil.Amount
+	fee vclutil.Amount
 
 	// ourBalance is our balance on this commitment *after* subtracting
 	// commitment fees and anchor outputs. This can be different than the
@@ -578,16 +578,16 @@ func (cb *CommitmentBuilder) createUnsignedCommitmentTx(ourBalance,
 
 	// Next, we'll ensure that we don't accidentally create a commitment
 	// transaction which would be invalid by consensus.
-	uTx := btcutil.NewTx(commitTx)
+	uTx := vclutil.NewTx(commitTx)
 	if err := blockchain.CheckTransactionSanity(uTx); err != nil {
 		return nil, err
 	}
 
 	// Finally, we'll assert that were not attempting to draw more out of
 	// the channel that was originally placed within it.
-	var totalOut btcutil.Amount
+	var totalOut vclutil.Amount
 	for _, txOut := range commitTx.TxOut {
-		totalOut += btcutil.Amount(txOut.Value)
+		totalOut += vclutil.Amount(txOut.Value)
 	}
 	if totalOut+commitFee > cb.chanState.Capacity {
 		return nil, fmt.Errorf("height=%v, for ChannelPoint(%v) "+
@@ -614,7 +614,7 @@ func (cb *CommitmentBuilder) createUnsignedCommitmentTx(ourBalance,
 func CreateCommitTx(chanType channeldb.ChannelType,
 	fundingOutput wire.TxIn, keyRing *CommitmentKeyRing,
 	localChanCfg, remoteChanCfg *channeldb.ChannelConfig,
-	amountToLocal, amountToRemote btcutil.Amount,
+	amountToLocal, amountToRemote vclutil.Amount,
 	numHTLCs int64) (*wire.MsgTx, error) {
 
 	// First, we create the script for the delayed "pay-to-self" output.
@@ -701,8 +701,8 @@ func CreateCommitTx(chanType channeldb.ChannelType,
 // CoopCloseBalance returns the final balances that should be used to create
 // the cooperative close tx, given the channel type and transaction fee.
 func CoopCloseBalance(chanType channeldb.ChannelType, isInitiator bool,
-	coopCloseFee btcutil.Amount, localCommit channeldb.ChannelCommitment) (
-	btcutil.Amount, btcutil.Amount, error) {
+	coopCloseFee vclutil.Amount, localCommit channeldb.ChannelCommitment) (
+	vclutil.Amount, vclutil.Amount, error) {
 
 	// Get both parties' balances from the latest commitment.
 	ourBalance := localCommit.LocalBalance.ToSatoshis()

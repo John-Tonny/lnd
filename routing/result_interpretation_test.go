@@ -4,10 +4,10 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/John-Tonny/lnd/lnwire"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/lightningnetwork/lnd/lnwire"
 
-	"github.com/lightningnetwork/lnd/routing/route"
+	"github.com/John-Tonny/lnd/routing/route"
 )
 
 var (

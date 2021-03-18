@@ -7,22 +7,22 @@ import (
 	"sync"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/lnd/batch"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/lnpeer"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/multimutex"
+	"github.com/John-Tonny/lnd/netann"
+	"github.com/John-Tonny/lnd/routing"
+	"github.com/John-Tonny/lnd/routing/route"
+	"github.com/John-Tonny/lnd/ticker"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/lightningnetwork/lnd/batch"
-	"github.com/lightningnetwork/lnd/chainntnfs"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/lnpeer"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/multimutex"
-	"github.com/lightningnetwork/lnd/netann"
-	"github.com/lightningnetwork/lnd/routing"
-	"github.com/lightningnetwork/lnd/routing/route"
-	"github.com/lightningnetwork/lnd/ticker"
 	"golang.org/x/time/rate"
 )
 
@@ -53,7 +53,7 @@ var (
 // can provide that serve useful when processing a specific network
 // announcement.
 type optionalMsgFields struct {
-	capacity     *btcutil.Amount
+	capacity     *vclutil.Amount
 	channelPoint *wire.OutPoint
 }
 
@@ -71,7 +71,7 @@ type OptionalMsgField func(*optionalMsgFields)
 
 // ChannelCapacity is an optional field that lets the gossiper know of the
 // capacity of a channel.
-func ChannelCapacity(capacity btcutil.Amount) OptionalMsgField {
+func ChannelCapacity(capacity vclutil.Amount) OptionalMsgField {
 	return func(f *optionalMsgFields) {
 		f.capacity = &capacity
 	}

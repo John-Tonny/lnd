@@ -3,7 +3,7 @@
 package main
 
 import (
-	"github.com/lightningnetwork/lnd/lnrpc/watchtowerrpc"
+	"github.com/John-Tonny/lnd/lnrpc/watchtowerrpc"
 	"github.com/urfave/cli"
 )
 

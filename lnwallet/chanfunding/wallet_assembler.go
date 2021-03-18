@@ -3,13 +3,13 @@ package chanfunding
 import (
 	"math"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcutil/txsort"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/keychain"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	"github.com/John-Tonny/vclsuite_vclutil/txsort"
 )
 
 // FullIntent is an intent that is fully backed by the internal wallet. This
@@ -209,7 +209,7 @@ type WalletConfig struct {
 
 	// DustLimit is the current dust limit. We'll use this to ensure that
 	// we don't make dust outputs on the funding transaction.
-	DustLimit btcutil.Amount
+	DustLimit vclutil.Amount
 }
 
 // WalletAssembler is an instance of the Assembler interface that is backed by
@@ -259,8 +259,8 @@ func (w *WalletAssembler) ProvisionChannel(r *Request) (Intent, error) {
 
 		var (
 			selectedCoins        []Coin
-			localContributionAmt btcutil.Amount
-			changeAmt            btcutil.Amount
+			localContributionAmt vclutil.Amount
+			changeAmt            vclutil.Amount
 		)
 
 		// Perform coin selection over our available, unlocked unspent

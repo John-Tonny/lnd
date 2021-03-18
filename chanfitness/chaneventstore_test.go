@@ -6,12 +6,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/clock"
-	"github.com/lightningnetwork/lnd/routing/route"
-	"github.com/lightningnetwork/lnd/subscribe"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/clock"
+	"github.com/John-Tonny/lnd/routing/route"
+	"github.com/John-Tonny/lnd/subscribe"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
 	"github.com/stretchr/testify/require"
 )
 

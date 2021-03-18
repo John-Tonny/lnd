@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/lightningnetwork/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lnrpc"
 	"github.com/urfave/cli"
 )
 

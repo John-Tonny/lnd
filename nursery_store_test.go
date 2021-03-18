@@ -6,9 +6,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/btcsuite/btcd/wire"
-	"github.com/lightningnetwork/lnd/chainreg"
-	"github.com/lightningnetwork/lnd/channeldb"
+	"github.com/John-Tonny/lnd/chainreg"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
 )
 
 type incubateTest struct {

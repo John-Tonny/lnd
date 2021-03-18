@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/John-Tonny/lnd"
+	"github.com/John-Tonny/lnd/signal"
 	"github.com/jessevdk/go-flags"
-	"github.com/lightningnetwork/lnd"
-	"github.com/lightningnetwork/lnd/signal"
 )
 
 func main() {

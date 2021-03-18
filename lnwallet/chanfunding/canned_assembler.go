@@ -3,11 +3,11 @@ package chanfunding
 import (
 	"fmt"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/keychain"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 // ShimIntent is an intent created by the CannedAssembler which represents a
@@ -16,11 +16,11 @@ import (
 // crafting the funding transaction, and not lnd.
 type ShimIntent struct {
 	// localFundingAmt is the final amount we put into the funding output.
-	localFundingAmt btcutil.Amount
+	localFundingAmt vclutil.Amount
 
 	// remoteFundingAmt is the final amount the remote party put into the
 	// funding output.
-	remoteFundingAmt btcutil.Amount
+	remoteFundingAmt vclutil.Amount
 
 	// localKey is our multi-sig key.
 	localKey *keychain.KeyDescriptor
@@ -66,7 +66,7 @@ func (s *ShimIntent) Cancel() {
 // RemoteFundingAmt is the amount the remote party put into the channel.
 //
 // NOTE: This method satisfies the chanfunding.Intent interface.
-func (s *ShimIntent) LocalFundingAmt() btcutil.Amount {
+func (s *ShimIntent) LocalFundingAmt() vclutil.Amount {
 	return s.localFundingAmt
 }
 
@@ -75,7 +75,7 @@ func (s *ShimIntent) LocalFundingAmt() btcutil.Amount {
 // from of that LocalAmt into fees to minimize change.
 //
 // NOTE: This method satisfies the chanfunding.Intent interface.
-func (s *ShimIntent) RemoteFundingAmt() btcutil.Amount {
+func (s *ShimIntent) RemoteFundingAmt() vclutil.Amount {
 	return s.remoteFundingAmt
 }
 
@@ -153,7 +153,7 @@ var _ Intent = (*ShimIntent)(nil)
 // actually needs to proceed: the channel point.
 type CannedAssembler struct {
 	// fundingAmt is the total amount of coins in the funding output.
-	fundingAmt btcutil.Amount
+	fundingAmt vclutil.Amount
 
 	// localKey is our multi-sig key.
 	localKey *keychain.KeyDescriptor
@@ -176,7 +176,7 @@ type CannedAssembler struct {
 // NewCannedAssembler creates a new CannedAssembler from the material required
 // to construct a funding output and channel point.
 func NewCannedAssembler(thawHeight uint32, chanPoint wire.OutPoint,
-	fundingAmt btcutil.Amount, localKey *keychain.KeyDescriptor,
+	fundingAmt vclutil.Amount, localKey *keychain.KeyDescriptor,
 	remoteKey *btcec.PublicKey, initiator bool) *CannedAssembler {
 
 	return &CannedAssembler{

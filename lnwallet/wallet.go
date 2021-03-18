@@ -10,23 +10,23 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/btcsuite/btcd/blockchain"
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcutil/psbt"
-	"github.com/btcsuite/btcutil/txsort"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/lnwallet/chanfunding"
+	"github.com/John-Tonny/lnd/lnwallet/chanvalidate"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/shachain"
+	"github.com/John-Tonny/vclsuite_vcld/blockchain"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	"github.com/John-Tonny/vclsuite_vclutil/psbt"
+	"github.com/John-Tonny/vclsuite_vclutilite_vclutil/txsort"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
-	"github.com/lightningnetwork/lnd/lnwallet/chanfunding"
-	"github.com/lightningnetwork/lnd/lnwallet/chanvalidate"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/shachain"
 )
 
 const (
@@ -38,7 +38,7 @@ const (
 	// wallet in case we have to fee bump anchor channels on force close.
 	// TODO(halseth): update constant to target a specific commit size at
 	// set fee rate.
-	anchorChanReservedValue = btcutil.Amount(10_000)
+	anchorChanReservedValue = vclutil.Amount(10_000)
 )
 
 var (
@@ -106,11 +106,11 @@ type InitFundingReserveMsg struct {
 
 	// LocalFundingAmt is the amount of funds requested from us for this
 	// channel.
-	LocalFundingAmt btcutil.Amount
+	LocalFundingAmt vclutil.Amount
 
 	// RemoteFundingAmnt is the amount of funds the remote will contribute
 	// to this channel.
-	RemoteFundingAmt btcutil.Amount
+	RemoteFundingAmt vclutil.Amount
 
 	// CommitFeePerKw is the starting accepted satoshis/Kw fee for the set
 	// of initial commitment transactions. In order to ensure timely
@@ -399,7 +399,7 @@ func (l *LightningWallet) Shutdown() error {
 // ConfirmedBalance returns the current confirmed balance of the wallet. This
 // methods wraps the interal WalletController method so we're able to properly
 // hold the coin select mutex while we compute the balance.
-func (l *LightningWallet) ConfirmedBalance(confs int32) (btcutil.Amount, error) {
+func (l *LightningWallet) ConfirmedBalance(confs int32) (vclutil.Amount, error) {
 	l.coinSelectMtx.Lock()
 	defer l.coinSelectMtx.Unlock()
 
@@ -721,7 +721,7 @@ func (l *LightningWallet) handleFundingReserveRequest(req *InitFundingReserveMsg
 			MinConfs:     req.MinConfs,
 			SubtractFees: req.SubtractFees,
 			FeeRate:      req.FundingFeePerKw,
-			ChangeAddr: func() (btcutil.Address, error) {
+			ChangeAddr: func() (vclutil.Address, error) {
 				return l.NewAddress(WitnessPubKey, true)
 			},
 		}
@@ -918,7 +918,7 @@ func (l *LightningWallet) currentNumAnchorChans() (int, error) {
 //
 // NOTE: This method should only be run with the CoinSelectLock held.
 func (l *LightningWallet) CheckReservedValue(in []wire.OutPoint,
-	out []*wire.TxOut, numAnchorChans int) (btcutil.Amount, error) {
+	out []*wire.TxOut, numAnchorChans int) (vclutil.Amount, error) {
 
 	// Get all unspent coins in the wallet.
 	witnessOutputs, err := l.ListUnspentWitness(0, math.MaxInt32)
@@ -937,7 +937,7 @@ func (l *LightningWallet) CheckReservedValue(in []wire.OutPoint,
 	// the wallet balance. In case they haven't been properly locked, we
 	// check whether they are still listed among our unspents and deduct
 	// them.
-	var walletBalance btcutil.Amount
+	var walletBalance vclutil.Amount
 	for _, in := range witnessOutputs {
 		// Spending an unlocked wallet UTXO, don't add it to the
 		// balance.
@@ -966,7 +966,7 @@ func (l *LightningWallet) CheckReservedValue(in []wire.OutPoint,
 				continue
 			}
 
-			walletBalance += btcutil.Amount(txOut.Value)
+			walletBalance += vclutil.Amount(txOut.Value)
 
 			// We break since we don't want to double count the output.
 			break
@@ -974,7 +974,7 @@ func (l *LightningWallet) CheckReservedValue(in []wire.OutPoint,
 	}
 
 	// We reserve a given amount for each anchor channel.
-	reserved := btcutil.Amount(numAnchorChans) * anchorChanReservedValue
+	reserved := vclutil.Amount(numAnchorChans) * anchorChanReservedValue
 
 	if walletBalance < reserved {
 		walletLog.Debugf("Reserved value=%v above final "+
@@ -991,7 +991,7 @@ func (l *LightningWallet) CheckReservedValue(in []wire.OutPoint,
 // database.
 //
 // NOTE: This method should only be run with the CoinSelectLock held.
-func (l *LightningWallet) CheckReservedValueTx(tx *wire.MsgTx) (btcutil.Amount,
+func (l *LightningWallet) CheckReservedValueTx(tx *wire.MsgTx) (vclutil.Amount,
 	error) {
 
 	numAnchors, err := l.currentNumAnchorChans()
@@ -1145,7 +1145,7 @@ func (l *LightningWallet) handleFundingCancelRequest(req *fundingReserveCancelMs
 // initial funding workflow as both sides must generate a signature for the
 // remote party's commitment transaction, and verify the signature for their
 // version of the commitment transaction.
-func CreateCommitmentTxns(localBalance, remoteBalance btcutil.Amount,
+func CreateCommitmentTxns(localBalance, remoteBalance vclutil.Amount,
 	ourChanCfg, theirChanCfg *channeldb.ChannelConfig,
 	localCommitPoint, remoteCommitPoint *btcec.PublicKey,
 	fundingTxIn wire.TxIn, chanType channeldb.ChannelType) (
@@ -1166,7 +1166,7 @@ func CreateCommitmentTxns(localBalance, remoteBalance btcutil.Amount,
 		return nil, nil, err
 	}
 
-	otxn := btcutil.NewTx(ourCommitTx)
+	otxn := vclutil.NewTx(ourCommitTx)
 	if err := blockchain.CheckTransactionSanity(otxn); err != nil {
 		return nil, nil, err
 	}
@@ -1179,7 +1179,7 @@ func CreateCommitmentTxns(localBalance, remoteBalance btcutil.Amount,
 		return nil, nil, err
 	}
 
-	ttxn := btcutil.NewTx(theirCommitTx)
+	ttxn := vclutil.NewTx(theirCommitTx)
 	if err := blockchain.CheckTransactionSanity(ttxn); err != nil {
 		return nil, nil, err
 	}

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/btcsuite/btcwallet/snacl"
+	"github.com/John-Tonny/vclsuite_vclwallet/snacl"
 	"gopkg.in/macaroon.v2"
 )
 

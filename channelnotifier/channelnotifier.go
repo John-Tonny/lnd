@@ -3,9 +3,9 @@ package channelnotifier
 import (
 	"sync"
 
-	"github.com/btcsuite/btcd/wire"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/subscribe"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/subscribe"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
 )
 
 // ChannelNotifier is a subsystem which all active, inactive, and closed channel

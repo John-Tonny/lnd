@@ -8,7 +8,7 @@ import (
 
 	"strconv"
 
-	"github.com/lightningnetwork/lnd/lnrpc/invoicesrpc"
+	"github.com/John-Tonny/lnd/lnrpc/invoicesrpc"
 	"github.com/urfave/cli"
 )
 

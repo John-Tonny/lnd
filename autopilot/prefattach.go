@@ -4,8 +4,8 @@ import (
 	prand "math/rand"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 )
 
 // minMedianChanSizeFraction determines the minimum size a channel must have to
@@ -79,13 +79,13 @@ func (p *PrefAttachment) Name() string {
 //
 // NOTE: This is a part of the AttachmentHeuristic interface.
 func (p *PrefAttachment) NodeScores(g ChannelGraph, chans []LocalChannel,
-	chanSize btcutil.Amount, nodes map[NodeID]struct{}) (
+	chanSize vclutil.Amount, nodes map[NodeID]struct{}) (
 	map[NodeID]*NodeScore, error) {
 
 	// We first run though the graph once in order to find the median
 	// channel size.
 	var (
-		allChans  []btcutil.Amount
+		allChans  []vclutil.Amount
 		seenChans = make(map[uint64]struct{})
 	)
 	if err := g.ForEachNode(func(n Node) error {

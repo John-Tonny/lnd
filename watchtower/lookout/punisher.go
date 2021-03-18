@@ -1,8 +1,8 @@
 package lookout
 
 import (
-	"github.com/btcsuite/btcd/wire"
-	"github.com/lightningnetwork/lnd/labels"
+	"github.com/John-Tonny/lnd/labels"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
 )
 
 // PunisherConfig houses the resources required by the Punisher.

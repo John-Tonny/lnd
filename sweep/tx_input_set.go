@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcwallet/wallet/txrules"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/vclsuite_vcld/txscript"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
+	"github.com/John-Tonny/vclsuite_vclwallet/wallet/txrules"
 )
 
 // addConstraints defines the constraints to apply when adding an input.
@@ -35,10 +35,10 @@ type txInputSetState struct {
 	feeRate chainfee.SatPerKWeight
 
 	// inputTotal is the total value of all inputs.
-	inputTotal btcutil.Amount
+	inputTotal vclutil.Amount
 
 	// requiredOutput is the sum of the outputs committed to by the inputs.
-	requiredOutput btcutil.Amount
+	requiredOutput vclutil.Amount
 
 	// changeOutput is the value of the change output. This will be what is
 	// left over after subtracting the requiredOutput and the tx fee from
@@ -46,13 +46,13 @@ type txInputSetState struct {
 	//
 	// NOTE: This might be below the dust limit, or even negative since it
 	// is the change remaining in csse we pay the fee for a change output.
-	changeOutput btcutil.Amount
+	changeOutput vclutil.Amount
 
 	// inputs is the set of tx inputs.
 	inputs []input.Input
 
 	// walletInputTotal is the total value of inputs coming from the wallet.
-	walletInputTotal btcutil.Amount
+	walletInputTotal vclutil.Amount
 
 	// force indicates that this set must be swept even if the total yield
 	// is negative.
@@ -85,7 +85,7 @@ func (t *txInputSetState) weightEstimate(change bool) *weightEstimator {
 // totalOutput is the total amount left for us after paying fees.
 //
 // NOTE: This might be dust.
-func (t *txInputSetState) totalOutput() btcutil.Amount {
+func (t *txInputSetState) totalOutput() vclutil.Amount {
 	return t.requiredOutput + t.changeOutput
 }
 
@@ -110,7 +110,7 @@ type txInputSet struct {
 	txInputSetState
 
 	// dustLimit is the minimum output value of the tx.
-	dustLimit btcutil.Amount
+	dustLimit vclutil.Amount
 
 	// maxInputs is the maximum number of inputs that will be accepted in
 	// the set.
@@ -121,10 +121,10 @@ type txInputSet struct {
 	wallet Wallet
 }
 
-func dustLimit(relayFee chainfee.SatPerKWeight) btcutil.Amount {
+func dustLimit(relayFee chainfee.SatPerKWeight) vclutil.Amount {
 	return txrules.GetDustThreshold(
 		input.P2WPKHSize,
-		btcutil.Amount(relayFee.FeePerKVByte()),
+		vclutil.Amount(relayFee.FeePerKVByte()),
 	)
 }
 
@@ -192,7 +192,7 @@ func (t *txInputSet) addToState(inp input.Input, constraints addConstraints) *tx
 	// If the input comes with a required tx out that is below dust, we
 	// won't add it.
 	reqOut := inp.RequiredTxOut()
-	if reqOut != nil && btcutil.Amount(reqOut.Value) < t.dustLimit {
+	if reqOut != nil && vclutil.Amount(reqOut.Value) < t.dustLimit {
 		return nil
 	}
 
@@ -203,7 +203,7 @@ func (t *txInputSet) addToState(inp input.Input, constraints addConstraints) *tx
 	s.inputs = append(s.inputs, inp)
 
 	// Add the value of the new input.
-	value := btcutil.Amount(inp.SignDesc().Output.Value)
+	value := vclutil.Amount(inp.SignDesc().Output.Value)
 	s.inputTotal += value
 
 	// Recalculate the tx fee.
@@ -211,7 +211,7 @@ func (t *txInputSet) addToState(inp input.Input, constraints addConstraints) *tx
 
 	// Calculate the new output value.
 	if reqOut != nil {
-		s.requiredOutput += btcutil.Amount(reqOut.Value)
+		s.requiredOutput += vclutil.Amount(reqOut.Value)
 	}
 	s.changeOutput = s.inputTotal - s.requiredOutput - fee
 

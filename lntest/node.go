@@ -16,23 +16,23 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/integration/rpctest"
-	"github.com/btcsuite/btcd/rpcclient"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/lnd/chanbackup"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lnrpc/invoicesrpc"
+	"github.com/John-Tonny/lnd/lnrpc/routerrpc"
+	"github.com/John-Tonny/lnd/lnrpc/signrpc"
+	"github.com/John-Tonny/lnd/lnrpc/walletrpc"
+	"github.com/John-Tonny/lnd/lnrpc/watchtowerrpc"
+	"github.com/John-Tonny/lnd/lnrpc/wtclientrpc"
+	"github.com/John-Tonny/lnd/lntest/wait"
+	"github.com/John-Tonny/lnd/macaroons"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/integration/rpctest"
+	"github.com/John-Tonny/vclsuite_vcld/rpcclient"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/go-errors/errors"
-	"github.com/lightningnetwork/lnd/chanbackup"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/lnrpc/invoicesrpc"
-	"github.com/lightningnetwork/lnd/lnrpc/routerrpc"
-	"github.com/lightningnetwork/lnd/lnrpc/signrpc"
-	"github.com/lightningnetwork/lnd/lnrpc/walletrpc"
-	"github.com/lightningnetwork/lnd/lnrpc/watchtowerrpc"
-	"github.com/lightningnetwork/lnd/lnrpc/wtclientrpc"
-	"github.com/lightningnetwork/lnd/lntest/wait"
-	"github.com/lightningnetwork/lnd/macaroons"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"gopkg.in/macaroon.v2"
@@ -1350,11 +1350,11 @@ func (hn *HarnessNode) WaitForBlockchainSync(ctx context.Context) error {
 
 // WaitForBalance waits until the node sees the expected confirmed/unconfirmed
 // balance within their wallet.
-func (hn *HarnessNode) WaitForBalance(expectedBalance btcutil.Amount, confirmed bool) error {
+func (hn *HarnessNode) WaitForBalance(expectedBalance vclutil.Amount, confirmed bool) error {
 	ctx := context.Background()
 	req := &lnrpc.WalletBalanceRequest{}
 
-	var lastBalance btcutil.Amount
+	var lastBalance vclutil.Amount
 	doesBalanceMatch := func() bool {
 		balance, err := hn.WalletBalance(ctx, req)
 		if err != nil {
@@ -1362,12 +1362,12 @@ func (hn *HarnessNode) WaitForBalance(expectedBalance btcutil.Amount, confirmed 
 		}
 
 		if confirmed {
-			lastBalance = btcutil.Amount(balance.ConfirmedBalance)
-			return btcutil.Amount(balance.ConfirmedBalance) == expectedBalance
+			lastBalance = vclutil.Amount(balance.ConfirmedBalance)
+			return vclutil.Amount(balance.ConfirmedBalance) == expectedBalance
 		}
 
-		lastBalance = btcutil.Amount(balance.UnconfirmedBalance)
-		return btcutil.Amount(balance.UnconfirmedBalance) == expectedBalance
+		lastBalance = vclutil.Amount(balance.UnconfirmedBalance)
+		return vclutil.Amount(balance.UnconfirmedBalance) == expectedBalance
 	}
 
 	err := wait.Predicate(doesBalanceMatch, DefaultTimeout)

@@ -12,24 +12,24 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/chainntnfs"
-	"github.com/lightningnetwork/lnd/channeldb"
-	"github.com/lightningnetwork/lnd/htlcswitch"
-	"github.com/lightningnetwork/lnd/input"
-	"github.com/lightningnetwork/lnd/keychain"
-	"github.com/lightningnetwork/lnd/lntest/channels"
-	"github.com/lightningnetwork/lnd/lntest/mock"
-	"github.com/lightningnetwork/lnd/lnwallet"
-	"github.com/lightningnetwork/lnd/lnwallet/chainfee"
-	"github.com/lightningnetwork/lnd/lnwire"
-	"github.com/lightningnetwork/lnd/netann"
-	"github.com/lightningnetwork/lnd/queue"
-	"github.com/lightningnetwork/lnd/shachain"
-	"github.com/lightningnetwork/lnd/ticker"
+	"github.com/John-Tonny/lnd/chainntnfs"
+	"github.com/John-Tonny/lnd/channeldb"
+	"github.com/John-Tonny/lnd/htlcswitch"
+	"github.com/John-Tonny/lnd/input"
+	"github.com/John-Tonny/lnd/keychain"
+	"github.com/John-Tonny/lnd/lntest/channels"
+	"github.com/John-Tonny/lnd/lntest/mock"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet/chainfee"
+	"github.com/John-Tonny/lnd/lnwire"
+	"github.com/John-Tonny/lnd/netann"
+	"github.com/John-Tonny/lnd/queue"
+	"github.com/John-Tonny/lnd/shachain"
+	"github.com/John-Tonny/lnd/ticker"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/stretchr/testify/require"
 )
 
@@ -66,10 +66,10 @@ func createTestPeer(notifier chainntnfs.ChainNotifier,
 		btcec.S256(), channels.BobsPrivKey,
 	)
 
-	channelCapacity := btcutil.Amount(10 * 1e8)
+	channelCapacity := vclutil.Amount(10 * 1e8)
 	channelBal := channelCapacity / 2
-	aliceDustLimit := btcutil.Amount(200)
-	bobDustLimit := btcutil.Amount(1300)
+	aliceDustLimit := vclutil.Amount(200)
+	bobDustLimit := vclutil.Amount(1300)
 	csvTimeoutAlice := uint32(5)
 	csvTimeoutBob := uint32(4)
 
@@ -83,7 +83,7 @@ func createTestPeer(notifier chainntnfs.ChainNotifier,
 		ChannelConstraints: channeldb.ChannelConstraints{
 			DustLimit:        aliceDustLimit,
 			MaxPendingAmount: lnwire.MilliSatoshi(rand.Int63()),
-			ChanReserve:      btcutil.Amount(rand.Int63()),
+			ChanReserve:      vclutil.Amount(rand.Int63()),
 			MinHTLC:          lnwire.MilliSatoshi(rand.Int63()),
 			MaxAcceptedHtlcs: uint16(rand.Int31()),
 			CsvDelay:         uint16(csvTimeoutAlice),
@@ -108,7 +108,7 @@ func createTestPeer(notifier chainntnfs.ChainNotifier,
 		ChannelConstraints: channeldb.ChannelConstraints{
 			DustLimit:        bobDustLimit,
 			MaxPendingAmount: lnwire.MilliSatoshi(rand.Int63()),
-			ChanReserve:      btcutil.Amount(rand.Int63()),
+			ChanReserve:      vclutil.Amount(rand.Int63()),
 			MinHTLC:          lnwire.MilliSatoshi(rand.Int63()),
 			MaxAcceptedHtlcs: uint16(rand.Int31()),
 			CsvDelay:         uint16(csvTimeoutBob),
@@ -191,7 +191,7 @@ func createTestPeer(notifier chainntnfs.ChainNotifier,
 		CommitHeight:  0,
 		LocalBalance:  lnwire.NewMSatFromSatoshis(channelBal),
 		RemoteBalance: lnwire.NewMSatFromSatoshis(channelBal),
-		FeePerKw:      btcutil.Amount(feePerKw),
+		FeePerKw:      vclutil.Amount(feePerKw),
 		CommitFee:     feePerKw.FeeForWeight(input.CommitWeight),
 		CommitTx:      aliceCommitTx,
 		CommitSig:     bytes.Repeat([]byte{1}, 71),
@@ -200,7 +200,7 @@ func createTestPeer(notifier chainntnfs.ChainNotifier,
 		CommitHeight:  0,
 		LocalBalance:  lnwire.NewMSatFromSatoshis(channelBal),
 		RemoteBalance: lnwire.NewMSatFromSatoshis(channelBal),
-		FeePerKw:      btcutil.Amount(feePerKw),
+		FeePerKw:      vclutil.Amount(feePerKw),
 		CommitFee:     feePerKw.FeeForWeight(input.CommitWeight),
 		CommitTx:      bobCommitTx,
 		CommitSig:     bytes.Repeat([]byte{1}, 71),

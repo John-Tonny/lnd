@@ -20,8 +20,8 @@ RUN apk add --no-cache --update alpine-sdk \
     git \
     make \
     gcc \
-&&  git clone https://github.com/lightningnetwork/lnd /go/src/github.com/lightningnetwork/lnd \
-&&  cd /go/src/github.com/lightningnetwork/lnd \
+&&  git clone https://github.com/John-Tonny/lnd /go/src/github.com/John-Tonny/lnd \
+&&  cd /go/src/github.com/John-Tonny/lnd \
 &&  git checkout $checkout \
 &&  make release-install
 
@@ -43,7 +43,7 @@ RUN apk --no-cache add \
 # Copy the binaries from the builder image.
 COPY --from=builder /go/bin/lncli /bin/
 COPY --from=builder /go/bin/lnd /bin/
-COPY --from=builder /go/src/github.com/lightningnetwork/lnd/scripts/verify-install.sh /
+COPY --from=builder /go/src/github.com/John-Tonny/lnd/scripts/verify-install.sh /
 
 # Store the SHA256 hash of the binaries that were just produced for later
 # verification.

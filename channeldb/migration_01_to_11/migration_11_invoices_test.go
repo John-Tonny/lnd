@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/btcec"
-	bitcoinCfg "github.com/btcsuite/btcd/chaincfg"
-	"github.com/lightningnetwork/lnd/channeldb/kvdb"
-	"github.com/lightningnetwork/lnd/zpay32"
+	"github.com/John-Tonny/lnd/channeldb/kvdb"
+	"github.com/John-Tonny/lnd/zpay32"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	bitcoinCfg "github.com/John-Tonny/vclsuite_vcld/chaincfg"
 	litecoinCfg "github.com/ltcsuite/ltcd/chaincfg"
 )
 

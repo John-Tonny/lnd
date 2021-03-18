@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/lnd/lnwire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/lightningnetwork/lnd/lnwire"
 	"github.com/stretchr/testify/require"
 )
 
@@ -79,7 +79,7 @@ func TestProbabilityExtrapolation(t *testing.T) {
 
 type mppSendTestCase struct {
 	name             string
-	amt              btcutil.Amount
+	amt              vclutil.Amount
 	expectedAttempts int
 
 	// expectedSuccesses is a list of htlcs that made it to the receiver,
@@ -89,7 +89,7 @@ type mppSendTestCase struct {
 	graph           func(g *mockGraph)
 	expectedFailure bool
 	maxParts        uint32
-	maxShardSize    btcutil.Amount
+	maxShardSize    vclutil.Amount
 }
 
 const (
@@ -111,7 +111,7 @@ func onePathGraph(g *mockGraph) {
 	g.addChannel(chanIm1Target, targetNodeID, im1NodeID, 100000)
 }
 
-func twoPathGraph(g *mockGraph, capacityOut, capacityIn btcutil.Amount) {
+func twoPathGraph(g *mockGraph, capacityOut, capacityIn vclutil.Amount) {
 	// Create the following network of nodes:
 	// source -> intermediate1 -> target
 	// source -> intermediate2 -> target
@@ -281,7 +281,7 @@ func testMppSend(t *testing.T, testCase *mppSendTestCase) {
 
 // expectedHtlcSuccess describes an expected successful htlc attempt.
 type expectedHtlcSuccess struct {
-	amt   btcutil.Amount
+	amt   vclutil.Amount
 	chans []uint64
 }
 

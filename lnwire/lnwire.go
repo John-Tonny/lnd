@@ -10,12 +10,12 @@ import (
 
 	"net"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/John-Tonny/lnd/tor"
+	"github.com/John-Tonny/vclsuite_vcld/btcec"
+	"github.com/John-Tonny/vclsuite_vcld/chaincfg/chainhash"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/go-errors/errors"
-	"github.com/lightningnetwork/lnd/tor"
 )
 
 const (
@@ -130,7 +130,7 @@ func WriteElement(w io.Writer, element interface{}) error {
 		if _, err := w.Write(b[:]); err != nil {
 			return err
 		}
-	case btcutil.Amount:
+	case vclutil.Amount:
 		var b [8]byte
 		binary.BigEndian.PutUint64(b[:], uint64(e))
 		if _, err := w.Write(b[:]); err != nil {
@@ -529,12 +529,12 @@ func ReadElement(r io.Reader, element interface{}) error {
 			return err
 		}
 		*e = MilliSatoshi(int64(binary.BigEndian.Uint64(b[:])))
-	case *btcutil.Amount:
+	case *vclutil.Amount:
 		var b [8]byte
 		if _, err := io.ReadFull(r, b[:]); err != nil {
 			return err
 		}
-		*e = btcutil.Amount(int64(binary.BigEndian.Uint64(b[:])))
+		*e = vclutil.Amount(int64(binary.BigEndian.Uint64(b[:])))
 	case **btcec.PublicKey:
 		var b [btcec.PubKeyBytesLenCompressed]byte
 		if _, err = io.ReadFull(r, b[:]); err != nil {

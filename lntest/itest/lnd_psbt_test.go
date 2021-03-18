@@ -6,12 +6,12 @@ import (
 	"crypto/rand"
 	"fmt"
 
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/lightningnetwork/lnd/funding"
-	"github.com/lightningnetwork/lnd/lnrpc"
-	"github.com/lightningnetwork/lnd/lnrpc/walletrpc"
-	"github.com/lightningnetwork/lnd/lntest"
+	"github.com/John-Tonny/lnd/funding"
+	"github.com/John-Tonny/lnd/lnrpc"
+	"github.com/John-Tonny/lnd/lnrpc/walletrpc"
+	"github.com/John-Tonny/lnd/lntest"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
+	vclutil "github.com/John-Tonny/vclsuite_vclutil"
 	"github.com/stretchr/testify/require"
 )
 
@@ -32,7 +32,7 @@ func testPsbtChanFunding(net *lntest.NetworkHarness, t *harnessTest) {
 	dave, err := net.NewNode("dave", nil)
 	require.NoError(t.t, err)
 	defer shutdownAndAssert(net, t, dave)
-	err = net.SendCoins(ctxb, btcutil.SatoshiPerBitcoin, dave)
+	err = net.SendCoins(ctxb, vclutil.SatoshiPerBitcoin, dave)
 	if err != nil {
 		t.Fatalf("unable to send coins to dave: %v", err)
 	}
@@ -233,7 +233,7 @@ func testPsbtChanFunding(net *lntest.NetworkHarness, t *harnessTest) {
 
 	// Next, to make sure the channel functions as normal, we'll make some
 	// payments within the channel.
-	payAmt := btcutil.Amount(100000)
+	payAmt := vclutil.Amount(100000)
 	invoice := &lnrpc.Invoice{
 		Memo:  "new chans",
 		Value: int64(payAmt),

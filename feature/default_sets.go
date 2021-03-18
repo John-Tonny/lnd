@@ -1,6 +1,6 @@
 package feature
 
-import "github.com/lightningnetwork/lnd/lnwire"
+import "github.com/John-Tonny/lnd/lnwire"
 
 // setDesc describes which feature bits should be advertised in which feature
 // sets.

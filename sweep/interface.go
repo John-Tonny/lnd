@@ -1,8 +1,8 @@
 package sweep
 
 import (
-	"github.com/btcsuite/btcd/wire"
-	"github.com/lightningnetwork/lnd/lnwallet"
+	"github.com/John-Tonny/lnd/lnwallet"
+	"github.com/John-Tonny/vclsuite_vcld/wire"
 )
 
 // Wallet contains all wallet related functionality required by sweeper.

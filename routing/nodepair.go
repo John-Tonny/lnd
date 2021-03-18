@@ -3,7 +3,7 @@ package routing
 import (
 	"fmt"
 
-	"github.com/lightningnetwork/lnd/routing/route"
+	"github.com/John-Tonny/lnd/routing/route"
 )
 
 // DirectedNodePair stores a directed pair of nodes.
